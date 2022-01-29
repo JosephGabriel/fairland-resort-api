@@ -10,22 +10,85 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//  Usuários    //
 model User {
-  id                Int      @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   firstName         String
   lastName          String
-  userName          String   @unique
-  email             String   @unique
+  userName          String    @unique
+  email             String    @unique
   avatar            String?
   password          String
   passwordChangedAt String?
-  role              userRole @default(USER)
-  active            Boolean  @default(true)
-  verified          Boolean  @default(false)
-  createdAt         DateTime @default(now())
+  role              userRole  @default(USER)
+  active            Boolean   @default(true)
+  verified          Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime
+  bookings          Booking[]
+  reviews           Review[]
 }
 
 enum userRole {
   USER
   ADMIN
+}
+
+//    Hoteis    //
+model Hotel {
+  id          Int    @id @default(autoincrement())
+  name        String
+  rating      Int
+  summary     String
+  description String
+  thumbnail   String
+  images      String
+  logo        String
+  slug        String
+  latitude    String
+  longitude   String
+  address     String
+  zipCode     String
+  room        Room[]
+}
+
+//    Quartos   //
+model Room {
+  id          Int       @id @default(autoincrement())
+  name        String
+  summary     String
+  thumbnail   String
+  description String
+  images      String[]
+  price       Float
+  rating      Int
+  hotelId     Int?
+  hotel       Hotel?    @relation(fields: [hotelId], references: [id])
+  bookings    Booking[]
+  Review      Review[]
+}
+
+//    Reservas    //
+model Booking {
+  id          Int      @id @default(autoincrement())
+  price       Float
+  paid        Boolean
+  bookingDate DateTime @default(now())
+  dateIn      DateTime
+  dateOut     DateTime
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
+  room        Room?    @relation(fields: [roomId], references: [id])
+  roomId      Int?
+}
+
+//    Reviews    //
+model Review {
+  id     Int    @id @default(autoincrement())
+  review String
+  rating Int
+  user   User?  @relation(fields: [userId], references: [id])
+  userId Int?
+  room   Room   @relation(fields: [roomId], references: [id])
+  roomId Int
 }

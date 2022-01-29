@@ -31,6 +31,12 @@ type User {
 
   "Mostra se o usuário verificou o email ou não"
   verified: Boolean!
+
+  "Reservas do usúario"
+  bookings: [Booking!]
+
+  "Review feitas pelo usuário"
+  reviews: [Review!]
 }
 
 enum userRole {

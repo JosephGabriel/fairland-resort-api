@@ -9,7 +9,7 @@ type Booking {
   room: Room!
 
   "Preço da reserva"
-  price: Int!
+  price: Float!
 
   "Booleano que mostra se foi pago ou não"
   paid: Boolean!
