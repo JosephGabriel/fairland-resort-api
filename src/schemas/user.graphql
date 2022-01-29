@@ -1,0 +1,39 @@
+type User {
+  "Id único de cada usuário"
+  id: ID!
+
+  "Primeiro nome do usuário"
+  firstName: String!
+
+  "Sobrenome nome do usuário"
+  lastName: String!
+
+  "Nome de usuário único de cada usuário"
+  userName: String!
+
+  "Email único de cada usuário"
+  email: String!
+
+  "Url da imagem de perfil de cada usuário"
+  avatar: String
+
+  "Senha criptografada de cada usuário"
+  password: String!
+
+  "Timestamp do momento em que o usuário mudou a senha"
+  passwordChangedAt: String
+
+  "Enum do tipo de função (ADMIN | USER)"
+  role: userRole!
+
+  "Mostra se o usuário esta ativo ou não"
+  active: Boolean!
+
+  "Mostra se o usuário verificou o email ou não"
+  verified: Boolean!
+}
+
+enum userRole {
+  ADMIN
+  USER
+}
