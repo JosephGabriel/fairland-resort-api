@@ -1,0 +1,51 @@
+type Hotel {
+  "Id do hotel"
+  id: ID!
+
+  "Nome do hotel"
+  name: String!
+
+  "Classificação do hotel ex: 5 estrelas"
+  rating: Int
+
+  "Uma pequena descrição do hotel de 10 as 30 palavras"
+  summary: String!
+
+  "A descrição do hotel"
+  description: String!
+
+  "Thumbnail a ser exibida do hotel"
+  thumbnail: String!
+
+  "Um array de url's de imagens de hoteis"
+  images: [String!]
+
+  #commodities: [String!]
+
+  #mainCommodities: [String!]
+
+  #forFamilycommodities: [String!]
+
+  #activityCommodities: [String!]
+
+  "Url da logo do hotel"
+  logo: String!
+
+  "Slug do hotel baseado no nome"
+  slug: String!
+
+  "Latitude do hotel"
+  latitude: String
+
+  "Longitude do hotel"
+  longitude: String
+
+  "Endereço do hotel"
+  address: String
+
+  "Cep do hotel"
+  zipCode: String
+
+  "Array com os quartos do hotel"
+  rooms: [Room!]
+}

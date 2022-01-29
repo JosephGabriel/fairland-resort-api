@@ -1,0 +1,25 @@
+type Room {
+  "Id do quarto"
+  id: ID!
+
+  "Nome do quarto"
+  name: String!
+
+  "Uma pequena descrição do quarto"
+  summary: String!
+
+  "Thumbnail a ser exibida do quarto"
+  thumbnail: String!
+
+  "Um array de url's de imagens do quarto"
+  images: [String!]
+
+  "Preço por noite do quarto"
+  price: Float!
+
+  "Classificação do hotel ex: 5 estrelas"
+  rating: Int
+
+  "Hotel a qual o quarto pertence"
+  hotel: Hotel!
+}

@@ -1,0 +1,25 @@
+type Booking {
+  "Id da reserva"
+  id: ID!
+
+  "Usuário que fez a reserva"
+  user: User!
+
+  "Quarto reservado"
+  room: Room!
+
+  "Preço da reserva"
+  price: Int!
+
+  "Booleano que mostra se foi pago ou não"
+  paid: Boolean!
+
+  "Data em qua a reserva foi feita"
+  bookingDate: String!
+
+  "Data de entrada da reserva"
+  dateIn: String!
+
+  "Data de saida da reserva"
+  dateOut: String!
+}

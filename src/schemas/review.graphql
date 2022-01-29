@@ -1,0 +1,16 @@
+type Review {
+  "Id da review"
+  id: ID!
+
+  "Usuário que fez a review"
+  user: User!
+
+  "Quarto que recebeu a review"
+  room: Room!
+
+  "Texto da review"
+  review: String!
+
+  "Classificação da review"
+  rating: Int!
+}
