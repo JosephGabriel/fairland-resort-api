@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
+import { graphqlUploadExpress } from "graphql-upload";
 
 export const startServer = async (typeDefs, resolvers, context, port) => {
   const server = new ApolloServer({
@@ -9,6 +10,10 @@ export const startServer = async (typeDefs, resolvers, context, port) => {
   });
 
   const app = express();
+
+  app.use(server.graphqlPath, graphqlUploadExpress());
+
+  app.use(express.static("public"));
 
   await server.start();
 
