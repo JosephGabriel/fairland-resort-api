@@ -6,19 +6,23 @@
   "scripts": {
     "start": "nodemon src/server --ext graphql,js",
     "debug": "nodemon src/server --ext graphql,js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@sucrase/jest-plugin": "^2.2.0",
+    "cross-fetch": "^3.1.5",
     "jest": "^27.4.7",
     "prisma": "^3.8.1",
     "sucrase": "^3.20.3"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.8",
     "@graphql-tools/merge": "^8.2.1",
     "@prisma/client": "^3.8.1",
+    "@sendgrid/mail": "^7.6.0",
     "apollo-server-express": "^3.6.2",
     "bcrypt": "^5.0.1",
     "dotenv": "^14.3.2",

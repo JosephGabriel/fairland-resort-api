@@ -7,9 +7,20 @@ type Query {
 }
 
 type Mutation {
+  "Usada para fazer login"
   loginUser(data: LoginUserInput!): AuthPayload!
+
+  "Usada para criar um usuário"
   createUser(data: CreateUserInput!): AuthPayload!
+
+  "Usada para atualizar informações não sensiveis (ex: senhas)"
   updateUser(data: UpdateUserInput!): AuthPayload!
+
+  "Usada para desativar um usuário"
+  deleteUser(id: ID!): String!
+
+  "Usada para verificar um usuário"
+  verifyUser: AuthPayload!
 
   createHotel(data: CreateHotelInput!): Hotel!
   updateHotel(id: ID!, data: UpdateHotelInput!): Hotel!

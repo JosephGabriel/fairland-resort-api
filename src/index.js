@@ -1,14 +1,21 @@
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
 
-export const startServer = async (typeDefs, resolvers, context, port) => {
+import { typeDefs } from "./schemas";
+import { resolvers } from "./resolvers";
+
+const port = process.env.PORT || 4000;
+
+export const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
+    context(req) {
+      return {
+        req,
+      };
+    },
   });
 
   const app = express();

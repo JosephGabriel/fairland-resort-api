@@ -6,8 +6,6 @@ const validate = (value) => {
     throw new GraphQLError(`The value: ${value} is not a string`);
   }
 
-  console.log(value);
-
   if (!validator.isEmail(value)) {
     throw new GraphQLError(`The value: ${value} is not a valid email`);
   }
