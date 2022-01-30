@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 
 import { startServer } from "./index";
 
@@ -9,10 +9,10 @@ import { resolvers } from "./resolvers";
 if (process.env.NODE_ENV === "development") {
   dotenv.config();
 }
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const context = {
-  prisma,
+  // prisma,
 };
 
 const port = process.env.PORT || 4000;

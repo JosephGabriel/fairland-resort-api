@@ -24,7 +24,7 @@ model User {
   active            Boolean   @default(true)
   verified          Boolean   @default(false)
   createdAt         DateTime  @default(now())
-  updatedAt         DateTime
+  updatedAt         DateTime?
   bookings          Booking[]
   reviews           Review[]
 }

@@ -1,10 +1,12 @@
 import { GraphQLScalarType, GraphQLError, Kind } from "graphql";
 import validator from "validator";
 
-const validate = ({ value }) => {
+const validate = (value) => {
   if (typeof value !== "string") {
     throw new GraphQLError(`The value: ${value} is not a string`);
   }
+
+  console.log(value);
 
   if (!validator.isEmail(value)) {
     throw new GraphQLError(`The value: ${value} is not a valid email`);
@@ -18,7 +20,7 @@ const parseLiteral = (ast) => {
     throw new GraphQLError(`Can only parse strings but got ${ast.kind}`);
   }
 
-  return ast;
+  return ast.value;
 };
 
 export const GraphQLEmailAddress = new GraphQLScalarType({
