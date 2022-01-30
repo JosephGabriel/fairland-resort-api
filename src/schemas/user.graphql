@@ -12,13 +12,13 @@ type User {
   userName: String!
 
   "Email único de cada usuário"
-  email: String!
+  email: EmailAddress!
 
   "Url da imagem de perfil de cada usuário"
   avatar: String
 
   "Senha criptografada de cada usuário"
-  password: String!
+  password: Password!
 
   "Timestamp do momento em que o usuário mudou a senha"
   passwordChangedAt: String
@@ -37,6 +37,38 @@ type User {
 
   "Review feitas pelo usuário"
   reviews: [Review!]
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  email: EmailAddress!
+  password: Password!
+}
+
+input CreateUserInput {
+  firstName: String!
+  email: EmailAddress!
+  lastName: String!
+  userName: String!
+  password: Password!
+  passwordConfirm: Password!
+}
+
+input UpdateUserInput {
+  firstName: String
+  email: EmailAddress
+  lastName: String
+  userName: String
+  avatar: Upload
+}
+
+input UpdateUserPasswordInput {
+  password: Password!
+  passwordConfirm: Password!
 }
 
 enum userRole {

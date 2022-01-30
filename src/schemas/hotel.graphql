@@ -49,3 +49,29 @@ type Hotel {
   "Array com os quartos do hotel"
   rooms: [Room!]
 }
+
+input CreateHotelInput {
+  name: String!
+  summary: String!
+  description: String!
+  thumbnail: Upload!
+  images: [Upload!]
+  logo: Upload!
+  latitude: String
+  longitude: String
+  address: String
+  zipCode: String
+}
+
+input UpdateHotelInput {
+  name: String
+  summary: String
+  description: String
+  thumbnail: Upload
+  images: [Upload]
+  logo: Upload
+  latitude: String
+  longitude: String
+  address: String
+  zipCode: String
+}

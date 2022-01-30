@@ -1,7 +1,9 @@
-import { GraphQLUpload } from "graphql-upload";
 import { Query } from "./Query";
+import { Mutation } from "./Mutation";
+import { scalars } from "../scalars";
 
 export const resolvers = {
-  Upload: GraphQLUpload,
+  ...scalars,
   Query,
+  Mutation,
 };

@@ -1,5 +1,17 @@
 scalar Upload
+scalar Password
+scalar EmailAddress
 
 type Query {
   hello: String
+}
+
+type Mutation {
+  loginUser(data: LoginUserInput!): AuthPayload!
+  createUser(data: CreateUserInput!): AuthPayload!
+  updateUser(data: UpdateUserInput!): AuthPayload!
+
+  createHotel(data: CreateHotelInput!): Hotel!
+  updateHotel(id: ID!, data: UpdateHotelInput!): Hotel!
+  deleteHotel(id: ID!): Hotel!
 }

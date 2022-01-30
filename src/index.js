@@ -1,3 +1,4 @@
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
@@ -7,6 +8,7 @@ export const startServer = async (typeDefs, resolvers, context, port) => {
     typeDefs,
     resolvers,
     context,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
   });
 
   const app = express();
