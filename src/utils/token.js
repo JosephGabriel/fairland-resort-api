@@ -8,7 +8,7 @@ export const signUpToken = async (payload) => {
   return token;
 };
 
-export const veirfyToken = async (payload) => {
+export const verifyToken = async (payload) => {
   const token = await jwt.verify(payload, process.env.JWT_SECRET);
   return token;
 };

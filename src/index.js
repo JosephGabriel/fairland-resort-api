@@ -1,17 +1,24 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
+import { applyMiddleware } from "graphql-middleware";
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
+import { permisions } from "./permisions";
 
 const port = process.env.PORT || 4000;
 
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
 export const startServer = async () => {
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context(req) {
+    schema: applyMiddleware(schema, permisions),
+    context({ req }) {
       return {
         req,
       };
@@ -28,9 +35,9 @@ export const startServer = async () => {
 
   server.applyMiddleware({ app });
 
-  await new Promise((resolve) => app.listen({ port }, resolve));
-
-  console.log(
-    `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
-  );
+  await app.listen({ port }, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
+    );
+  });
 };

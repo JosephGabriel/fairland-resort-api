@@ -16,8 +16,11 @@ type Mutation {
   "Usada para atualizar informações não sensiveis (ex: senhas)"
   updateUser(data: UpdateUserInput!): AuthPayload!
 
-  "Usada para desativar um usuário"
-  deleteUser(id: ID!): String!
+  "Usada para alterar a senha do usuário"
+  updateUserPassword(data: UpdateUserPasswordInput!): AuthPayload!
+
+  "Usada para que o próprio usuário possa desativar a conta, mas não apagá-la"
+  deactivateUser(id: ID!): String!
 
   "Usada para verificar um usuário"
   verifyUser: AuthPayload!
