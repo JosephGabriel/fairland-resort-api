@@ -36,13 +36,13 @@ enum userRole {
 
 //    Hoteis    //
 model Hotel {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
-  rating      Int
+  rating      Int?     @default(0)
   summary     String
   description String
   thumbnail   String
-  images      String
+  images      String[]
   logo        String
   slug        String
   latitude    String

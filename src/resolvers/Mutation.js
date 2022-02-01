@@ -1,16 +1,14 @@
 import { ForbiddenError, ValidationError } from "apollo-server-errors";
-import { PrismaClient } from "@prisma/client";
+import { uploadMultipleImages, uploadSingleImage } from "../utils/upload";
 import { sendWelcomeMail } from "../utils/email";
 import { signUpToken, verifyToken } from "../utils/token";
 import { hashPassword, verifyPassword } from "../utils/password";
 import { userExists, userNotExists } from "../utils/user";
-import path from "path";
-import fs from "fs";
-
-const prisma = new PrismaClient();
+import slugify from "slugify";
 
 export const Mutation = {
-  async loginUser(parent, { data }, ctx, info) {
+  // User Mutations
+  async loginUser(parent, { data }, { prisma }, info) {
     const user = await prisma.user.findUnique({
       where: {
         email: data.email,
@@ -35,7 +33,7 @@ export const Mutation = {
     };
   },
 
-  async createUser(parent, { data }, { req }, info) {
+  async createUser(parent, { data }, { req, prisma }, info) {
     await userExists(
       { email: data.email },
       prisma,
@@ -51,25 +49,7 @@ export const Mutation = {
     data.password = await hashPassword(data.password);
 
     if (data.avatar) {
-      const { filename, createReadStream } = await data.avatar;
-
-      const { ext, name } = path.parse(filename);
-
-      const stream = createReadStream();
-
-      const fileName = `${Date.now()}-${name}.${ext}`;
-
-      const pathName = path.join(
-        `${__dirname}/../../public/images/users/${fileName}`
-      );
-
-      await stream.pipe(fs.createWriteStream(pathName));
-
-      const avatarUrl = `${req.protocol}://${req.get(
-        "host"
-      )}/images/users/${fileName}`;
-
-      data.avatar = avatarUrl;
+      data.avatar = await uploadSingleImage(data.avatar, req, "users");
     }
 
     const user = await prisma.user.create({ data });
@@ -93,7 +73,7 @@ export const Mutation = {
     };
   },
 
-  async deactivateUser(parent, args, { req }, info) {
+  async deactivateUser(parent, args, { req, prisma }, info) {
     const header = req.headers.authorization.replace("Bearer ", "");
     const headerToken = await verifyToken(header);
 
@@ -117,32 +97,14 @@ export const Mutation = {
     return "Usuário Desativado";
   },
 
-  async updateUser(parent, { data }, { req }, info) {
+  async updateUser(parent, { data }, { req, prisma }, info) {
     const header = req.headers.authorization.replace("Bearer ", "");
     const headerToken = await verifyToken(header);
 
     await userNotExists({ id: headerToken.id }, prisma);
 
     if (data.avatar) {
-      const { filename, createReadStream } = await data.avatar;
-
-      const { ext, name } = path.parse(filename);
-
-      const stream = createReadStream();
-
-      const fileName = `${Date.now()}-${name}.${ext}`;
-
-      const pathName = path.join(
-        `${__dirname}/../../public/images/users/${fileName}`
-      );
-
-      await stream.pipe(fs.createWriteStream(pathName));
-
-      const avatarUrl = `${req.protocol}://${req.get(
-        "host"
-      )}/images/users/${fileName}`;
-
-      data.avatar = avatarUrl;
+      data.avatar = await uploadSingleImage(data.avatar, req, "users");
     }
 
     const updatedUser = await prisma.user.update({
@@ -158,7 +120,7 @@ export const Mutation = {
     };
   },
 
-  async updateUserPassword(parent, { data }, { req }, info) {
+  async updateUserPassword(parent, { data }, { req, prisma }, info) {
     const header = req.headers.authorization.replace("Bearer ", "");
     const headerToken = await verifyToken(header);
 
@@ -185,7 +147,7 @@ export const Mutation = {
     };
   },
 
-  async verifyUser(parent, args, { req }, info) {
+  async verifyUser(parent, args, { req, prisma }, info) {
     const header = req.headers.authorization.replace("Bearer ", "");
     const headerToken = await verifyToken(header);
 
@@ -204,5 +166,64 @@ export const Mutation = {
       token,
       user: updatedUser,
     };
+  },
+
+  // Hotel Mutations
+  async createHotel(parent, { data }, { req, prisma }, info) {
+    data.slug = slugify(data.name, { lower: true });
+
+    data.logo = await uploadSingleImage(data.logo, req, "logos");
+
+    data.thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
+
+    data.images = await uploadMultipleImages(data.images, req, "hotels");
+
+    const hotel = await prisma.hotel.create({ data });
+
+    return hotel;
+  },
+
+  async updateHotel(parent, { id, data }, { req, prisma }, info) {
+    if (data.logo) {
+      data.logo = await uploadSingleImage(data.logo, req, "logos");
+    }
+
+    if (data.thumbnail) {
+      data.thumbnail = await uploadSingleImage(
+        data.thumbnail,
+        req,
+        "thumbnails"
+      );
+    }
+
+    if (data.images) {
+      data.images = await uploadMultipleImages(data.images, req, "hotels");
+    }
+
+    const updatedHotel = await prisma.hotel.update({
+      where: { id },
+      data,
+    });
+
+    return updatedHotel;
+  },
+
+  async deleteHotel(parent, { id }, { prisma }, info) {
+    await prisma.hotel.delete({
+      where: { id },
+    });
+
+    return "Hotel apagado com sucesso";
+  },
+
+  // Room Mutations
+  async createRoom(parent, { data }, { req, prisma }, info) {
+    data.thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
+
+    data.images = await uploadMultipleImages(data.images, req, "rooms");
+
+    const room = await prisma.room.create({ data });
+
+    return room;
   },
 };

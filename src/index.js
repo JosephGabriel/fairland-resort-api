@@ -3,10 +3,13 @@ import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
 import { applyMiddleware } from "graphql-middleware";
 const { makeExecutableSchema } = require("@graphql-tools/schema");
+import { PrismaClient } from "@prisma/client";
 
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
 import { permisions } from "./permisions";
+
+const prisma = new PrismaClient();
 
 const port = process.env.PORT || 4000;
 
@@ -21,6 +24,7 @@ export const startServer = async () => {
     context({ req }) {
       return {
         req,
+        prisma,
       };
     },
   });

@@ -9,10 +9,10 @@ type Room {
   summary: String!
 
   "Thumbnail a ser exibida do quarto"
-  thumbnail: String!
+  thumbnail: Upload!
 
   "Um array de url's de imagens do quarto"
-  images: [String!]
+  images: [Upload!]
 
   "Preço por noite do quarto"
   price: Float!
@@ -22,4 +22,21 @@ type Room {
 
   "Hotel a qual o quarto pertence"
   hotel: Hotel!
+}
+
+input CreateRoomInput {
+  name: String!
+  summary: String!
+  thumbnail: Upload!
+  images: [Upload!]
+  price: Float!
+  hotel: ID!
+}
+
+input UpdateRoomInput {
+  name: String
+  summary: String
+  thumbnail: Upload
+  images: [Upload!]
+  price: Float
 }

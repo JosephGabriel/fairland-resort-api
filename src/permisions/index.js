@@ -1,23 +1,32 @@
-import { AuthenticationError } from "apollo-server-errors";
 import { shield, rule, chain } from "graphql-shield";
 import { verifyToken } from "../utils/token";
-import { userExists } from "../utils/user";
 
-const isLoggedin = rule()(async (parent, args, { req }, info) => {
+const isLoggedin = rule()(async (parent, args, { req, prisma }, info) => {
   const user = req.headers.authorization.replace("Bearer ", "");
+  const userId = await verifyToken(user);
 
-  if (user) return true;
+  const userExists = await await prisma.user.findUnique({
+    where: { id: userId.id },
+  });
 
-  throw new AuthenticationError("Faça login para continuar!");
+  if (userExists) return true;
+
+  throw new Error("Faça login para continuar!");
 });
 
 const isAdmin = rule()(async (parent, args, { req, prisma }, info) => {
   const user = req.headers.authorization.replace("Bearer ", "");
-  const userId = verifyToken(user);
+  const userId = await verifyToken(user);
 
-  const hasUser = await userExists({ id: userId.id }, prisma);
+  const hasUser = await prisma.user.findUnique({ where: { id: userId.id } });
 
-  return hasUser.role === "ADMIN";
+  if (hasUser.role === "ADMIN" && hasUser.verified && hasUser.active) {
+    return true;
+  }
+
+  throw new Error(
+    "Para realizar esta ação é necessário um administrador válido!"
+  );
 });
 
 export const permisions = shield({

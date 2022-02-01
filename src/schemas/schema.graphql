@@ -1,4 +1,7 @@
 scalar Upload
+scalar Latitude
+scalar PostalCode
+scalar Longitude
 scalar Password
 scalar EmailAddress
 
@@ -7,6 +10,7 @@ type Query {
 }
 
 type Mutation {
+  ########## Usuário ################
   "Usada para fazer login"
   loginUser(data: LoginUserInput!): AuthPayload!
 
@@ -25,7 +29,20 @@ type Mutation {
   "Usada para verificar um usuário"
   verifyUser: AuthPayload!
 
+  ########## Hotel ################
+
+  "Usada para criar um hotel"
   createHotel(data: CreateHotelInput!): Hotel!
+
+  "Usada para atualizar um hotel"
   updateHotel(id: ID!, data: UpdateHotelInput!): Hotel!
-  deleteHotel(id: ID!): Hotel!
+
+  "Usada para apagar um hotel"
+  deleteHotel(id: ID!): String!
+
+  ########## Quartos ################
+
+  createRoom(data: CreateRoomInput!): Room!
+  updateRoom(id: ID!, data: UpdateRoomInput!): Room!
+  deleteRoom(id: ID!): Room!
 }
