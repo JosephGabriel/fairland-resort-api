@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+
+
+      - name: Digital Ocean Deploy App
+        uses: jjst/action-digitalocean-deploy-app@v2
+        with:
+          token: aa564fd996197066737cb7db18b3b710489e5bdec2f988e0d69363b6f005fd87

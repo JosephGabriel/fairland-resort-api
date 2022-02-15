@@ -1,42 +1,63 @@
 import { shield, rule, chain } from "graphql-shield";
 import { verifyToken } from "../utils/token";
 
-const isLoggedin = rule()(async (parent, args, { req, prisma }, info) => {
-  const user = req.headers.authorization.replace("Bearer ", "");
-  const userId = await verifyToken(user);
+const isLoggedin = rule()(async (parent, args, ctx, info) => {
+  const header = ctx.req.headers.authorization;
 
-  const userExists = await await prisma.user.findUnique({
-    where: { id: userId.id },
-  });
-
-  if (userExists) return true;
-
-  throw new Error("Faça login para continuar!");
-});
-
-const isAdmin = rule()(async (parent, args, { req, prisma }, info) => {
-  const user = req.headers.authorization.replace("Bearer ", "");
-  const userId = await verifyToken(user);
-
-  const hasUser = await prisma.user.findUnique({ where: { id: userId.id } });
-
-  if (hasUser.role === "ADMIN" && hasUser.verified && hasUser.active) {
-    return true;
+  if (!header) {
+    return Error("Você não esta logado");
   }
 
-  throw new Error(
-    "Para realizar esta ação é necessário um administrador válido!"
-  );
+  const userId = await verifyToken(ctx.req);
+
+  const userExists = await await ctx.prisma.user.findUnique({
+    where: { id: parseInt(userId.id) },
+  });
+
+  console.log(userExists);
+  ctx.user = userExists;
+
+  if (userExists) {
+    return true;
+  } else {
+    return new Error("Você não esta logado");
+  }
 });
 
-export const permisions = shield({
-  Mutation: {
-    verifyUser: isLoggedin,
-    updateUser: isLoggedin,
-    deactivateUser: isLoggedin,
-    updateUserPassword: isLoggedin,
-    createHotel: chain(isLoggedin, isAdmin),
-    updateHotel: chain(isLoggedin, isAdmin),
-    deleteHotel: chain(isLoggedin, isAdmin),
-  },
+const isAdmin = rule()(async (parent, args, ctx, info) => {
+  const userId = await verifyToken(ctx.req);
+
+  const hasUser = await ctx.prisma.user.findUnique({
+    where: { id: parseInt(userId.id) },
+  });
+
+  if (
+    hasUser &&
+    hasUser.role === "ADMIN" &&
+    hasUser.verified &&
+    hasUser.active
+  ) {
+    ctx.user = hasUser;
+    return true;
+  } else {
+    return new Error("É necessário um administrador válido para continuar");
+  }
 });
+
+export const permisions = shield(
+  {
+    Mutation: {
+      verifyUser: isLoggedin,
+      updateUser: isLoggedin,
+      deactivateUser: isLoggedin,
+      updateUserPassword: isLoggedin,
+      createHotel: chain(isLoggedin, isAdmin),
+      updateHotel: chain(isLoggedin, isAdmin),
+      deleteHotel: chain(isLoggedin, isAdmin),
+    },
+  },
+  {
+    allowExternalErrors: true,
+    fallbackError: process.env.NODE_ENV === "production",
+  }
+);

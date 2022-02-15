@@ -18,9 +18,12 @@ const schema = makeExecutableSchema({
   resolvers,
 });
 
+const schemaWithPermisions = applyMiddleware(schema, permisions);
+
 export const startServer = async () => {
   const server = new ApolloServer({
-    schema: applyMiddleware(schema, permisions),
+    schema: schemaWithPermisions,
+    debug: false,
     context({ req }) {
       return {
         req,

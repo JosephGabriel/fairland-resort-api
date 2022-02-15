@@ -1,5 +1,3 @@
-import { ValidationError } from "apollo-server-errors";
-
 export const userExists = async (
   condition,
   prisma,
@@ -10,7 +8,7 @@ export const userExists = async (
   });
 
   if (userExists) {
-    throw new ValidationError(message);
+    throw new Error(message);
   }
 
   return userExists;
@@ -26,7 +24,7 @@ export const userNotExists = async (
   });
 
   if (!userExists) {
-    throw new ValidationError(message);
+    throw new Error(message);
   }
 
   return userExists;

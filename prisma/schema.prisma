@@ -24,7 +24,7 @@ model User {
   active            Boolean   @default(true)
   verified          Boolean   @default(false)
   createdAt         DateTime  @default(now())
-  updatedAt         DateTime?
+  updatedAt         DateTime? @updatedAt
   bookings          Booking[]
   reviews           Review[]
 }
@@ -36,6 +36,7 @@ enum userRole {
 
 //    Hoteis    //
 model Hotel {
+
   id          Int      @id @default(autoincrement())
   name        String
   rating      Int?     @default(0)
@@ -45,8 +46,8 @@ model Hotel {
   images      String[]
   logo        String
   slug        String
-  latitude    String
-  longitude   String
+  latitude    Float
+  longitude   Float
   address     String
   zipCode     String
   room        Room[]
