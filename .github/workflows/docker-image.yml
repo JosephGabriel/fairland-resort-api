@@ -12,10 +12,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Docker image
-
-
+      - name: Checkout files
+      
       - name: Digital Ocean Deploy App
-        uses: jjst/action-digitalocean-deploy-app@v2
+      - uses: jjst/action-digitalocean-deploy-app@v2
         with:
-          token: aa564fd996197066737cb7db18b3b710489e5bdec2f988e0d69363b6f005fd87
+          token: c4a5f670dd3c322c1d741ae2f07ba3f90dc79727bc7154c096abe7253158e805
