@@ -13,11 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Build, Push and Deploy to Heroku
-        id: heroku
-        uses: jctaveras/heroku-deploy@v1.0.0
+      - name: Build, Push and Deploy to Heroku 
+        uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
-          api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
-          app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
-          dockerfile_path: './' # set the path to the folder where the Dockerfile is located
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
+          dockerfile_directory: ./
+          dockerfile_name: Dockerfile
+          docker_options: "--no-cache"
+          process_type: web
