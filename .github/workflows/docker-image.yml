@@ -23,7 +23,7 @@ jobs:
         
       - name: Tag image 
         run:
-          docker tag venus/api \
-          registry.digitalocean.com/joseph/venus/api:${{github.event.inputs.version }}
+          docker tag venus-api \
+          registry.digitalocean.com/joseph/venus-api:${{github.event.inputs.version }}
       - name: Push image to DO Container Registry 
-        run: docker push registry.digitalocean.com/joseph/venus/api:${{ github.event.inputs.version }}
+        run: docker push registry.digitalocean.com/joseph/venus-api:${{ github.event.inputs.version }}
