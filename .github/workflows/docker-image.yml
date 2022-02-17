@@ -16,14 +16,14 @@ jobs:
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
         with:
-          token: 713dc417a459cbca6408390efff34c441a3a097efa066d4cb9271eb790f51116
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
       - name: Log in to DO Container Registry 
         run: doctl registry login --expiry-seconds 600
         
       - name: Tag image 
         run:
-          docker tag sample/my-page \
-          registry.digitalocean.com/my-sample-registry/my-sample-page:${{github.event.inputs.version }}
+          docker tag venus/api \
+          registry.digitalocean.com/joseph/venus/api:${{github.event.inputs.version }}
       - name: Push image to DO Container Registry 
-        run: docker push registry.digitalocean.com/my-sample-registry/my-sample-page:${{ github.event.inputs.version }}
+        run: docker push registry.digitalocean.com/joseph/venus/api:${{ github.event.inputs.version }}
