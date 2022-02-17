@@ -23,7 +23,7 @@ jobs:
         
       - name: Tag image 
         run:
-          docker tag venus-api registry.digitalocean.com/joseph
+          docker tag venus registry.digitalocean.com/joseph/venus
 
       - name: Push image to DO Container Registry 
-        run: docker push registry.digitalocean.com/joseph
+        run: docker push registry.digitalocean.com/joseph/venus
