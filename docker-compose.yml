@@ -1,17 +1,30 @@
 version: "3"
 
 services:
+  node-venus:
+    build: .
+    command: npm start
+    ports:
+      - "5000:5000"
+    depends_on:
+      - "postgres"
+    volumes:
+      - .:/app
+    environment:
+      PORT: 5000
+      JWT_SECRET: "hotel"
+      JWT_EXPIRES_IN: "30d"
+      DATABASE_URL: "postgres://postgres:postgres@localhost/postgres"
+      SENDGRID_API_KEY: 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
+
   postgres:
     image: postgres:alpine
     restart: always
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: postgres
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
