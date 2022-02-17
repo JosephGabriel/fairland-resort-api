@@ -13,13 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Build, Push and Deploy to Heroku 
-        uses: gonuit/heroku-docker-deploy@v1.3.3
+      - name: Install doctl 
+        uses: digitalocean/action-doctl@v2
         with:
-          email: cronosrage.jg@gmail.com
-          heroku_api_key: 244772ca-d9c3-4329-87bb-35feb81a7eda
-          heroku_app_name: venus-graphql-api
-          dockerfile_directory: ./
-          dockerfile_name: dockerfile
-          docker_options: "--no-cache"
-          process_type: web
+          token: 62b11fdfafc374d8a491402c1cd9c53fd4725d43e0ccaf9c0a150e96f12b1a27
