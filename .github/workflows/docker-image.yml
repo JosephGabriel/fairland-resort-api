@@ -16,9 +16,9 @@ jobs:
       - name: Build, Push and Deploy to Heroku 
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
+          email: cronosrage.jg@gmail.com
+          heroku_api_key: 244772ca-d9c3-4329-87bb-35feb81a7eda
+          heroku_app_name: venus-graphql-api
           dockerfile_directory: ./
           dockerfile_name: dockerfile
           docker_options: "--no-cache"
