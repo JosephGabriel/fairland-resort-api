@@ -13,13 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Build, Push and Deploy to Heroku
-        id: heroku
-        uses: jctaveras/heroku-deploy@v1.0.0
+      - name: Build, Push and Deploy to Heroku 
+        uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
-          app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
-          dockerfile_path: '' # set the path to the folder where the Dockerfile is located
-          options: '' # Docker Build Options
-          formation: '' # Docker Dyno Formation. By default is web
+          email: cronosrage.jg@gmail.com
+          heroku_api_key: 244772ca-d9c3-4329-87bb-35feb81a7eda
+          heroku_app_name: venus-graphql-api
+          dockerfile_directory: ./
+          dockerfile_name: dockerfile
+          docker_options: "--no-cache"
+          process_type: web
