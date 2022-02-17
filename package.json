@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx nodemon src/server --ext graphql,js",
+    "postinstall": "npx prisma migrate deploy",
     "debug": "nodemon src/server --ext graphql,js",
     "test": "jest --watchAll"
   },
