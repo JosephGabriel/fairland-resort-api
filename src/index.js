@@ -1,3 +1,4 @@
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
@@ -23,7 +24,8 @@ const schemaWithPermisions = applyMiddleware(schema, permisions);
 export const startServer = async () => {
   const server = new ApolloServer({
     schema: schemaWithPermisions,
-    debug: false,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    debug: process.env.NODE_ENV !== "production",
     context({ req }) {
       return {
         req,
@@ -42,7 +44,7 @@ export const startServer = async () => {
 
   server.applyMiddleware({ app });
 
-  await app.listen({ port }, () => {
+  app.listen({ port }, () => {
     console.log(
       `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
     );

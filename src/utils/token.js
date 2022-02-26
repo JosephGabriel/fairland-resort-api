@@ -8,13 +8,14 @@ export const signUpToken = async (payload) => {
   return token;
 };
 
-export const verifyToken = async (req) => {
-  try {
-    const payload = req.headers.authorization.replace("Bearer ", "");
-    const token = await jwt.verify(payload, process.env.JWT_SECRET);
-    return token;
-  } catch (error) {
-    console.err(error);
-    throw new Error("Token inválido");
-  }
+export const verifyToken = async (header) => {
+  const payload = header.replace("Bearer ", "");
+  const token = await jwt.verify(
+    payload,
+    process.env.JWT_SECRET,
+    function (err, decode) {
+      return err ? null : decode;
+    }
+  );
+  return token;
 };

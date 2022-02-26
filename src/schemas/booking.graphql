@@ -23,3 +23,11 @@ type Booking {
   "Data de saida da reserva"
   dateOut: String!
 }
+
+input CreateBookingInput {
+  user: ID!
+  room: ID!
+  price: Float!
+  dateIn: String!
+  dateOut: String!
+}

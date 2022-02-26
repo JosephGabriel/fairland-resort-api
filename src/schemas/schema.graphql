@@ -30,7 +30,6 @@ type Mutation {
   verifyUser: AuthPayload!
 
   ########## Hotel ################
-
   "Usada para criar um hotel"
   createHotel(data: CreateHotelInput!): Hotel!
 
@@ -41,9 +40,16 @@ type Mutation {
   deleteHotel(id: ID!): String!
 
   ########## Quartos ################
-
   "Usada para criar um quarto de hotel"
   createRoom(data: CreateRoomInput!): Room!
+
+  "Usada para atualizar um quarto de hotel"
   updateRoom(id: ID!, data: UpdateRoomInput!): Room!
+
+  "Usada para deletar um quarto de hotel"
   deleteRoom(id: ID!): Room!
+
+  ########## Quartos ################
+  "Usada para fazer uma reserva"
+  createBooking(data: CreateBookingInput): Booking!
 }

@@ -1,7 +1,6 @@
 import { sendWelcomeMail } from "../utils/email";
-import { signUpToken, verifyToken } from "../utils/token";
+import { signUpToken } from "../utils/token";
 import { hashPassword, verifyPassword } from "../utils/password";
-import { userExists, userNotExists } from "../utils/user";
 import slugify from "slugify";
 
 import {
@@ -39,12 +38,6 @@ export const Mutation = {
   },
 
   async createUser(parent, { data }, { req, prisma }, info) {
-    await userExists(
-      { email: data.email },
-      prisma,
-      "Este email já esta em uso"
-    );
-
     if (data.password !== data.passwordConfirm) {
       throw new Error("As senhas não coincidem");
     }
@@ -61,16 +54,16 @@ export const Mutation = {
 
     const token = await signUpToken(user.id);
 
-    const url = `${req.protocol}://${req.get("host")}${
-      req.originalUrl
-    }/verifyUser/${token}`;
+    // const url = `${req.protocol}://${req.get("host")}${
+    //   req.originalUrl
+    // }/verifyUser/${token}`;
 
-    try {
-      await sendWelcomeMail(user.email, url, user.firstName);
-    } catch (error) {
-      console.log(error.response.body);
-      throw new Error(error.response.body.errors[0].message);
-    }
+    // try {
+    //   await sendWelcomeMail(user.email, url, user.firstName);
+    // } catch (error) {
+    //   console.log(error.response.body);
+    //   throw new Error(error.response.body.errors[0].message);
+    // }
 
     return {
       token,
@@ -78,22 +71,9 @@ export const Mutation = {
     };
   },
 
-  async deactivateUser(parent, args, { req, prisma }, info) {
-    const header = req.headers.authorization.replace("Bearer ", "");
-    const headerToken = await verifyToken(header);
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: headerToken.id,
-      },
-    });
-
-    if (!user) {
-      throw new ValidationError("Usúario inválido");
-    }
-
+  async deactivateUser(parent, args, { user, prisma }, info) {
     await prisma.user.update({
-      where: { id },
+      where: { id: user.id },
       data: {
         active: false,
       },
@@ -102,35 +82,22 @@ export const Mutation = {
     return "Usuário Desativado";
   },
 
-  async updateUser(parent, { data }, { req, prisma }, info) {
-    const header = req.headers.authorization.replace("Bearer ", "");
-    const headerToken = await verifyToken(header);
-
-    await userNotExists({ id: headerToken.id }, prisma);
-
+  async updateUser(parent, { data }, { user, prisma }, info) {
     if (data.avatar) {
       data.avatar = await uploadSingleImage(data.avatar, req, "users");
     }
-
     const updatedUser = await prisma.user.update({
-      where: { id: headerToken.id },
+      where: { id: user.id },
       data: { ...data },
     });
-
     const token = await signUpToken(updatedUser.id);
-
     return {
       token,
       user: updatedUser,
     };
   },
 
-  async updateUserPassword(parent, { data }, { req, prisma }, info) {
-    const header = req.headers.authorization.replace("Bearer ", "");
-    const headerToken = await verifyToken(header);
-
-    await userExists({ id: headerToken.id }, prisma, "Usuário inválido");
-
+  async updateUserPassword(parent, { data }, { user, prisma }, info) {
     if (data.password !== data.passwordConfirm) {
       throw new ValidationError("As senhas não coincidem");
     }
@@ -141,27 +108,22 @@ export const Mutation = {
 
     data.passwordChangedAt = Date.now();
 
-    const user = await prisma.user.update({
-      where: { id: headerToken.id },
+    const activeUser = await prisma.user.update({
+      where: { id: user.id },
       data: { ...data },
     });
 
-    const token = await signUpToken(user.id);
+    const token = await signUpToken(activeUser.id);
 
     return {
       token,
-      user,
+      user: activeUser,
     };
   },
 
-  async verifyUser(parent, args, { req, prisma }, info) {
-    const header = req.headers.authorization.replace("Bearer ", "");
-    const headerToken = await verifyToken(header);
-
-    await userNotExists({ id: headerToken.id }, prisma);
-
+  async verifyUser(parent, args, { user, prisma }, info) {
     const updatedUser = await prisma.user.update({
-      where: { id: headerToken.id },
+      where: { id: user.id },
       data: {
         verified: true,
       },
@@ -194,9 +156,9 @@ export const Mutation = {
     return hotel;
   },
 
-  async updateHotel(parent, { id, data }, { req }, info) {
+  async updateHotel(parent, { id, data }, { user, prisma }, info) {
     const hotel = await prisma.hotel.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
     });
 
     if (data.logo) {
@@ -221,7 +183,7 @@ export const Mutation = {
     }
 
     const updatedHotel = await prisma.hotel.update({
-      where: { id: parseInt(id) },
+      where: { id },
       data,
     });
 
@@ -230,7 +192,7 @@ export const Mutation = {
 
   async deleteHotel(parent, { id }, { prisma }, info) {
     await prisma.hotel.delete({
-      where: { id: parseInt(id) },
+      where: { id },
     });
 
     return "Hotel apagado com sucesso";
@@ -244,7 +206,7 @@ export const Mutation = {
 
     const hotel = await prisma.hotel.findUnique({
       where: {
-        id: parseInt(data.hotel),
+        id: data.hotel,
       },
     });
 
@@ -261,7 +223,7 @@ export const Mutation = {
         ...data,
         hotel: {
           connect: {
-            id: parseInt(hotelId),
+            id: hotelId,
           },
         },
       },
@@ -270,7 +232,18 @@ export const Mutation = {
     return room;
   },
 
-  async updateRoom(parent, { id, data }, { req, prisma, user }, info) {
+  async updateRoom(parent, { id, data }, { req, prisma }, info) {
+    const hasRoom = await prisma.room.update({
+      where: { id },
+      data: {
+        ...data,
+      },
+    });
+
+    if (!hasRoom) {
+      return new Error("Quarto inválido");
+    }
+
     if (data.thumbnail) {
       await deleteUploadedFile(data.thumbnail);
 
@@ -288,7 +261,7 @@ export const Mutation = {
     }
 
     const room = await prisma.room.update({
-      where: { id: parseInt(id) },
+      where: { id },
       data: {
         ...data,
       },
@@ -298,10 +271,55 @@ export const Mutation = {
   },
 
   async deleteRoom(parent, { id }, { prisma }, info) {
-    await prisma.hotel.delete({
-      where: { id: parseInt(id) },
+    const room = await prisma.room.findUnique({
+      where: { id },
     });
 
-    return "Hotel apagado com sucesso";
+    if (!room) {
+      return new Error("Quarto inválido");
+    }
+
+    await deleteUploadedFile(room.thumbnail);
+
+    await deleteMultipleUploadedFiles(room.images);
+
+    await prisma.hotel.delete({
+      where: { id },
+    });
+
+    return "Quarto apagado com sucesso";
+  },
+
+  // Booking Mutations
+  async createBooking(parent, { data }, { prisma, user }, info) {
+    const hasRoom = await prisma.room.findUnique({
+      where: {
+        id: data.room,
+      },
+    });
+
+    if (!hasRoom) {
+      return new Error("Quarto inválido");
+    }
+
+    const booking = await prisma.booking.create({
+      data: {
+        ...data,
+        paid: false,
+        bookingDate: Date.now(),
+        room: {
+          connect: {
+            id: data.room,
+          },
+        },
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
+
+    return booking;
   },
 };

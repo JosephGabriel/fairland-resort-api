@@ -1,19 +1,6 @@
 version: "3"
 
-services:
-  node-venus:
-    build: .
-    command: npm start
-    depends_on:
-      - "postgres"
-    volumes:
-      - .:/app
-    environment:
-      JWT_SECRET: "hotel"
-      JWT_EXPIRES_IN: "30d"
-      DATABASE_URL: "postgres://postgres:postgres@localhost/postgres"
-      SENDGRID_API_KEY: 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
-
+services: 
   postgres:
     image: postgres:alpine
     restart: always

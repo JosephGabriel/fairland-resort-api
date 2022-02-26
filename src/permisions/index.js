@@ -1,52 +1,65 @@
-import { shield, rule, chain } from "graphql-shield";
+import { shield, rule, chain, not } from "graphql-shield";
 import { verifyToken } from "../utils/token";
+
+const hasUser = rule()(async (parent, { data }, { prisma }, info) => {
+  const userExists = await prisma.user.findUnique({
+    where: { email: data.email },
+  });
+
+  if (userExists) {
+    return new Error("Este email já esta em uso");
+  }
+
+  return true;
+});
 
 const isLoggedin = rule()(async (parent, args, ctx, info) => {
   const header = ctx.req.headers.authorization;
 
   if (!header) {
-    return Error("Você não esta logado");
-  }
-
-  const userId = await verifyToken(ctx.req);
-
-  const userExists = await await ctx.prisma.user.findUnique({
-    where: { id: parseInt(userId.id) },
-  });
-
-  console.log(userExists);
-  ctx.user = userExists;
-
-  if (userExists) {
-    return true;
-  } else {
     return new Error("Você não esta logado");
   }
-});
 
-const isAdmin = rule()(async (parent, args, ctx, info) => {
-  const userId = await verifyToken(ctx.req);
+  const userId = await verifyToken(header);
 
-  const hasUser = await ctx.prisma.user.findUnique({
-    where: { id: parseInt(userId.id) },
+  if (userId === null) {
+    return new Error("Token inválido");
+  }
+
+  const userExists = await await ctx.prisma.user.findUnique({
+    where: { id: userId.id },
   });
 
-  if (
-    hasUser &&
-    hasUser.role === "ADMIN" &&
-    hasUser.verified &&
-    hasUser.active
-  ) {
-    ctx.user = hasUser;
-    return true;
-  } else {
-    return new Error("É necessário um administrador válido para continuar");
+  if (!userExists) {
+    return new Error("Você não esta logado");
   }
+
+  const timeToken = Math.floor(userId.iat);
+
+  const passwordChangedAt = Math.floor(
+    Date.now(userExists.passwordChangedAt) / 1000 + 60 * 60
+  );
+
+  if (timeToken > passwordChangedAt) {
+    return new Error("Você não esta logado");
+  }
+
+  ctx.user = userExists;
+  return true;
+});
+
+const isAdmin = rule()(async (parent, args, { user }, info) => {
+  if (user && user.role === "ADMIN" && user.verified && user.active) {
+    return true;
+  }
+
+  return new Error("É necessário um administrador para continuar");
 });
 
 export const permisions = shield(
   {
     Mutation: {
+      createUser: hasUser,
       verifyUser: isLoggedin,
       updateUser: isLoggedin,
       deactivateUser: isLoggedin,
@@ -57,7 +70,7 @@ export const permisions = shield(
     },
   },
   {
-    allowExternalErrors: true,
+    allowExternalErrors: process.env.NODE_ENV !== "production",
     fallbackError: process.env.NODE_ENV === "production",
   }
 );
