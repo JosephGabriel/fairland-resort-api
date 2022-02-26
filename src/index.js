@@ -24,7 +24,7 @@ const schemaWithPermisions = applyMiddleware(schema, permisions);
 export const startServer = async () => {
   const server = new ApolloServer({
     schema: schemaWithPermisions,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    // plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     debug: process.env.NODE_ENV !== "production",
     context({ req }) {
       return {
