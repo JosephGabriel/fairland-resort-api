@@ -1,4 +1,3 @@
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
@@ -24,7 +23,6 @@ const schemaWithPermisions = applyMiddleware(schema, permisions);
 export const startServer = async () => {
   const server = new ApolloServer({
     schema: schemaWithPermisions,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     debug: process.env.NODE_ENV !== "production",
     context({ req }) {
       return {
