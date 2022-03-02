@@ -54,16 +54,11 @@ export const Mutation = {
 
     const token = await signUpToken(user.id);
 
-    // const url = `${req.protocol}://${req.get("host")}${
-    //   req.originalUrl
-    // }/verifyUser/${token}`;
+    const url = `${req.protocol}://${req.get("host")}${
+      req.originalUrl
+    }/verifyUser/${token}`;
 
-    // try {
-    //   await sendWelcomeMail(user.email, url, user.firstName);
-    // } catch (error) {
-    //   console.log(error.response.body);
-    //   throw new Error(error.response.body.errors[0].message);
-    // }
+    await sendWelcomeMail(user.email, url, user.firstName);
 
     return {
       token,

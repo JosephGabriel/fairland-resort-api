@@ -40,3 +40,10 @@ input UpdateRoomInput {
   images: [Upload!]
   price: Float
 }
+
+input RoomFilter {
+  minPrice: Float
+  maxPrice: Float
+  minRating: Int
+  maxRating: Int
+}

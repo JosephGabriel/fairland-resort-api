@@ -7,6 +7,26 @@ scalar EmailAddress
 
 type Query {
   hello: String
+
+  ########## Hotel ################
+  "Usada para buscar um hotel pelo id"
+  hotel(id: ID!): Hotel!
+
+  "Usada para buscar hotéis"
+  hotels: [Hotel!]
+
+  "Usada para buscar um hotel pelo slug"
+  hotelBySlug(slug: String!): Hotel!
+
+  ########## Room ################
+  "Usada para buscar um quarto pelo id"
+  room(id: ID!): Room!
+
+  "Usada para buscar um hotel pelo slug"
+  rooms(filter: RoomFilter): [Room!]
+
+  "Usada para buscar um hotel pelo id do hotel"
+  roomsByHotel(hotel: ID!): [Room!]
 }
 
 type Mutation {
