@@ -1,13 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 export const Query = {
   hello() {
     return "Hello World";
   },
 
   // Hotel
-  async hotel(parent, { id }, ctx, info) {
+  async hotel(parent, { id }, { prisma }, info) {
     const hotel = await prisma.hotel.findUnique({ where: { id } });
 
     if (!hotel) {
@@ -17,13 +14,13 @@ export const Query = {
     return hotel;
   },
 
-  async hotels(parent, args, ctx, info) {
+  async hotels(parent, args, { prisma }, info) {
     const hotels = await prisma.hotel.findMany();
 
     return hotels;
   },
 
-  async hotelBySlug(parent, { slug }, ctx, info) {
+  async hotelBySlug(parent, { slug }, { prisma }, info) {
     const hotel = await prisma.hotel.findUnique({
       where: {
         slug,
@@ -34,7 +31,7 @@ export const Query = {
   },
 
   // Room
-  async room(parent, { id }, ctx, info) {
+  async room(parent, { id }, { prisma }, info) {
     const room = await prisma.room.findUnique({ where: { id } });
 
     if (!room) {
@@ -44,7 +41,7 @@ export const Query = {
     return room;
   },
 
-  async rooms(parent, { filter }, ctx, info) {
+  async rooms(parent, { filter }, { prisma }, info) {
     const rooms = await prisma.room.findMany({
       where: {
         price: {
@@ -61,7 +58,7 @@ export const Query = {
     return rooms;
   },
 
-  async roomsByHotel(parent, { hotel }, ctx, info) {
+  async roomsByHotel(parent, { hotel }, { prisma }, info) {
     const rooms = await prisma.room.findMany({
       where: {
         hotel: {
