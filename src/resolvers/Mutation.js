@@ -77,7 +77,7 @@ export const Mutation = {
     return "Usuário Desativado";
   },
 
-  async updateUser(parent, { data }, { user, prisma }, info) {
+  async updateUser(parent, { data }, { req, user, prisma }, info) {
     if (data.avatar) {
       data.avatar = await uploadSingleImage(data.avatar, req, "users");
     }
