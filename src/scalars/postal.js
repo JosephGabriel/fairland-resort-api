@@ -2,7 +2,6 @@ import { GraphQLScalarType, Kind, GraphQLError } from "graphql";
 import validator from "validator";
 
 const validate = (value) => {
-  console.log(validator.isPostalCode(value, "any"));
   if (!validator.isPostalCode(value, "any")) {
     throw new GraphQLError(
       `Should receive a valid postal code but got: ${value}`

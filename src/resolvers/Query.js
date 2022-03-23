@@ -1,8 +1,4 @@
 export const Query = {
-  hello() {
-    return "Hello World";
-  },
-
   // Hotel
   async hotel(parent, { id }, { prisma }, info) {
     const hotel = await prisma.hotel.findUnique({ where: { id } });
@@ -18,6 +14,18 @@ export const Query = {
     const hotels = await prisma.hotel.findMany();
 
     return hotels;
+  },
+
+  async hotelsByAdmin(parent, { id }, { prisma }, info) {
+    const hotel = await prisma.hotel.findMany({
+      where: {
+        admin: {
+          id: id,
+        },
+      },
+    });
+
+    return hotel;
   },
 
   async hotelBySlug(parent, { slug }, { prisma }, info) {

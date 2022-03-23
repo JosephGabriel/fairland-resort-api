@@ -6,14 +6,15 @@ scalar Password
 scalar EmailAddress
 
 type Query {
-  hello: String
-
   ########## Hotel ################
   "Usada para buscar um hotel pelo id"
   hotel(id: ID!): Hotel!
 
   "Usada para buscar hotéis"
   hotels: [Hotel!]
+
+  "Usada para buscar um hotel pelo slug"
+  hotelsByAdmin(id: ID!): [Hotel!]
 
   "Usada para buscar um hotel pelo slug"
   hotelBySlug(slug: String!): Hotel!

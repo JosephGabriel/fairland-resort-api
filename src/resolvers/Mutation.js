@@ -2,6 +2,9 @@ import { sendWelcomeMail } from "../utils/email";
 import { signUpToken } from "../utils/token";
 import { hashPassword, verifyPassword } from "../utils/password";
 import slugify from "slugify";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 import {
   deleteMultipleUploadedFiles,
@@ -51,6 +54,42 @@ export const Mutation = {
     }
 
     const user = await prisma.user.create({ data });
+
+    const token = await signUpToken(user.id);
+
+    const url = `${req.protocol}://${req.get("host")}${
+      req.originalUrl
+    }/verifyUser/${token}`;
+
+    await sendWelcomeMail(user.email, url, user.firstName);
+
+    return {
+      token,
+      user,
+    };
+  },
+
+  async createAdmin(parent, { data }, { req }, info) {
+    if (data.password !== data.passwordConfirm) {
+      throw new Error("As senhas não coincidem");
+    }
+
+    delete data.passwordConfirm;
+
+    data.password = await hashPassword(data.password);
+
+    if (data.avatar) {
+      data.avatar = await uploadSingleImage(data.avatar, req, "users");
+    }
+
+    const user = await prisma.user.create({
+      data: {
+        ...data,
+        active: true,
+        role: "ADMIN",
+        verified: true,
+      },
+    });
 
     const token = await signUpToken(user.id);
 
@@ -133,7 +172,7 @@ export const Mutation = {
   },
 
   // Hotel Mutations
-  async createHotel(parent, { data }, { req, prisma }, info) {
+  async createHotel(parent, { data }, { req }, info) {
     data.latitude = parseFloat(data.latitude);
 
     data.longitude = parseFloat(data.longitude);
@@ -146,7 +185,16 @@ export const Mutation = {
 
     data.images = await uploadMultipleImages(data.images, req, "hotels");
 
-    const hotel = await prisma.hotel.create({ data });
+    const hotel = await prisma.hotel.create({
+      data: {
+        ...data,
+        admin: {
+          connect: {
+            id: data.admin,
+          },
+        },
+      },
+    });
 
     return hotel;
   },

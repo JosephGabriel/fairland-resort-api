@@ -22,6 +22,8 @@ const isLoggedin = rule()(async (parent, args, ctx, info) => {
 
   const userId = await verifyToken(header);
 
+  console.log(userId);
+
   if (userId === null) {
     return new Error("Token inválido");
   }

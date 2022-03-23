@@ -10,6 +10,7 @@ export const signUpToken = async (payload) => {
 
 export const verifyToken = async (header) => {
   const payload = header.replace("Bearer ", "");
+
   const token = await jwt.verify(
     payload,
     process.env.JWT_SECRET,

@@ -43,6 +43,9 @@ type Hotel {
   "Endereço do hotel"
   address: String
 
+  "Número residencial do hotel"
+  addressNumber: String
+
   "Cep do hotel"
   zipCode: PostalCode
 
@@ -60,7 +63,9 @@ input CreateHotelInput {
   latitude: Latitude!
   longitude: Longitude!
   address: String!
+  addressNumber: String!
   zipCode: PostalCode!
+  admin: ID!
 }
 
 input UpdateHotelInput {
@@ -73,5 +78,6 @@ input UpdateHotelInput {
   latitude: Latitude
   longitude: Longitude
   address: String
+  addressNumber: String
   zipCode: PostalCode
 }
