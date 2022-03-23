@@ -38,6 +38,9 @@ type Mutation {
   "Usada para criar um usuário"
   createUser(data: CreateUserInput!): AuthPayload!
 
+  "Usada para criar um admin"
+  createUser(data: CreateUserInput!): AuthPayload!
+
   "Usada para atualizar informações não sensiveis (ex: senhas)"
   updateUser(data: UpdateUserInput!): AuthPayload!
 
