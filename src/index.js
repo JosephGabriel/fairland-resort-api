@@ -1,10 +1,11 @@
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
-import express from "express";
 import { graphqlUploadExpress } from "graphql-upload";
 import { applyMiddleware } from "graphql-middleware";
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 import { PrismaClient } from "@prisma/client";
+import express from "express";
+import cors from "cors";
 
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
@@ -35,6 +36,8 @@ export const startServer = async () => {
   });
 
   const app = express();
+
+  app.use();
 
   app.use(server.graphqlPath, graphqlUploadExpress());
 
