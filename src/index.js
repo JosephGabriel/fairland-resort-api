@@ -37,7 +37,7 @@ export const startServer = async () => {
 
   const app = express();
 
-  app.use();
+  app.use(cors());
 
   app.use(server.graphqlPath, graphqlUploadExpress());
 
