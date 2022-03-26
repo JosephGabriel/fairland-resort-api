@@ -1,4 +1,4 @@
-import { shield, rule, chain, not } from "graphql-shield";
+import { shield, rule, chain } from "graphql-shield";
 import { verifyToken } from "../utils/token";
 
 const hasUser = rule()(async (parent, { data }, { prisma }, info) => {
@@ -22,8 +22,6 @@ const isLoggedin = rule()(async (parent, args, ctx, info) => {
 
   const userId = await verifyToken(header);
 
-  console.log(userId);
-
   if (userId === null) {
     return new Error("Token inválido");
   }
@@ -36,15 +34,15 @@ const isLoggedin = rule()(async (parent, args, ctx, info) => {
     return new Error("Você não esta logado");
   }
 
-  const timeToken = Math.floor(userId.iat);
+  // const timeToken = Math.floor(userId.iat);
 
-  const passwordChangedAt = Math.floor(
-    Date.now(userExists.passwordChangedAt) / 1000 + 60 * 60
-  );
+  // const passwordChangedAt = Math.floor(
+  //   Date.now(userExists.passwordChangedAt) / 1000 + 60 * 60
+  // );
 
-  if (timeToken > passwordChangedAt) {
-    return new Error("Você não esta logado");
-  }
+  // if (timeToken > passwordChangedAt) {
+  //   return new Error("Você não esta logado");
+  // }
 
   ctx.user = userExists;
   return true;
@@ -73,6 +71,7 @@ export const permisions = shield(
   },
   {
     allowExternalErrors: process.env.NODE_ENV !== "production",
-    fallbackError: process.env.NODE_ENV === "production",
+    fallbackError:
+      process.env.NODE_ENV === "production" ? "Erro no servidor" : undefined,
   }
 );

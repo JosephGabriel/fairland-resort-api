@@ -64,7 +64,7 @@ model Room {
   description String
   images      String[]
   price       Float
-  rating      Int
+  rating      Int       @default(0)
   hotelId     String?
   hotel       Hotel?    @relation(fields: [hotelId], references: [id])
   bookings    Booking[]

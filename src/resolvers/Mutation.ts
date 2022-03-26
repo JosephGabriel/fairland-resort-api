@@ -1,10 +1,8 @@
 import { sendWelcomeMail } from "../utils/email";
 import { signUpToken } from "../utils/token";
 import { hashPassword, verifyPassword } from "../utils/password";
-import slugify from "slugify";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import slugify from "slugify";
 
 import {
   deleteMultipleUploadedFiles,
@@ -12,8 +10,9 @@ import {
   uploadMultipleImages,
   uploadSingleImage,
 } from "../utils/upload";
+import { MutationResolvers } from "../generated/graphql";
 
-export const Mutation = {
+export const Mutation: MutationResolvers = {
   // User Mutations
   async loginUser(parent, { data }, { prisma }, info) {
     const user = await prisma.user.findUnique({
@@ -69,7 +68,7 @@ export const Mutation = {
     };
   },
 
-  async createAdmin(parent, { data }, { req }, info) {
+  async createAdmin(parent, { data }, { req, prisma }, info) {
     if (data.password !== data.passwordConfirm) {
       throw new Error("As senhas não coincidem");
     }
@@ -120,11 +119,20 @@ export const Mutation = {
     if (data.avatar) {
       data.avatar = await uploadSingleImage(data.avatar, req, "users");
     }
+
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
-      data: { ...data },
+      data: {
+        avatar: data.avatar ?? undefined,
+        email: data.email ?? undefined,
+        firstName: data.firstName ?? undefined,
+        lastName: data.lastName ?? undefined,
+        userName: data.userName ?? undefined,
+      },
     });
+
     const token = await signUpToken(updatedUser.id);
+
     return {
       token,
       user: updatedUser,
@@ -133,18 +141,16 @@ export const Mutation = {
 
   async updateUserPassword(parent, { data }, { user, prisma }, info) {
     if (data.password !== data.passwordConfirm) {
-      throw new ValidationError("As senhas não coincidem");
+      throw new Error("As senhas não coincidem");
     }
 
     delete data.passwordConfirm;
 
     data.password = await hashPassword(data.password);
 
-    data.passwordChangedAt = Date.now();
-
     const activeUser = await prisma.user.update({
       where: { id: user.id },
-      data: { ...data },
+      data: { ...data, passwordChangedAt: Date.now().toString() },
     });
 
     const token = await signUpToken(activeUser.id);
@@ -172,12 +178,10 @@ export const Mutation = {
   },
 
   // Hotel Mutations
-  async createHotel(parent, { data }, { req }, info) {
+  async createHotel(parent, { data }, { req, prisma, user }, info) {
     data.latitude = parseFloat(data.latitude);
 
     data.longitude = parseFloat(data.longitude);
-
-    data.slug = slugify(data.name, { lower: true });
 
     data.logo = await uploadSingleImage(data.logo, req, "logos");
 
@@ -188,9 +192,10 @@ export const Mutation = {
     const hotel = await prisma.hotel.create({
       data: {
         ...data,
+        slug: slugify(data.name, { lower: true }),
         admin: {
           connect: {
-            id: data.admin,
+            id: user.id,
           },
         },
       },
@@ -199,18 +204,18 @@ export const Mutation = {
     return hotel;
   },
 
-  async updateHotel(parent, { id, data }, { user, prisma }, info) {
+  async updateHotel(parent, { id, data }, { req, user, prisma }, info) {
     const hotel = await prisma.hotel.findUnique({
       where: { id },
     });
 
     if (data.logo) {
-      await deleteUploadedFile(hotel.logo);
+      await deleteUploadedFile(hotel?.logo);
       data.logo = await uploadSingleImage(data.logo, req, "logos");
     }
 
     if (data.thumbnail) {
-      await deleteUploadedFile(hotel.thumbnail);
+      await deleteUploadedFile(hotel?.thumbnail);
 
       data.thumbnail = await uploadSingleImage(
         data.thumbnail,
@@ -220,7 +225,7 @@ export const Mutation = {
     }
 
     if (data.images) {
-      await deleteMultipleUploadedFiles(hotel.images);
+      await deleteMultipleUploadedFiles(hotel?.images);
 
       data.images = await uploadMultipleImages(data.images, req, "hotels");
     }
@@ -243,10 +248,6 @@ export const Mutation = {
 
   // Room Mutations
   async createRoom(parent, { data }, { req, prisma }, info) {
-    data.thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
-
-    data.images = await uploadMultipleImages(data.images, req, "rooms");
-
     const hotel = await prisma.hotel.findUnique({
       where: {
         id: data.hotel,
@@ -257,16 +258,16 @@ export const Mutation = {
       throw new Error("Hotel inválido");
     }
 
-    const hotelId = data.hotel;
+    data.thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
 
-    delete data.hotel;
+    data.images = await uploadMultipleImages(data.images, req, "rooms");
 
     const room = await prisma.room.create({
       data: {
         ...data,
         hotel: {
           connect: {
-            id: hotelId,
+            id: data.hotel,
           },
         },
       },
@@ -319,7 +320,7 @@ export const Mutation = {
     });
 
     if (!room) {
-      return new Error("Quarto inválido");
+      throw new Error("Quarto inválido");
     }
 
     await deleteUploadedFile(room.thumbnail);
@@ -337,7 +338,7 @@ export const Mutation = {
   async createBooking(parent, { data }, { prisma, user }, info) {
     const hasRoom = await prisma.room.findUnique({
       where: {
-        id: data.room,
+        id: data?.room,
       },
     });
 
@@ -349,10 +350,10 @@ export const Mutation = {
       data: {
         ...data,
         paid: false,
-        bookingDate: Date.now(),
+        bookingDate: Date.now().toString(),
         room: {
           connect: {
-            id: data.room,
+            id: data?.room,
           },
         },
         user: {

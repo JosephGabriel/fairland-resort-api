@@ -1,10 +1,12 @@
-export const Query = {
+import { QueryResolvers } from "../generated/graphql";
+
+export const Query: QueryResolvers = {
   // Hotel
   async hotel(parent, { id }, { prisma }, info) {
     const hotel = await prisma.hotel.findUnique({ where: { id } });
 
     if (!hotel) {
-      return new Error("Hotel inválido");
+      throw new Error("Hotel inválido");
     }
 
     return hotel;
@@ -29,11 +31,15 @@ export const Query = {
   },
 
   async hotelBySlug(parent, { slug }, { prisma }, info) {
-    const hotel = await prisma.hotel.findUnique({
+    const hotel = await prisma.hotel.findFirst({
       where: {
-        slug,
+        slug: slug,
       },
     });
+
+    if (!hotel) {
+      throw new Error("Hotel inválido");
+    }
 
     return hotel;
   },
@@ -43,7 +49,7 @@ export const Query = {
     const room = await prisma.room.findUnique({ where: { id } });
 
     if (!room) {
-      return new Error("Quarto inválido");
+      throw new Error("Quarto inválido");
     }
 
     return room;
@@ -53,12 +59,12 @@ export const Query = {
     const rooms = await prisma.room.findMany({
       where: {
         price: {
-          lte: filter.maxPrice,
-          gte: filter.minPrice,
+          lte: filter?.maxPrice,
+          gte: filter?.minPrice,
         },
         rating: {
-          lte: filter.maxRating,
-          gte: filter.minRating,
+          lte: filter?.maxRating ? filter?.maxRating : 0,
+          gte: filter?.minRating ? filter?.maxRating : 0,
         },
       },
     });

@@ -65,7 +65,6 @@ input CreateHotelInput {
   address: String!
   addressNumber: String!
   zipCode: PostalCode!
-  admin: ID!
 }
 
 input UpdateHotelInput {

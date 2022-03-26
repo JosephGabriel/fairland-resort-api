@@ -48,7 +48,7 @@ type Mutation {
   updateUserPassword(data: UpdateUserPasswordInput!): AuthPayload!
 
   "Usada para que o próprio usuário possa desativar a conta, mas não apagá-la"
-  deactivateUser(id: ID!): String!
+  deactivateUser: String!
 
   "Usada para verificar um usuário"
   verifyUser: AuthPayload!
@@ -71,7 +71,7 @@ type Mutation {
   updateRoom(id: ID!, data: UpdateRoomInput!): Room!
 
   "Usada para deletar um quarto de hotel"
-  deleteRoom(id: ID!): Room!
+  deleteRoom(id: ID!): String!
 
   ########## Quartos ################
   "Usada para fazer uma reserva"
