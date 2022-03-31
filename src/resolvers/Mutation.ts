@@ -285,7 +285,7 @@ export const Mutation: MutationResolvers = {
     });
 
     if (!hasRoom) {
-      return new Error("Quarto inválido");
+      throw new Error("Quarto inválido");
     }
 
     if (data.thumbnail) {
@@ -343,7 +343,7 @@ export const Mutation: MutationResolvers = {
     });
 
     if (!hasRoom) {
-      return new Error("Quarto inválido");
+      throw new Error("Quarto inválido");
     }
 
     const booking = await prisma.booking.create({

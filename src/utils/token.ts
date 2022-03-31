@@ -1,4 +1,8 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+interface jsonwebtoken extends JwtPayload {
+  id: string;
+}
 
 export const signUpToken = async (payload) => {
   const token = await jwt.sign({ id: payload }, process.env.JWT_SECRET, {
@@ -8,15 +12,14 @@ export const signUpToken = async (payload) => {
   return token;
 };
 
-export const verifyToken = async (header) => {
+export const verifyToken = async (header: string) => {
   const payload = header.replace("Bearer ", "");
 
-  const token = await jwt.verify(
-    payload,
-    process.env.JWT_SECRET,
-    function (err, decode) {
-      return err ? null : decode;
-    }
-  );
-  return token;
+  const token = await jwt.verify(payload, process.env.JWT_SECRET);
+
+  if (typeof token !== "string") {
+    return token;
+  }
+
+  return null;
 };

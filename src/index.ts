@@ -9,7 +9,6 @@ import cors from "cors";
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
 import { permisions } from "./permisions/index";
-import { AuthPayload } from "./generated/graphql";
 
 const prisma = new PrismaClient();
 

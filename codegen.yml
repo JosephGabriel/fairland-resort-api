@@ -7,9 +7,9 @@ generates:
       useIndexSignature: true
       contextType: "../index#ServerContext"
       mappers:
-        User: "./src/models/models.ts"
-        Room: "./src/models/models.ts"
-        Booking: "./src/models/models.ts"
+        User: "../models/models#UserModel"
+        Room: "../models/models#RoomModel"
+        Booking: "../models/models#BookingModel"
     plugins:
       - "typescript"
       - "typescript-resolvers"

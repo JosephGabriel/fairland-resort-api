@@ -63,8 +63,8 @@ export const Query: QueryResolvers = {
           gte: filter?.minPrice,
         },
         rating: {
-          lte: filter?.maxRating ? filter?.maxRating : 0,
-          gte: filter?.minRating ? filter?.maxRating : 0,
+          lte: filter?.maxRating,
+          gte: filter?.minRating,
         },
       },
     });
