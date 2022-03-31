@@ -1,0 +1,7 @@
+mutation LoginUser($data: LoginUserInput!) {
+  loginUser(data: $data) {
+    user {
+      userName
+    }
+  }
+}

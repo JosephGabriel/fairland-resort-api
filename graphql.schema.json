@@ -731,7 +731,7 @@
       {
         "kind": "SCALAR",
         "name": "EmailAddress",
-        "description": "A valid email",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1006,7 +1006,7 @@
       {
         "kind": "SCALAR",
         "name": "Latitude",
-        "description": "A valid latitude",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1059,7 +1059,7 @@
       {
         "kind": "SCALAR",
         "name": "Longitude",
-        "description": "A valid longitude",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1536,7 +1536,7 @@
       {
         "kind": "SCALAR",
         "name": "Password",
-        "description": "A valid password",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1546,7 +1546,7 @@
       {
         "kind": "SCALAR",
         "name": "PostalCode",
-        "description": "A valid postal code",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,

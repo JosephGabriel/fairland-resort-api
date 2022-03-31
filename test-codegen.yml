@@ -1,0 +1,10 @@
+overwrite: true
+watch: true
+schema: "./src/schemas/*.graphql"
+documents: "./tests/**/*.graphql"
+generates:
+  tests/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-generic-sdk
