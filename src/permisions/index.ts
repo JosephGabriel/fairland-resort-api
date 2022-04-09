@@ -62,7 +62,6 @@ const isAdmin = rule()(async (parent, args, { user }, info) => {
 export const permisions = shield(
   {
     Mutation: {
-      loginUser: isLoggedin,
       createUser: hasUser,
       verifyUser: isLoggedin,
       updateUser: isLoggedin,
