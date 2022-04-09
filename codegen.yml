@@ -1,8 +1,13 @@
 overwrite: true
 watch: true
 schema: "./src/schemas/*.graphql"
-# documents: "./test/**/*.graphql"
+documents: "./tests/**/*.graphql"
 generates:
+  tests/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-generic-sdk
   src/generated/graphql.ts:
     config:
       useIndexSignature: true
@@ -14,6 +19,3 @@ generates:
     plugins:
       - "typescript"
       - "typescript-resolvers"
-  ./graphql.schema.json:
-    plugins:
-      - "introspection"
