@@ -60,7 +60,9 @@ export const Mutation: MutationResolvers = {
       req.originalUrl
     }/verifyUser/${token}`;
 
-    await sendWelcomeMail(user.email, url, user.firstName);
+    if (process.env.NODE_ENV === "production") {
+      await sendWelcomeMail(user.email, url, user.firstName);
+    }
 
     return {
       token,
@@ -96,7 +98,9 @@ export const Mutation: MutationResolvers = {
       req.originalUrl
     }/verifyUser/${token}`;
 
-    await sendWelcomeMail(user.email, url, user.firstName);
+    if (process.env.NODE_ENV === "production") {
+      await sendWelcomeMail(user.email, url, user.firstName);
+    }
 
     return {
       token,
@@ -123,11 +127,11 @@ export const Mutation: MutationResolvers = {
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {
-        avatar: data.avatar ?? undefined,
-        email: data.email ?? undefined,
-        firstName: data.firstName ?? undefined,
-        lastName: data.lastName ?? undefined,
-        userName: data.userName ?? undefined,
+        avatar: data.avatar,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        userName: data.userName,
       },
     });
 

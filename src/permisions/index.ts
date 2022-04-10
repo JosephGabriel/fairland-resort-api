@@ -20,7 +20,7 @@ const isLoggedin = rule()(async (parent, args, ctx: ServerContext, info) => {
   const header = ctx.req.headers.authorization;
 
   if (!header) {
-    return new Error("Você não esta logado");
+    throw new Error("Você não esta logado");
   }
 
   const userId = await verifyToken(header);
@@ -37,14 +37,14 @@ const isLoggedin = rule()(async (parent, args, ctx: ServerContext, info) => {
     return new Error("Você não esta logado");
   }
 
-  const timeToken = Math.floor(userId.iat);
+  const timeToken = new Date(userId.iat).getTime();
 
-  const passwordChangedAt = Math.floor(
-    new Date(userExists.passwordChangedAt).getMilliseconds() / 1000 + 60 * 60
-  );
+  const passwordChangedAt = new Date(userExists.passwordChangedAt).getTime();
 
-  if (timeToken > passwordChangedAt) {
-    return new Error("Você não esta logado");
+  if (timeToken < passwordChangedAt && passwordChangedAt > 0) {
+    return new Error(
+      "Você trocou sua senha recentemente, faça login novamente"
+    );
   }
 
   ctx.user = userExists;
@@ -73,8 +73,7 @@ export const permisions = shield(
     },
   },
   {
-    allowExternalErrors: process.env.NODE_ENV !== "production",
-    fallbackError:
-      process.env.NODE_ENV === "production" ? "Erro no servidor" : undefined,
+    allowExternalErrors: true,
+    fallbackError: "Erro",
   }
 );

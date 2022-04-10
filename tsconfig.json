@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "CommonJS",
+    "target": "ES2017",
+    "module": "ES2022",
     "moduleResolution": "Node",
     "outDir": "./dist",
     "rootDir": "./src",
-    "lib": ["ES2020"],
+    "lib": ["ESNext"],
     "strict": false,
     "esModuleInterop": true
   },

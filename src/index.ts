@@ -1,3 +1,4 @@
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer, ExpressContext } from "apollo-server-express";
 import { graphqlUploadExpress } from "graphql-upload";
 import { applyMiddleware } from "graphql-middleware";
@@ -10,7 +11,7 @@ import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
 import { permisions } from "./permisions/index";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const port = process.env.PORT || 4000;
 
@@ -29,7 +30,7 @@ const schemaWithPermisions = applyMiddleware(schema, permisions);
 export const startServer = async () => {
   const server = new ApolloServer({
     schema: schemaWithPermisions,
-    plugins: [],
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     debug: process.env.NODE_ENV !== "production",
     context({ req, res }) {
       return {
@@ -52,9 +53,11 @@ export const startServer = async () => {
 
   server.applyMiddleware({ app });
 
-  app.listen({ port }, () => {
+  const expressServer = app.listen({ port }, () => {
     console.log(
       `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
     );
   });
+
+  return { expressServer, server };
 };

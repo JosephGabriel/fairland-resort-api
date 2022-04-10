@@ -382,6 +382,25 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type CreateAdminMutationVariables = Exact<{
+  data: CreateUserInput;
+}>;
+
+
+export type CreateAdminMutation = { __typename?: 'Mutation', createAdmin: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
+
+export type CreateUserMutationVariables = Exact<{
+  data: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
+
+export type DeactivateUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeactivateUserMutation = { __typename?: 'Mutation', deactivateUser: string };
+
 export type LoginUserMutationVariables = Exact<{
   data: LoginUserInput;
 }>;
@@ -390,6 +409,29 @@ export type LoginUserMutationVariables = Exact<{
 export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
 
 
+export const CreateAdminDocument = gql`
+    mutation CreateAdmin($data: CreateUserInput!) {
+  createAdmin(data: $data) {
+    user {
+      userName
+    }
+  }
+}
+    `;
+export const CreateUserDocument = gql`
+    mutation CreateUser($data: CreateUserInput!) {
+  createUser(data: $data) {
+    user {
+      userName
+    }
+  }
+}
+    `;
+export const DeactivateUserDocument = gql`
+    mutation DeactivateUser {
+  deactivateUser
+}
+    `;
 export const LoginUserDocument = gql`
     mutation LoginUser($data: LoginUserInput!) {
   loginUser(data: $data) {
@@ -402,6 +444,15 @@ export const LoginUserDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
+    CreateAdmin(variables: CreateAdminMutationVariables, options?: C): Promise<CreateAdminMutation> {
+      return requester<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument, variables, options);
+    },
+    CreateUser(variables: CreateUserMutationVariables, options?: C): Promise<CreateUserMutation> {
+      return requester<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, variables, options);
+    },
+    DeactivateUser(variables?: DeactivateUserMutationVariables, options?: C): Promise<DeactivateUserMutation> {
+      return requester<DeactivateUserMutation, DeactivateUserMutationVariables>(DeactivateUserDocument, variables, options);
+    },
     LoginUser(variables: LoginUserMutationVariables, options?: C): Promise<LoginUserMutation> {
       return requester<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, variables, options);
     }
