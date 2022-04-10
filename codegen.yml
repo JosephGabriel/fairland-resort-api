@@ -4,18 +4,43 @@ schema: "./src/schemas/*.graphql"
 documents: "./tests/**/*.graphql"
 generates:
   tests/generated/graphql.ts:
+    config:
+      scalars:
+        EmailAddress: string
+        Password: string
+        PostalCode: string
+        Latitude: number
+        Longitude: number
+        Upload: FileUpload
+
     plugins:
+      - add:
+          content:
+            - "import { FileUpload } from 'graphql-upload';"
       - typescript
       - typescript-operations
       - typescript-generic-sdk
+
   src/generated/graphql.ts:
     config:
+      scalars:
+        EmailAddress: string
+        Password: string
+        PostalCode: string
+        Latitude: number
+        Longitude: number
+        Upload: FileUpload
+
       useIndexSignature: true
       contextType: "../index#ServerContext"
       mappers:
         User: "../models/models#UserModel"
         Room: "../models/models#RoomModel"
         Booking: "../models/models#BookingModel"
+
     plugins:
-      - "typescript"
-      - "typescript-resolvers"
+      - add:
+          content:
+            - "import { FileUpload } from 'graphql-upload';"
+      - typescript
+      - typescript-resolvers
