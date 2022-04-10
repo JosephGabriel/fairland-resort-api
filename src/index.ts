@@ -31,7 +31,7 @@ export const startServer = async () => {
   const server = new ApolloServer({
     schema: schemaWithPermisions,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-    debug: process.env.NODE_ENV !== "production",
+    debug: false,
     context({ req, res }) {
       return {
         req,

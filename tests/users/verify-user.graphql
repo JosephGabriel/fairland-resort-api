@@ -1,0 +1,7 @@
+mutation VerifyUser {
+  verifyUser {
+    user {
+      verified
+    }
+  }
+}

@@ -408,6 +408,25 @@ export type LoginUserMutationVariables = Exact<{
 
 export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
 
+export type UpdateUserPasswordMutationVariables = Exact<{
+  data: UpdateUserPasswordInput;
+}>;
+
+
+export type UpdateUserPasswordMutation = { __typename?: 'Mutation', updateUserPassword: { __typename?: 'AuthPayload', user: { __typename?: 'User', password: any } } };
+
+export type UpdateUserMutationVariables = Exact<{
+  data: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', firstName: string, lastName: string, userName: string } } };
+
+export type VerifyUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VerifyUserMutation = { __typename?: 'Mutation', verifyUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', verified: boolean } } };
+
 
 export const CreateAdminDocument = gql`
     mutation CreateAdmin($data: CreateUserInput!) {
@@ -441,6 +460,35 @@ export const LoginUserDocument = gql`
   }
 }
     `;
+export const UpdateUserPasswordDocument = gql`
+    mutation UpdateUserPassword($data: UpdateUserPasswordInput!) {
+  updateUserPassword(data: $data) {
+    user {
+      password
+    }
+  }
+}
+    `;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($data: UpdateUserInput!) {
+  updateUser(data: $data) {
+    user {
+      firstName
+      lastName
+      userName
+    }
+  }
+}
+    `;
+export const VerifyUserDocument = gql`
+    mutation VerifyUser {
+  verifyUser {
+    user {
+      verified
+    }
+  }
+}
+    `;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
@@ -455,6 +503,15 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     LoginUser(variables: LoginUserMutationVariables, options?: C): Promise<LoginUserMutation> {
       return requester<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, variables, options);
+    },
+    UpdateUserPassword(variables: UpdateUserPasswordMutationVariables, options?: C): Promise<UpdateUserPasswordMutation> {
+      return requester<UpdateUserPasswordMutation, UpdateUserPasswordMutationVariables>(UpdateUserPasswordDocument, variables, options);
+    },
+    UpdateUser(variables: UpdateUserMutationVariables, options?: C): Promise<UpdateUserMutation> {
+      return requester<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, variables, options);
+    },
+    VerifyUser(variables?: VerifyUserMutationVariables, options?: C): Promise<VerifyUserMutation> {
+      return requester<VerifyUserMutation, VerifyUserMutationVariables>(VerifyUserDocument, variables, options);
     }
   };
 }

@@ -1,6 +1,7 @@
 import { shield, rule, chain } from "graphql-shield";
 import { verifyToken } from "../utils/token";
 import { ServerContext } from "../index";
+import { ApolloError } from "apollo-server-express";
 
 const hasUser = rule()(
   async (parent, { data }, { prisma }: ServerContext, info) => {
@@ -20,7 +21,7 @@ const isLoggedin = rule()(async (parent, args, ctx: ServerContext, info) => {
   const header = ctx.req.headers.authorization;
 
   if (!header) {
-    throw new Error("Você não esta logado");
+    return new ApolloError("Você não esta logado", "403");
   }
 
   const userId = await verifyToken(header);
@@ -74,6 +75,8 @@ export const permisions = shield(
   },
   {
     allowExternalErrors: true,
-    fallbackError: "Erro",
+    fallbackError: (err, parent) => {
+      return new Error("err.");
+    },
   }
 );

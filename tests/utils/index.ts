@@ -7,7 +7,7 @@ import { User } from "@prisma/client";
 import { signUpToken } from "../../src/utils/token";
 
 interface userForTest {
-  user: User | {};
+  user: User | null;
   token: string;
 }
 
@@ -24,7 +24,7 @@ export const getClient = (authHeader?: string) =>
   });
 
 export let userForTest: userForTest = {
-  user: {},
+  user: null,
   token: "",
 };
 
@@ -44,8 +44,8 @@ export const setupDatabase = async () => {
       lastName: "Test",
       userName: "Test",
       active: true,
-      verified: true,
-      role: "ADMIN",
+      verified: false,
+      role: "USER",
       password: passwordHashed,
     },
   });

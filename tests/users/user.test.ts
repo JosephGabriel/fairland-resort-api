@@ -1,4 +1,5 @@
 import { getClient, setupDatabase, userForTest } from "../utils/index";
+import bcrypt from "bcrypt";
 
 import {
   //Login user
@@ -20,12 +21,28 @@ import {
   DeactivateUserDocument,
   DeactivateUserMutation,
   DeactivateUserMutationVariables,
+
+  //Update User
+  UpdateUserDocument,
+  UpdateUserMutation,
+  UpdateUserMutationVariables,
+
+  //Update User Password
+  UpdateUserPasswordDocument,
+  UpdateUserPasswordMutation,
+  UpdateUserPasswordMutationVariables,
+
+  //Verify User
+  VerifyUserDocument,
+  VerifyUserMutation,
+  VerifyUserMutationVariables,
 } from "../generated/graphql";
+import { verifyPassword } from "../../src/utils/password";
 
 beforeEach(setupDatabase);
 
-describe("User", () => {
-  test("Should login", async () => {
+describe("User Mutations", () => {
+  it("should login", async () => {
     const client = getClient();
 
     const { data } = await client.mutate<
@@ -44,7 +61,7 @@ describe("User", () => {
     expect(data.loginUser.user.userName).toBe("Test");
   });
 
-  test("Should create user", async () => {
+  it("should create one user", async () => {
     const client = getClient();
 
     const { data } = await client.mutate<
@@ -67,7 +84,7 @@ describe("User", () => {
     expect(data.createUser.user.userName).toBe("Test2");
   });
 
-  test("Should create admin", async () => {
+  it("should create one admin", async () => {
     const client = getClient(userForTest.token);
 
     const { data } = await client.mutate<
@@ -90,20 +107,92 @@ describe("User", () => {
     expect(data.createAdmin.user.userName).toBe("Admin-test");
   });
 
-  test("Should deactivate user", async () => {
+  it("should deactivate one user", async () => {
     const client = getClient(userForTest.token);
 
-    try {
-      const { data } = await client.mutate<
-        DeactivateUserMutation,
-        DeactivateUserMutationVariables
-      >({
-        mutation: DeactivateUserDocument,
-      });
+    const { data } = await client.mutate<
+      DeactivateUserMutation,
+      DeactivateUserMutationVariables
+    >({
+      mutation: DeactivateUserDocument,
+    });
 
-      expect(data.deactivateUser).toBe("Usuário Desativado");
-    } catch (error) {
-      console.error(error);
-    }
+    expect(data.deactivateUser).toBe("Usuário Desativado");
+  });
+
+  it("should update user", async () => {
+    const client = getClient(userForTest.token);
+
+    const { data } = await client.mutate<
+      UpdateUserMutation,
+      UpdateUserMutationVariables
+    >({
+      mutation: UpdateUserDocument,
+      variables: {
+        data: {
+          firstName: "Updated",
+          userName: "User",
+        },
+      },
+    });
+
+    expect(data.updateUser.user.firstName).toBe("Updated");
+    expect(data.updateUser.user.userName).toBe("User");
+    expect(data.updateUser.user.lastName).toBe(userForTest.user.lastName);
+  });
+
+  it("should update user password", async () => {
+    const client = getClient(userForTest.token);
+
+    const { data, errors } = await client.mutate<
+      UpdateUserPasswordMutation,
+      UpdateUserPasswordMutationVariables
+    >({
+      mutation: UpdateUserPasswordDocument,
+      variables: {
+        data: {
+          password: "Testing95!",
+          passwordConfirm: "Testing95!",
+        },
+      },
+    });
+
+    const password = data.updateUserPassword.user.password;
+
+    const decodedPassword = await bcrypt.compare("Testing95!", password);
+
+    expect(decodedPassword).toBe(true);
+  });
+
+  it("should reject to update user password", async () => {
+    const client = getClient(userForTest.token);
+
+    await expect(
+      client.mutate<
+        UpdateUserPasswordMutation,
+        UpdateUserPasswordMutationVariables
+      >({
+        mutation: UpdateUserPasswordDocument,
+        variables: {
+          data: {
+            password: "Password95!",
+            passwordConfirm: "Password95!",
+          },
+        },
+      })
+    ).rejects.toThrow();
+  });
+
+  it("should verify an user", async () => {
+    const client = getClient(userForTest.token);
+
+    const { data } = await client.mutate<
+      VerifyUserMutation,
+      VerifyUserMutationVariables
+    >({
+      mutation: VerifyUserDocument,
+    });
+
+    expect(data.verifyUser.user.verified).toBe(true);
   });
 });
