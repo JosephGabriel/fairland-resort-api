@@ -1,3 +1,4 @@
+import { FileUpload } from 'graphql-upload';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
@@ -12,12 +13,12 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  EmailAddress: any;
-  Latitude: any;
-  Longitude: any;
-  Password: any;
-  PostalCode: any;
-  Upload: any;
+  EmailAddress: string;
+  Latitude: number;
+  Longitude: number;
+  Password: string;
+  PostalCode: string;
+  Upload: FileUpload;
 };
 
 export type AuthPayload = {
@@ -413,7 +414,7 @@ export type UpdateUserPasswordMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserPasswordMutation = { __typename?: 'Mutation', updateUserPassword: { __typename?: 'AuthPayload', user: { __typename?: 'User', password: any } } };
+export type UpdateUserPasswordMutation = { __typename?: 'Mutation', updateUserPassword: { __typename?: 'AuthPayload', user: { __typename?: 'User', password: string } } };
 
 export type UpdateUserMutationVariables = Exact<{
   data: UpdateUserInput;

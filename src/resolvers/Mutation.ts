@@ -1,6 +1,7 @@
 import { sendWelcomeMail } from "../utils/email";
 import { signUpToken } from "../utils/token";
 import { hashPassword, verifyPassword } from "../utils/password";
+import { MutationResolvers } from "../generated/graphql";
 
 import slugify from "slugify";
 
@@ -10,7 +11,6 @@ import {
   uploadMultipleImages,
   uploadSingleImage,
 } from "../utils/upload";
-import { MutationResolvers } from "../generated/graphql";
 
 export const Mutation: MutationResolvers = {
   // User Mutations
@@ -48,11 +48,18 @@ export const Mutation: MutationResolvers = {
 
     data.password = await hashPassword(data.password);
 
+    let avatar: string;
+
     if (data.avatar) {
-      data.avatar = await uploadSingleImage(data.avatar, req, "users");
+      avatar = await uploadSingleImage(data.avatar, req, "users");
     }
 
-    const user = await prisma.user.create({ data });
+    const user = await prisma.user.create({
+      data: {
+        ...data,
+        avatar,
+      },
+    });
 
     const token = await signUpToken(user.id);
 
@@ -79,13 +86,16 @@ export const Mutation: MutationResolvers = {
 
     data.password = await hashPassword(data.password);
 
+    let avatar: string;
+
     if (data.avatar) {
-      data.avatar = await uploadSingleImage(data.avatar, req, "users");
+      avatar = await uploadSingleImage(data.avatar, req, "users");
     }
 
     const user = await prisma.user.create({
       data: {
         ...data,
+        avatar,
         active: true,
         role: "ADMIN",
         verified: true,
@@ -120,18 +130,17 @@ export const Mutation: MutationResolvers = {
   },
 
   async updateUser(parent, { data }, { req, user, prisma }, info) {
+    let avatar: string;
+
     if (data.avatar) {
-      data.avatar = await uploadSingleImage(data.avatar, req, "users");
+      avatar = await uploadSingleImage(data.avatar, req, "users");
     }
 
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {
-        avatar: data.avatar,
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        userName: data.userName,
+        ...data,
+        avatar,
       },
     });
 
@@ -183,19 +192,22 @@ export const Mutation: MutationResolvers = {
 
   // Hotel Mutations
   async createHotel(parent, { data }, { req, prisma, user }, info) {
-    data.latitude = parseFloat(data.latitude);
+    const logo = await uploadSingleImage(data.logo, req, "logos");
 
-    data.longitude = parseFloat(data.longitude);
+    const thumbnail = await uploadSingleImage(
+      data.thumbnail,
+      req,
+      "thumbnails"
+    );
 
-    data.logo = await uploadSingleImage(data.logo, req, "logos");
-
-    data.thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
-
-    data.images = await uploadMultipleImages(data.images, req, "hotels");
+    const images = await uploadMultipleImages(data.images, req, "hotels");
 
     const hotel = await prisma.hotel.create({
       data: {
         ...data,
+        logo,
+        thumbnail,
+        images,
         slug: slugify(data.name, { lower: true }),
         admin: {
           connect: {
@@ -213,30 +225,35 @@ export const Mutation: MutationResolvers = {
       where: { id },
     });
 
+    let logo: string;
+    let thumbnail: string;
+    let images: string[];
+
     if (data.logo) {
       await deleteUploadedFile(hotel?.logo);
-      data.logo = await uploadSingleImage(data.logo, req, "logos");
+      logo = await uploadSingleImage(data.logo, req, "logos");
     }
 
     if (data.thumbnail) {
       await deleteUploadedFile(hotel?.thumbnail);
 
-      data.thumbnail = await uploadSingleImage(
-        data.thumbnail,
-        req,
-        "thumbnails"
-      );
+      thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
     }
 
     if (data.images) {
       await deleteMultipleUploadedFiles(hotel?.images);
 
-      data.images = await uploadMultipleImages(data.images, req, "hotels");
+      images = await uploadMultipleImages(data.images, req, "hotels");
     }
 
     const updatedHotel = await prisma.hotel.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        logo,
+        images,
+        thumbnail,
+      },
     });
 
     return updatedHotel;
@@ -262,13 +279,18 @@ export const Mutation: MutationResolvers = {
       throw new Error("Hotel inválido");
     }
 
-    data.thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
+    let thumbnail: string;
+    let images: string[];
 
-    data.images = await uploadMultipleImages(data.images, req, "rooms");
+    thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
+
+    images = await uploadMultipleImages(data.images, req, "rooms");
 
     const room = await prisma.room.create({
       data: {
         ...data,
+        thumbnail,
+        images,
         hotel: {
           connect: {
             id: data.hotel,
@@ -281,12 +303,12 @@ export const Mutation: MutationResolvers = {
   },
 
   async updateRoom(parent, { id, data }, { req, prisma }, info) {
-    const hasRoom = await prisma.room.update({
+    const hasRoom = await prisma.room.findUnique({
       where: { id },
-      data: {
-        ...data,
-      },
     });
+
+    let thumbnail: string;
+    let images: string[];
 
     if (!hasRoom) {
       throw new Error("Quarto inválido");
@@ -295,23 +317,21 @@ export const Mutation: MutationResolvers = {
     if (data.thumbnail) {
       await deleteUploadedFile(data.thumbnail);
 
-      data.thumbnail = await uploadSingleImage(
-        data.thumbnail,
-        req,
-        "thumbnails"
-      );
+      thumbnail = await uploadSingleImage(data.thumbnail, req, "thumbnails");
     }
 
     if (data.images) {
       await deleteMultipleUploadedFiles(data.images);
 
-      data.images = await uploadMultipleImages(data.images, req, "rooms");
+      images = await uploadMultipleImages(data.images, req, "rooms");
     }
 
     const room = await prisma.room.update({
       where: { id },
       data: {
         ...data,
+        thumbnail,
+        images,
       },
     });
 
