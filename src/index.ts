@@ -9,7 +9,7 @@ import cors from "cors";
 
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
-import { permisions } from "./permisions/index";
+import { permisions } from "./permisions";
 
 export const prisma = new PrismaClient();
 
@@ -28,17 +28,15 @@ const schema = makeExecutableSchema({
 const schemaWithPermisions = applyMiddleware(schema, permisions);
 
 export const startServer = async () => {
-  const server = new ApolloServer({
+  const server = new ApolloServer<ServerContext>({
     schema: schemaWithPermisions,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-    debug: false,
-    context({ req, res }) {
-      return {
-        req,
-        res,
-        prisma,
-      };
-    },
+    debug: process.env.NODE_ENV !== "production",
+    context: ({ req, res }) => ({
+      prisma,
+      req,
+      res,
+    }),
   });
 
   const app = express();

@@ -2,11 +2,40 @@ version: "3"
 
 services:
   database:
-    image: postgres:alpine
+      container_name: venus_postgres_db
+      image: postgres:alpine
+      restart: always
+      ports:
+        - "5432:5432"
+      networks:
+        - app
+      environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        
+  server:
+    build: .
+    container_name: venus_node_server
+    command: npm start
     restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - database
     ports:
-      - "5432:5432"
+      - "8080:${PORT}"
+    networks:
+      - app
     environment:
-      POSTGRES_USER: venususer
-      POSTGRES_DB: venusdb
-      POSTGRES_PASSWORD: venuspassword
+      APOLLO_KEY: ${APOLLO_KEY}
+      APOLLO_GRAPH_REF: ${APOLLO_GRAPH_REF}
+      APOLLO_SCHEMA_REPORTING: ${APOLLO_SCHEMA_REPORTING}
+      PORT: ${PORT}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+
+networks:
+  app:
+    driver: bridge

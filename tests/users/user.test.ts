@@ -37,7 +37,6 @@ import {
   VerifyUserMutation,
   VerifyUserMutationVariables,
 } from "../generated/graphql";
-import { verifyPassword } from "../../src/utils/password";
 
 beforeEach(setupDatabase);
 
@@ -52,13 +51,29 @@ describe("User Mutations", () => {
       mutation: LoginUserDocument,
       variables: {
         data: {
-          email: "test@test.com",
-          password: "Daredevil95!",
+          email: userForTest.user!.email,
+          password: userForTest.raw_password,
         },
       },
     });
 
-    expect(data.loginUser.user.userName).toBe("Test");
+    expect(data?.loginUser.user.userName).toBe("Test");
+  });
+
+  it("should not do login when give a wrong credential", async () => {
+    const client = getClient();
+
+    expect(
+      await client.mutate<LoginUserMutation, LoginUserMutationVariables>({
+        mutation: LoginUserDocument,
+        variables: {
+          data: {
+            email: userForTest.user!.email,
+            password: "wrong_password",
+          },
+        },
+      })
+    ).rejects.toThrow();
   });
 
   it("should create one user", async () => {
@@ -75,13 +90,13 @@ describe("User Mutations", () => {
           firstName: "Test2",
           lastName: "Test2",
           userName: "Test2",
-          password: "Daredevil95!",
-          passwordConfirm: "Daredevil95!",
+          password: userForTest.raw_password,
+          passwordConfirm: userForTest.raw_password,
         },
       },
     });
 
-    expect(data.createUser.user.userName).toBe("Test2");
+    expect(data?.createUser.user.userName).toBe("Test2");
   });
 
   it("should create one admin", async () => {
@@ -97,14 +112,14 @@ describe("User Mutations", () => {
           email: "admin@admin.com",
           firstName: "Admin-test",
           lastName: "Admin-test",
-          password: "Daredevil95!",
-          passwordConfirm: "Daredevil95!",
+          password: userForTest.raw_password,
+          passwordConfirm: userForTest.raw_password,
           userName: "Admin-test",
         },
       },
     });
 
-    expect(data.createAdmin.user.userName).toBe("Admin-test");
+    expect(data!.createAdmin.user.userName).toBe("Admin-test");
   });
 
   it("should deactivate one user", async () => {
@@ -117,7 +132,7 @@ describe("User Mutations", () => {
       mutation: DeactivateUserDocument,
     });
 
-    expect(data.deactivateUser).toBe("Usuário Desativado");
+    expect(data!.deactivateUser).toBe("Usuário Desativado");
   });
 
   it("should update user", async () => {
@@ -136,9 +151,9 @@ describe("User Mutations", () => {
       },
     });
 
-    expect(data.updateUser.user.firstName).toBe("Updated");
-    expect(data.updateUser.user.userName).toBe("User");
-    expect(data.updateUser.user.lastName).toBe(userForTest.user.lastName);
+    expect(data!.updateUser.user.firstName).toBe("Updated");
+    expect(data!.updateUser.user.userName).toBe("User");
+    expect(data!.updateUser.user.lastName).toBe(userForTest.user!.lastName);
   });
 
   it("should update user password", async () => {
@@ -157,7 +172,7 @@ describe("User Mutations", () => {
       },
     });
 
-    const password = data.updateUserPassword.user.password;
+    const password = data!.updateUserPassword.user.password;
 
     const decodedPassword = await bcrypt.compare("Testing95!", password);
 
@@ -193,6 +208,6 @@ describe("User Mutations", () => {
       mutation: VerifyUserDocument,
     });
 
-    expect(data.verifyUser.user.verified).toBe(true);
+    expect(data!.verifyUser.user.verified).toBe(true);
   });
 });

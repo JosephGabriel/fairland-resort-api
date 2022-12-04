@@ -1,14 +1,15 @@
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client/core";
+import { User } from "@prisma/client";
 import fetch from "cross-fetch";
 import bcrypt from "bcrypt";
 
 import { prisma } from "../../src/index";
-import { User } from "@prisma/client";
 import { signUpToken } from "../../src/utils/token";
 
 interface userForTest {
   user: User | null;
   token: string;
+  raw_password: string;
 }
 
 export const getClient = (authHeader?: string) =>
@@ -17,7 +18,7 @@ export const getClient = (authHeader?: string) =>
       headers: {
         authorization: `Bearer ${authHeader}`,
       },
-      uri: "http://localhost:4000/graphql",
+      uri: `http://localhost:${process.env.PORT}/graphql`,
       fetch,
     }),
     cache: new InMemoryCache(),
@@ -26,6 +27,7 @@ export const getClient = (authHeader?: string) =>
 export let userForTest: userForTest = {
   user: null,
   token: "",
+  raw_password: "Daredevil95!",
 };
 
 export const setupDatabase = async () => {
@@ -35,7 +37,7 @@ export const setupDatabase = async () => {
   await prisma.review.deleteMany();
   await prisma.booking.deleteMany();
 
-  const passwordHashed = await bcrypt.hash("Daredevil95!", 10);
+  const passwordHashed = await bcrypt.hash(userForTest.raw_password, 10);
 
   const user = await prisma.user.create({
     data: {
