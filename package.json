@@ -9,6 +9,7 @@
     "prestart": "npx prisma migrate deploy",
     "dev": "nodemon src/server --ext graphql,ts",
     "test": "npx jest ----runInBand --watchAll",
+    "database": "docker compose -f docker-compose.db.yml up -d",
     "generate": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],

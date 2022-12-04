@@ -63,17 +63,19 @@ describe("User Mutations", () => {
   it("should not do login when give a wrong credential", async () => {
     const client = getClient();
 
-    expect(
+    try {
       await client.mutate<LoginUserMutation, LoginUserMutationVariables>({
         mutation: LoginUserDocument,
         variables: {
           data: {
             email: userForTest.user!.email,
-            password: "wrong_password",
+            password: "Wrong_124566499!",
           },
         },
-      })
-    ).rejects.toThrow();
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Email ou senha inválida");
+    }
   });
 
   it("should create one user", async () => {
