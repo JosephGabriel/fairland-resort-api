@@ -79,5 +79,6 @@ export const permisions = shield(
   },
   {
     allowExternalErrors: true,
+    debug: true,
   }
 );

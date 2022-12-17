@@ -2,7 +2,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 import { ApolloServer, ExpressContext } from "apollo-server-express";
 import { graphqlUploadExpress } from "graphql-upload";
 import { applyMiddleware } from "graphql-middleware";
-const { makeExecutableSchema } = require("@graphql-tools/schema");
+import { makeExecutableSchema } from "@graphql-tools/schema"
 import { PrismaClient, User } from "@prisma/client";
 import express from "express";
 import cors from "cors";

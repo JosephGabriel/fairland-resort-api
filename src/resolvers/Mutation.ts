@@ -205,6 +205,8 @@ export const Mutation: MutationResolvers = {
     const hotel = await prisma.hotel.create({
       data: {
         ...data,
+        latitude: data.latitude,
+        longitude: data.longitude,
         logo,
         thumbnail,
         images,

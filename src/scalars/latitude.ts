@@ -14,7 +14,7 @@ const parseLiteral = (ast) => {
     throw new GraphQLError(`Expected a float but got: ${ast.kind}`);
   }
 
-  return ast.value;
+  return parseFloat(ast.value);
 };
 
 export const GraphQLLatitude = new GraphQLScalarType({

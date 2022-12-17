@@ -2,11 +2,7 @@ FROM node:16-alpine
 
 USER root
 
-RUN mkdir /app && chown root:root /app
-
-WORKDIR /app/
-
-RUN npm cache clean --force  
+WORKDIR /app/ 
 
 COPY package*.json /app/
 
@@ -14,8 +10,8 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build 
+RUN npx prisma generate
 
-RUN npx prisma migrate deploy
+RUN npm run build
 
 CMD ["npm", "start" ]

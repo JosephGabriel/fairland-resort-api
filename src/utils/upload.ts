@@ -1,15 +1,14 @@
 import path from "path";
 import fs from "fs";
+import { FileUpload } from "graphql-upload";
 // import sharp from "sharp";
 
-export const uploadSingleImage = async (image, req, folder) => {
-  const { filename, createReadStream } = await image;
+export const uploadSingleImage = async (image: any, req, folder) => {
+  const { filename, createReadStream } = await image.file;
 
-  const { ext, name } = path.parse(filename);
+  const stream = await createReadStream();
 
-  const stream = createReadStream();
-
-  const fileName = `${Date.now()}-${name}${ext}`;
+  const fileName = `${Date.now()}-${filename}`;
 
   const pathName = path.join(
     `${__dirname}/../../public/images/${folder}/${fileName}`
