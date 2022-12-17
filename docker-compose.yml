@@ -7,8 +7,6 @@ services:
       restart: always
       ports:
         - "5432:5432"
-      networks:
-        - app
       environment:
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_DB: ${POSTGRES_DB}
@@ -25,8 +23,6 @@ services:
       - database
     ports:
       - "8080:${PORT}"
-    networks:
-      - app
     environment:
       APOLLO_KEY: ${APOLLO_KEY}
       APOLLO_GRAPH_REF: ${APOLLO_GRAPH_REF}
@@ -35,7 +31,3 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: ${DATABASE_URL}
-
-networks:
-  app:
-    driver: bridge

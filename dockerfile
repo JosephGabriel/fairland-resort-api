@@ -1,14 +1,14 @@
-FROM node:16-alpine
+FROM node:16-bullseye-slim
 
-USER root
+USER node
 
 WORKDIR /app/ 
 
 COPY package*.json /app/
 
-RUN npm install 
+RUN npm install --production 
 
-COPY . .
+COPY --chown=node:node . .
 
 RUN npx prisma generate
 
