@@ -24,10 +24,10 @@ services:
     ports:
       - "8080:${PORT}"
     environment:
-      APOLLO_KEY: service:venus-api-my6z8:5OwbQh51Y8mvXSwU_Gq2Ww
-      APOLLO_GRAPH_REF: venus-api-my6z8@current
-      APOLLO_SCHEMA_REPORTING: true
-      PORT: 5000
-      JWT_EXPIRES_IN: 7d
-      JWT_SECRET: venus
-      DATABASE_URL: postgres://venususer:venuspassword@database:5432/venusdb?connect_timeout=300
+      APOLLO_KEY: ${APOLLO_KEY}
+      APOLLO_GRAPH_REF: ${APOLLO_GRAPH_REF}
+      APOLLO_SCHEMA_REPORTING: ${APOLLO_SCHEMA_REPORTING}
+      PORT: ${PORT}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
