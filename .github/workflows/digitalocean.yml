@@ -67,7 +67,8 @@ jobs:
             docker rm $(echo $IMAGE_NAME)
 
             # Run a new container from a new image
-            docker run --env APOLLO_KEY=service:venus-api-my6z8:5OwbQh51Y8mvXSwU_Gq2Ww APOLLO_GRAPH_REF=venus-api-my6z8@current APOLLO_SCHEMA_REPORTING=true PORT=5000 JWT_EXPIRES_IN=7d JWT_SECRET=venus DATABASE_URL=postgres://venususer:venuspassword@database:5432/venusdb?connect_timeout=300 -d \
+            docker run -d \
             --restart always \
+            -e APOLLO_KEY="service:venus-api-my6z8:5OwbQh51Y8mvXSwU_Gq2Ww" APOLLO_GRAPH_REF="venus-api-my6z8@current" APOLLO_SCHEMA_REPORTING="true" PORT="5000" JWT_EXPIRES_IN="7d" "JWT_SECRET="venus" DATABASE_URL="postgres://venususer:venuspassword@database:5432/venusdb?connect_timeout=300"
             --name $(echo $IMAGE_NAME) \
             $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) \
