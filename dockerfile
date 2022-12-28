@@ -1,8 +1,10 @@
 FROM node:16-bullseye-slim
 
-WORKDIR /app/ 
+RUN mkdir -p /app
 
-COPY package*.json /app/
+WORKDIR /app/
+
+COPY package*.json .
 
 RUN npm install
 
