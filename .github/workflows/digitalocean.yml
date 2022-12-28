@@ -67,7 +67,7 @@ jobs:
             docker rm $(echo $IMAGE_NAME)
 
             # Run a new container from a new image
-            docker run -d -rm \
+            docker run -d \
             --restart always \
             -e PORT="5000" \
             -e JWT_EXPIRES_IN="7d" \
