@@ -1,14 +1,16 @@
 FROM node:16-bullseye-slim
 
+USER root
+
 RUN mkdir -p /app
 
-WORKDIR /app/
+WORKDIR /app
 
-COPY package*.json .
+COPY --chown=root:root package.json .
 
 RUN npm install
 
-COPY . .
+COPY --chown=root:root . .
 
 RUN npx prisma generate
 
