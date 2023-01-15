@@ -1,3 +1,5 @@
+import { GraphQLError } from "graphql";
+
 import { QueryResolvers } from "../generated/graphql";
 
 export const Query: QueryResolvers = {
@@ -6,7 +8,7 @@ export const Query: QueryResolvers = {
     const hotel = await prisma.hotel.findUnique({ where: { id } });
 
     if (!hotel) {
-      throw new Error("Hotel inválido");
+      throw new GraphQLError("Hotel inválido");
     }
 
     return hotel;
@@ -38,7 +40,7 @@ export const Query: QueryResolvers = {
     });
 
     if (!hotel) {
-      throw new Error("Hotel inválido");
+      throw new GraphQLError("Hotel inválido");
     }
 
     return hotel;
@@ -49,7 +51,7 @@ export const Query: QueryResolvers = {
     const room = await prisma.room.findUnique({ where: { id } });
 
     if (!room) {
-      throw new Error("Quarto inválido");
+      throw new GraphQLError("Quarto inválido");
     }
 
     return room;

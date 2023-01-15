@@ -1,39 +1,54 @@
-import path from "path";
+import { Request, Response } from "express";
+import { randomBytes } from "crypto";
+import multer from "multer";
 import fs from "fs";
-import { FileUpload } from "graphql-upload";
-// import sharp from "sharp";
 
-export const uploadSingleImage = async (image: any, req, folder) => {
-  const { filename, createReadStream } = await image.file;
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const extension = file.originalname.split(".")[1];
 
-  const stream = await createReadStream();
+    const newFileName = randomBytes(64).toString("hex");
 
-  const fileName = `${Date.now()}-${filename}`;
+    cb(null, `${newFileName}.${extension}`);
+  },
+});
 
-  const pathName = path.join(
-    `${__dirname}/../../public/images/${folder}/${fileName}`
-  );
+export const upload = multer({ storage: storage });
 
-  await stream.pipe(fs.createWriteStream(pathName));
+export const uploadUserAvatar = (req: Request, res: Response) => {
+  const { file } = req;
 
-  const imageUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/images/${folder}/${fileName}`;
-
-  return imageUrl;
+  return res.json({
+    url: `${req.protocol}://${req.get("host")}/${file.filename}`,
+  });
 };
 
-export const uploadMultipleImages = async (images, req, folder) => {
-  let imagesArray = [];
+export const uploadHotelImages = (req: Request, res: Response) => {
+  const { files } = req;
 
-  await Promise.all(
-    images.map(async (image) => {
-      const imageUrl = await uploadSingleImage(image, req, "hotels");
-      imagesArray.push(imageUrl);
-    })
-  );
+  //@ts-ignore
+  const photos = files.photos.map((f) => ({
+    url: `${req.protocol}://${req.get("host")}/${f.filename}`,
+  }));
 
-  return imagesArray;
+  //@ts-ignore
+  const thumbnail = files.thumbnail.map((f) => ({
+    url: `${req.protocol}://${req.get("host")}/${f.filename}`,
+  }));
+
+  //@ts-ignore
+  const logo = files.logo.map((f) => ({
+    url: `${req.protocol}://${req.get("host")}/${f.filename}`,
+  }));
+
+  return res.json({
+    logo,
+    thumbnail,
+    photos,
+  });
 };
 
 export const deleteUploadedFile = async (file) => {

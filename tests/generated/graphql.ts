@@ -1,4 +1,3 @@
-import { FileUpload } from 'graphql-upload';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
@@ -18,7 +17,6 @@ export type Scalars = {
   Longitude: number;
   Password: string;
   PostalCode: string;
-  Upload: FileUpload;
 };
 
 export type AuthPayload = {
@@ -59,28 +57,28 @@ export type CreateHotelInput = {
   address: Scalars['String'];
   addressNumber: Scalars['String'];
   description: Scalars['String'];
-  images?: InputMaybe<Array<Scalars['Upload']>>;
+  images?: InputMaybe<Array<Scalars['String']>>;
   latitude: Scalars['Latitude'];
-  logo: Scalars['Upload'];
+  logo: Scalars['String'];
   longitude: Scalars['Longitude'];
   name: Scalars['String'];
   summary: Scalars['String'];
-  thumbnail: Scalars['Upload'];
+  thumbnail: Scalars['String'];
   zipCode: Scalars['PostalCode'];
 };
 
 export type CreateRoomInput = {
   description: Scalars['String'];
   hotel: Scalars['ID'];
-  images?: InputMaybe<Array<Scalars['Upload']>>;
+  images?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   price: Scalars['Float'];
   summary: Scalars['String'];
-  thumbnail: Scalars['Upload'];
+  thumbnail: Scalars['String'];
 };
 
 export type CreateUserInput = {
-  avatar?: InputMaybe<Scalars['Upload']>;
+  avatar?: InputMaybe<Scalars['String']>;
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -293,7 +291,7 @@ export type Room = {
   /** Id do quarto */
   id: Scalars['ID'];
   /** Um array de url's de imagens do quarto */
-  images?: Maybe<Array<Scalars['Upload']>>;
+  images?: Maybe<Array<Scalars['String']>>;
   /** Nome do quarto */
   name: Scalars['String'];
   /** Preço por noite do quarto */
@@ -303,7 +301,7 @@ export type Room = {
   /** Uma pequena descrição do quarto */
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do quarto */
-  thumbnail: Scalars['Upload'];
+  thumbnail: Scalars['String'];
 };
 
 export type RoomFilter = {
@@ -317,26 +315,26 @@ export type UpdateHotelInput = {
   address?: InputMaybe<Scalars['String']>;
   addressNumber?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
-  images?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+  images?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   latitude?: InputMaybe<Scalars['Latitude']>;
-  logo?: InputMaybe<Scalars['Upload']>;
+  logo?: InputMaybe<Scalars['String']>;
   longitude?: InputMaybe<Scalars['Longitude']>;
   name?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;
-  thumbnail?: InputMaybe<Scalars['Upload']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['PostalCode']>;
 };
 
 export type UpdateRoomInput = {
-  images?: InputMaybe<Array<Scalars['Upload']>>;
+  images?: InputMaybe<Array<Scalars['String']>>;
   name?: InputMaybe<Scalars['String']>;
   price?: InputMaybe<Scalars['Float']>;
   summary?: InputMaybe<Scalars['String']>;
-  thumbnail?: InputMaybe<Scalars['Upload']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
-  avatar?: InputMaybe<Scalars['Upload']>;
+  avatar?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['EmailAddress']>;
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
@@ -490,8 +488,8 @@ export const VerifyUserDocument = gql`
   }
 }
     `;
-export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
-export function getSdk<C>(requester: Requester<C>) {
+export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
+export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     CreateAdmin(variables: CreateAdminMutationVariables, options?: C): Promise<CreateAdminMutation> {
       return requester<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument, variables, options);

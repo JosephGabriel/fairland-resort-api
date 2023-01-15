@@ -57,9 +57,9 @@ input CreateHotelInput {
   name: String!
   summary: String!
   description: String!
-  thumbnail: Upload!
-  images: [Upload!]
-  logo: Upload!
+  thumbnail: String!
+  images: [String!]
+  logo: String!
   latitude: Latitude!
   longitude: Longitude!
   address: String!
@@ -71,9 +71,9 @@ input UpdateHotelInput {
   name: String
   summary: String
   description: String
-  thumbnail: Upload
-  images: [Upload]
-  logo: Upload
+  thumbnail: String
+  images: [String]
+  logo: String
   latitude: Latitude
   longitude: Longitude
   address: String

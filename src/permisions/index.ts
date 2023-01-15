@@ -1,17 +1,18 @@
 import { shield, rule, chain } from "graphql-shield";
 import { ShieldRule } from "graphql-shield/typings/types";
+import { GraphQLError } from "graphql";
 
 import { verifyToken } from "../utils/token";
 import { ServerContext } from "../index";
 
 const hasUser: ShieldRule = rule()(
-  async (parent, { data }, { prisma }: ServerContext, info) => {
+  async (parent, { data }, { prisma }, info) => {
     const userExists = await prisma.user.findUnique({
       where: { email: data.email },
     });
 
     if (userExists) {
-      return new Error("Este email já esta em uso");
+      return new GraphQLError("Este email já esta em uso");
     }
 
     return true;
@@ -20,16 +21,16 @@ const hasUser: ShieldRule = rule()(
 
 const isLoggedin: ShieldRule = rule()(
   async (parent, args, ctx: ServerContext, info) => {
-    const header = ctx.req.headers.authorization;
+    const header = ctx.request.headers.get("Authorization");
 
     if (!header) {
-      return new Error("Você não esta logado");
+      return new GraphQLError("Você não esta logado");
     }
 
     const userId = await verifyToken(header);
 
     if (userId === null) {
-      return new Error("Token inválido");
+      return new GraphQLError("Token inválido");
     }
 
     const userExists = await await ctx.prisma.user.findUnique({
@@ -37,7 +38,7 @@ const isLoggedin: ShieldRule = rule()(
     });
 
     if (!userExists) {
-      return new Error("Você não esta logado");
+      return new GraphQLError("Você não esta logado");
     }
 
     const timeToken = new Date(userId.iat).getTime();
@@ -45,7 +46,7 @@ const isLoggedin: ShieldRule = rule()(
     const passwordChangedAt = new Date(userExists.passwordChangedAt).getTime();
 
     if (timeToken < passwordChangedAt && passwordChangedAt > 0) {
-      return new Error(
+      return new GraphQLError(
         "Você trocou sua senha recentemente, faça login novamente"
       );
     }
@@ -61,10 +62,10 @@ const isAdmin: ShieldRule = rule()(async (parent, args, { user }, info) => {
     return true;
   }
 
-  return new Error("É necessário um administrador para continuar");
+  return new GraphQLError("É necessário um administrador para continuar");
 });
 
-export const permisions = shield(
+export const permisions = shield<any, ServerContext>(
   {
     Mutation: {
       createUser: hasUser,

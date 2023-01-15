@@ -1,6 +1,9 @@
+import { PrismaClient } from "@prisma/client";
+import { GraphQLError } from "graphql";
+
 export const userExists = async (
   condition,
-  prisma,
+  prisma: PrismaClient,
   message = "Usuário inválido"
 ) => {
   const userExists = await prisma.user.findUnique({
@@ -8,7 +11,7 @@ export const userExists = async (
   });
 
   if (userExists) {
-    throw new Error(message);
+    throw new GraphQLError(message);
   }
 
   return userExists;
@@ -16,7 +19,7 @@ export const userExists = async (
 
 export const userNotExists = async (
   condition,
-  prisma,
+  prisma: PrismaClient,
   message = "Usuário inválido"
 ) => {
   const userExists = await prisma.user.findUnique({
@@ -24,7 +27,7 @@ export const userNotExists = async (
   });
 
   if (!userExists) {
-    throw new Error(message);
+    throw new GraphQLError(message);
   }
 
   return userExists;

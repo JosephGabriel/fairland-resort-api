@@ -56,7 +56,7 @@ input CreateUserInput {
   userName: String!
   password: Password!
   passwordConfirm: Password!
-  avatar: Upload
+  avatar: String
 }
 
 input UpdateUserInput {
@@ -64,7 +64,7 @@ input UpdateUserInput {
   email: EmailAddress
   lastName: String
   userName: String
-  avatar: Upload
+  avatar: String
 }
 
 input UpdateUserPasswordInput {

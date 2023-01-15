@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
-import { startServer } from "../src";
+import { app, yoga } from "../src";
 
 export default async () => {
   dotenv.config();
 
-  const { server, expressServer } = await startServer();
+  const port = process.env.PORT || 4000;
 
-  global.apolloServer = server;
-  global.expressServer = expressServer;
+  global.expressServer = app.listen({ port }, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${port}${yoga.graphqlEndpoint}`
+    );
+  });
 };

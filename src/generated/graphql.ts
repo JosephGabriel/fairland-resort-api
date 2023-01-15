@@ -1,4 +1,3 @@
-import { FileUpload } from 'graphql-upload';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { UserModel, RoomModel, BookingModel } from '../models/models';
 import { ServerContext } from '../index';
@@ -21,7 +20,6 @@ export type Scalars = {
   Longitude: number;
   Password: string;
   PostalCode: string;
-  Upload: FileUpload;
 };
 
 export type AuthPayload = {
@@ -62,28 +60,28 @@ export type CreateHotelInput = {
   address: Scalars['String'];
   addressNumber: Scalars['String'];
   description: Scalars['String'];
-  images?: InputMaybe<Array<Scalars['Upload']>>;
+  images?: InputMaybe<Array<Scalars['String']>>;
   latitude: Scalars['Latitude'];
-  logo: Scalars['Upload'];
+  logo: Scalars['String'];
   longitude: Scalars['Longitude'];
   name: Scalars['String'];
   summary: Scalars['String'];
-  thumbnail: Scalars['Upload'];
+  thumbnail: Scalars['String'];
   zipCode: Scalars['PostalCode'];
 };
 
 export type CreateRoomInput = {
   description: Scalars['String'];
   hotel: Scalars['ID'];
-  images?: InputMaybe<Array<Scalars['Upload']>>;
+  images?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   price: Scalars['Float'];
   summary: Scalars['String'];
-  thumbnail: Scalars['Upload'];
+  thumbnail: Scalars['String'];
 };
 
 export type CreateUserInput = {
-  avatar?: InputMaybe<Scalars['Upload']>;
+  avatar?: InputMaybe<Scalars['String']>;
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -296,7 +294,7 @@ export type Room = {
   /** Id do quarto */
   id: Scalars['ID'];
   /** Um array de url's de imagens do quarto */
-  images?: Maybe<Array<Scalars['Upload']>>;
+  images?: Maybe<Array<Scalars['String']>>;
   /** Nome do quarto */
   name: Scalars['String'];
   /** Preço por noite do quarto */
@@ -306,7 +304,7 @@ export type Room = {
   /** Uma pequena descrição do quarto */
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do quarto */
-  thumbnail: Scalars['Upload'];
+  thumbnail: Scalars['String'];
 };
 
 export type RoomFilter = {
@@ -320,26 +318,26 @@ export type UpdateHotelInput = {
   address?: InputMaybe<Scalars['String']>;
   addressNumber?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
-  images?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+  images?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   latitude?: InputMaybe<Scalars['Latitude']>;
-  logo?: InputMaybe<Scalars['Upload']>;
+  logo?: InputMaybe<Scalars['String']>;
   longitude?: InputMaybe<Scalars['Longitude']>;
   name?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;
-  thumbnail?: InputMaybe<Scalars['Upload']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['PostalCode']>;
 };
 
 export type UpdateRoomInput = {
-  images?: InputMaybe<Array<Scalars['Upload']>>;
+  images?: InputMaybe<Array<Scalars['String']>>;
   name?: InputMaybe<Scalars['String']>;
   price?: InputMaybe<Scalars['Float']>;
   summary?: InputMaybe<Scalars['String']>;
-  thumbnail?: InputMaybe<Scalars['Upload']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
-  avatar?: InputMaybe<Scalars['Upload']>;
+  avatar?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['EmailAddress']>;
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
@@ -483,7 +481,6 @@ export type ResolversTypes = ResolversObject<{
   UpdateRoomInput: UpdateRoomInput;
   UpdateUserInput: UpdateUserInput;
   UpdateUserPasswordInput: UpdateUserPasswordInput;
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
   User: ResolverTypeWrapper<UserModel>;
   userRole: UserRole;
 }>;
@@ -517,7 +514,6 @@ export type ResolversParentTypes = ResolversObject<{
   UpdateRoomInput: UpdateRoomInput;
   UpdateUserInput: UpdateUserInput;
   UpdateUserPasswordInput: UpdateUserPasswordInput;
-  Upload: Scalars['Upload'];
   User: UserModel;
 }>;
 
@@ -618,18 +614,14 @@ export type RoomResolvers<ContextType = ServerContext, ParentType extends Resolv
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Maybe<Array<ResolversTypes['Upload']>>, ParentType, ContextType>;
+  images?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  thumbnail?: Resolver<ResolversTypes['Upload'], ParentType, ContextType>;
+  thumbnail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
-
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
-  name: 'Upload';
-}
 
 export type UserResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -661,7 +653,6 @@ export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Review?: ReviewResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
-  Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
 }>;
 

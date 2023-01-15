@@ -35,7 +35,6 @@ enum userRole {
 
 //    Hoteis    //
 model Hotel {
-
   id            String   @id @default(uuid())
   name          String
   rating        Int?     @default(0)
