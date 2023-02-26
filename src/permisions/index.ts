@@ -6,7 +6,7 @@ import { verifyToken } from "../utils/token";
 import { ServerContext } from "../index";
 
 const hasUser: ShieldRule = rule()(
-  async (parent, { data }, { prisma }, info) => {
+  async (parent, { data }, { prisma }: ServerContext, info) => {
     const userExists = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -69,6 +69,7 @@ export const permisions = shield<any, ServerContext>(
   {
     Mutation: {
       createUser: hasUser,
+      createAdmin: hasUser,
       verifyUser: isLoggedin,
       updateUser: isLoggedin,
       deactivateUser: isLoggedin,

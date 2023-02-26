@@ -60,7 +60,25 @@ describe("User Mutations", () => {
     expect(data?.loginUser.user.userName).toBe("Test");
   });
 
-  it("should not do login when give a wrong credential", async () => {
+  it("should not do login when give a wrong email", async () => {
+    const client = getClient();
+
+    try {
+      await client.mutate<LoginUserMutation, LoginUserMutationVariables>({
+        mutation: LoginUserDocument,
+        variables: {
+          data: {
+            email: "xcdcr@email.com",
+            password: userForTest.raw_password,
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Email ou senha inválida");
+    }
+  });
+
+  it("should not do login when give a wrong password", async () => {
     const client = getClient();
 
     try {
@@ -101,6 +119,56 @@ describe("User Mutations", () => {
     expect(data?.createUser.user.userName).toBe("Test2");
   });
 
+  it("should not create one user when passwords do not match", async () => {
+    const client = getClient();
+
+    try {
+      const { data } = await client.mutate<
+        CreateUserMutation,
+        CreateUserMutationVariables
+      >({
+        mutation: CreateUserDocument,
+        variables: {
+          data: {
+            email: "test2@test.com",
+            firstName: "Test2",
+            lastName: "Test2",
+            userName: "Test2",
+            password: userForTest.raw_password,
+            passwordConfirm: `${userForTest.raw_password}222`,
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("As senhas não coincidem");
+    }
+  });
+
+  it("should not create one user when email is already in use", async () => {
+    const client = getClient();
+
+    try {
+      const { data } = await client.mutate<
+        CreateUserMutation,
+        CreateUserMutationVariables
+      >({
+        mutation: CreateUserDocument,
+        variables: {
+          data: {
+            email: userForTest.user!.email,
+            firstName: "Test2",
+            lastName: "Test2",
+            userName: "Test2",
+            password: userForTest.raw_password,
+            passwordConfirm: userForTest.raw_password,
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Este email já esta em uso");
+    }
+  });
+
   it("should create one admin", async () => {
     const client = getClient(userForTest.token);
 
@@ -124,6 +192,56 @@ describe("User Mutations", () => {
     expect(data!.createAdmin.user.userName).toBe("Admin-test");
   });
 
+  it("should not create one admin when passwords do not match", async () => {
+    const client = getClient(userForTest.token);
+
+    try {
+      const { data } = await client.mutate<
+        CreateAdminMutation,
+        CreateAdminMutationVariables
+      >({
+        mutation: CreateAdminDocument,
+        variables: {
+          data: {
+            email: "admin@admin.com",
+            firstName: "Admin-test",
+            lastName: "Admin-test",
+            userName: "Admin-test",
+            password: userForTest.raw_password,
+            passwordConfirm: userForTest.raw_password + "3333",
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("As senhas não coincidem");
+    }
+  });
+
+  it("should not create one admin when email is already in use", async () => {
+    const client = getClient(userForTest.token);
+
+    try {
+      const { data } = await client.mutate<
+        CreateAdminMutation,
+        CreateAdminMutationVariables
+      >({
+        mutation: CreateAdminDocument,
+        variables: {
+          data: {
+            email: userForTest.user!.email,
+            firstName: "Admin-test",
+            lastName: "Admin-test",
+            userName: "Admin-test",
+            password: userForTest.raw_password,
+            passwordConfirm: userForTest.raw_password,
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Este email já esta em uso");
+    }
+  });
+
   it("should deactivate one user", async () => {
     const client = getClient(userForTest.token);
 
@@ -135,6 +253,36 @@ describe("User Mutations", () => {
     });
 
     expect(data!.deactivateUser).toBe("Usuário Desativado");
+  });
+
+  it("should not deactivate one user when there is no header", async () => {
+    const client = getClient();
+
+    try {
+      const { data } = await client.mutate<
+        DeactivateUserMutation,
+        DeactivateUserMutationVariables
+      >({
+        mutation: DeactivateUserDocument,
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Você não esta logado");
+    }
+  });
+
+  it("should not deactivate one user when there is an invalid header", async () => {
+    const client = getClient("xxxxxxxxxxx");
+
+    try {
+      const { data } = await client.mutate<
+        DeactivateUserMutation,
+        DeactivateUserMutationVariables
+      >({
+        mutation: DeactivateUserDocument,
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Token inválido");
+    }
   });
 
   it("should update user", async () => {

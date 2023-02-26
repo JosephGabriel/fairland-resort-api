@@ -1,6 +1,7 @@
+import { GraphQLError } from "graphql";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-interface jsonwebtoken extends JwtPayload {
+interface IJsonWebToken extends JwtPayload {
   id: string;
 }
 
@@ -15,11 +16,21 @@ export const signUpToken = async (payload: string) => {
 export const verifyToken = async (header: string) => {
   const payload = header.replace("Bearer ", "");
 
-  const token = await jwt.verify(payload, process.env.JWT_SECRET);
+  return new Promise<IJsonWebToken>((res, rej) => {
+    jwt.verify(payload, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        switch (err.message) {
+          case "jwt expired":
+            return rej(
+              new GraphQLError("Token expirado, faça login novamente")
+            );
 
-  if (typeof token !== "string") {
-    return token;
-  }
+          default:
+            return rej(new GraphQLError("Token inválido"));
+        }
+      }
 
-  return null;
+      res(decoded as IJsonWebToken);
+    });
+  });
 };

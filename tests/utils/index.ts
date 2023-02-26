@@ -13,16 +13,24 @@ interface userForTest {
 }
 
 export const getClient = (authHeader?: string) =>
-  new ApolloClient({
-    link: new HttpLink({
-      headers: {
-        authorization: `Bearer ${authHeader}`,
-      },
-      uri: `http://localhost:${process.env.PORT}/graphql`,
-      fetch,
-    }),
-    cache: new InMemoryCache(),
-  });
+  authHeader
+    ? new ApolloClient({
+        link: new HttpLink({
+          headers: {
+            authorization: `Bearer ${authHeader}`,
+          },
+          uri: `http://localhost:${process.env.PORT}/graphql`,
+          fetch,
+        }),
+        cache: new InMemoryCache(),
+      })
+    : new ApolloClient({
+        link: new HttpLink({
+          uri: `http://localhost:${process.env.PORT}/graphql`,
+          fetch,
+        }),
+        cache: new InMemoryCache(),
+      });
 
 export let userForTest: userForTest = {
   user: null,
