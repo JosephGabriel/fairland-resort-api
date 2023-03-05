@@ -11,7 +11,7 @@ services:
         POSTGRES_USER: venususer
         POSTGRES_DB: venusdb
         POSTGRES_PASSWORD: venuspassword
-        
+
   server:
     build: .
     container_name: venus_node_server

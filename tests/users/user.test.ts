@@ -306,6 +306,42 @@ describe("User Mutations", () => {
     expect(data!.updateUser.user.lastName).toBe(userForTest.user!.lastName);
   });
 
+  it("should not update user when there is an invalid header", async () => {
+    const client = getClient("xxxxxxxx");
+
+    try {
+      await client.mutate<UpdateUserMutation, UpdateUserMutationVariables>({
+        mutation: UpdateUserDocument,
+        variables: {
+          data: {
+            firstName: "Updated",
+            userName: "User",
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Token inválido");
+    }
+  });
+
+  it("should not update user when there is no header", async () => {
+    const client = getClient();
+
+    try {
+      await client.mutate<UpdateUserMutation, UpdateUserMutationVariables>({
+        mutation: UpdateUserDocument,
+        variables: {
+          data: {
+            firstName: "Updated",
+            userName: "User",
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("Você não esta logado");
+    }
+  });
+
   it("should update user password", async () => {
     const client = getClient(userForTest.token);
 
@@ -329,7 +365,28 @@ describe("User Mutations", () => {
     expect(decodedPassword).toBe(true);
   });
 
-  it("should reject to update user password", async () => {
+  it("should not update user password when passwords dont match", async () => {
+    const client = getClient(userForTest.token);
+
+    try {
+      const { data } = await client.mutate<
+        UpdateUserPasswordMutation,
+        UpdateUserPasswordMutationVariables
+      >({
+        mutation: UpdateUserPasswordDocument,
+        variables: {
+          data: {
+            password: "Testing954!",
+            passwordConfirm: "Testing95!",
+          },
+        },
+      });
+    } catch (error) {
+      expect(error.graphQLErrors[0].message).toBe("As senhas não coincidem");
+    }
+  });
+
+  it("should reject to update user password when it contains password", async () => {
     const client = getClient(userForTest.token);
 
     await expect(
