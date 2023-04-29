@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server",
     "build": "tsc --build",
-    "prestart": "npx prisma migrate deploy",
+    "prestart": "npx prisma migrate deploy && npx prisma db push",
     "dev": "nodemon src/server --ext graphql,ts",
     "test": "npx jest ----runInBand --watchAll",
     "generate": "graphql-codegen --config codegen.yml"
