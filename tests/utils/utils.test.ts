@@ -18,6 +18,8 @@ describe("Utils Functions", () => {
 
     const decodedToken = await verifyToken(`Bearer ${token}`);
 
+    console.log(decodedToken);
+
     expect(decodedToken.id).toBe("TestingToken");
   });
 });

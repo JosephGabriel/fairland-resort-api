@@ -7,9 +7,8 @@
     "start": "node dist/server",
     "build": "tsc --build",
     "prestart": "npx prisma migrate deploy",
-    "dev": "NODE_ENV='development' nodemon src/server --ext graphql,ts",
+    "dev": "nodemon src/server --ext graphql,ts",
     "test": "npx jest ----runInBand --watchAll",
-    "database": "docker compose -f docker-compose.db.yml up -d",
     "generate": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],

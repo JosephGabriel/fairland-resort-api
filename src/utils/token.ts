@@ -5,7 +5,7 @@ interface IJsonWebToken extends JwtPayload {
   id: string;
 }
 
-export const signUpToken = async (payload: string) => {
+export const signUpToken = async (payload: string): Promise<string> => {
   const token = await jwt.sign({ id: payload }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
@@ -13,7 +13,7 @@ export const signUpToken = async (payload: string) => {
   return token;
 };
 
-export const verifyToken = async (header: string) => {
+export const verifyToken = async (header: string): Promise<IJsonWebToken> => {
   const payload = header.replace("Bearer ", "");
 
   return new Promise<IJsonWebToken>((res, rej) => {
