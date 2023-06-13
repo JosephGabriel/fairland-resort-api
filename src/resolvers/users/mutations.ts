@@ -1,21 +1,11 @@
 import { GraphQLError } from "graphql";
 
-import { MutationResolvers } from "../../generated/graphql";
+import { Mutations } from "./types";
 
 import { hashPassword, verifyPassword } from "../../utils/password";
 import { signUpToken } from "../../utils/token";
 
-interface Resolvers {
-  loginUser: MutationResolvers["loginUser"];
-  createUser: MutationResolvers["createUser"];
-  createAdmin: MutationResolvers["createAdmin"];
-  deactivateUser: MutationResolvers["deactivateUser"];
-  updateUser: MutationResolvers["updateUser"];
-  updateUserPassword: MutationResolvers["updateUserPassword"];
-  verifyUser: MutationResolvers["verifyUser"];
-}
-
-export const UserMutations: Resolvers = {
+export const UserMutations: Mutations = {
   async loginUser(parent, { data }, { prisma }, info) {
     const user = await prisma.user.findUnique({
       where: {

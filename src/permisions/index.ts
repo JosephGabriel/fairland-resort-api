@@ -74,13 +74,15 @@ export const permisions = shield<any, ServerContext>(
       updateUser: isLoggedin,
       deactivateUser: isLoggedin,
       updateUserPassword: isLoggedin,
+      createBooking: isLoggedin,
+      deleteBooking: isLoggedin,
       createHotel: chain(isLoggedin, isAdmin),
       updateHotel: chain(isLoggedin, isAdmin),
       deleteHotel: chain(isLoggedin, isAdmin),
     },
   },
   {
-    allowExternalErrors: true,
-    debug: true,
+    allowExternalErrors: process.env.NODE_ENV !== "production",
+    debug: process.env.NODE_ENV !== "production",
   }
 );

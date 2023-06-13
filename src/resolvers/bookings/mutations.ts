@@ -1,12 +1,8 @@
 import { GraphQLError } from "graphql";
 
-import { MutationResolvers } from "../../generated/graphql";
+import { Mutations } from "./types";
 
-interface Resolvers {
-  createBooking: MutationResolvers["createBooking"];
-}
-
-export const BookingMutations: Resolvers = {
+export const BookingMutations: Mutations = {
   async createBooking(parent, { data }, { prisma, user }, info) {
     const hasRoom = await prisma.room.findUnique({
       where: {
@@ -21,8 +17,9 @@ export const BookingMutations: Resolvers = {
     const booking = await prisma.booking.create({
       data: {
         ...data,
-        paid: false,
-        bookingDate: Date.now().toString(),
+        paid: true,
+        dateIn: new Date(data?.dateIn),
+        dateOut: new Date(data?.dateOut),
         room: {
           connect: {
             id: data?.room,
@@ -37,5 +34,25 @@ export const BookingMutations: Resolvers = {
     });
 
     return booking;
+  },
+
+  async deleteBooking(parent, { id }, { prisma, user }, info) {
+    const booking = await prisma.booking.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!booking || booking.userId !== user.id) {
+      throw new GraphQLError("Reserva não encontrada");
+    }
+
+    await prisma.booking.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return "Reserva cancelada com sucesso";
   },
 };

@@ -1,7 +1,7 @@
-import { GraphQLScalarType, GraphQLError, Kind } from "graphql";
+import { GraphQLScalarType, GraphQLError, Kind, ValueNode } from "graphql";
 import validator from "validator";
 
-const validate = (value) => {
+const validate = (value: string) => {
   if (!validator.isLength(value, { min: 8 })) {
     throw new GraphQLError(
       `The password should be at lest 8 characters, but got: ${value.length}`
@@ -21,7 +21,7 @@ const validate = (value) => {
   return value;
 };
 
-const parseLiteral = (ast) => {
+const parseLiteral = (ast: ValueNode) => {
   if (ast.kind !== Kind.STRING) {
     throw new GraphQLError(`Can only parse strings but got ${ast.kind}`);
   }
@@ -31,7 +31,8 @@ const parseLiteral = (ast) => {
 
 export const GraphQLPassword = new GraphQLScalarType({
   name: "Password",
-  description: "A valid password",
+  description:
+    "A valid password should have at lest 8 characters, one special character, one capital letter, one lowercase letter, one number and should not contain the word password",
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,

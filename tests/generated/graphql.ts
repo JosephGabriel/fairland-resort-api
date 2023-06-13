@@ -50,7 +50,6 @@ export type CreateBookingInput = {
   dateOut: Scalars['String'];
   price: Scalars['Float'];
   room: Scalars['ID'];
-  user: Scalars['ID'];
 };
 
 export type CreateHotelInput = {
@@ -140,6 +139,8 @@ export type Mutation = {
   createUser: AuthPayload;
   /** Usada para que o próprio usuário possa desativar a conta, mas não apagá-la */
   deactivateUser: Scalars['String'];
+  /** Usada para cancelar uma reserva */
+  deleteBooking: Scalars['String'];
   /** Usada para apagar um hotel */
   deleteHotel: Scalars['String'];
   /** Usada para deletar um quarto de hotel */
@@ -165,7 +166,7 @@ export type MutationCreateAdminArgs = {
 
 
 export type MutationCreateBookingArgs = {
-  data?: InputMaybe<CreateBookingInput>;
+  data: CreateBookingInput;
 };
 
 
@@ -181,6 +182,11 @@ export type MutationCreateRoomArgs = {
 
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
+};
+
+
+export type MutationDeleteBookingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -222,6 +228,10 @@ export type MutationUpdateUserPasswordArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Usada para buscar uma reserva pelo id */
+  booking: Array<Booking>;
+  /** Usada para buscar reservas */
+  bookings: Array<Booking>;
   /** Usada para buscar um hotel pelo id */
   hotel: Hotel;
   /** Usada para buscar um hotel pelo slug */
@@ -236,6 +246,11 @@ export type Query = {
   rooms?: Maybe<Array<Room>>;
   /** Usada para buscar um hotel pelo id do hotel */
   roomsByHotel?: Maybe<Array<Room>>;
+};
+
+
+export type QueryBookingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -381,6 +396,20 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type CreateBookingMutationVariables = Exact<{
+  data: CreateBookingInput;
+}>;
+
+
+export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'Booking', id: string, user: { __typename?: 'User', id: string }, room: { __typename?: 'Room', id: string } } };
+
+export type DeleteBookingMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteBookingMutation = { __typename?: 'Mutation', deleteBooking: string };
+
 export type CreateAdminMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
@@ -427,6 +456,24 @@ export type VerifyUserMutationVariables = Exact<{ [key: string]: never; }>;
 export type VerifyUserMutation = { __typename?: 'Mutation', verifyUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', verified: boolean } } };
 
 
+export const CreateBookingDocument = gql`
+    mutation CreateBooking($data: CreateBookingInput!) {
+  createBooking(data: $data) {
+    id
+    user {
+      id
+    }
+    room {
+      id
+    }
+  }
+}
+    `;
+export const DeleteBookingDocument = gql`
+    mutation DeleteBooking($id: ID!) {
+  deleteBooking(id: $id)
+}
+    `;
 export const CreateAdminDocument = gql`
     mutation CreateAdmin($data: CreateUserInput!) {
   createAdmin(data: $data) {
@@ -491,6 +538,12 @@ export const VerifyUserDocument = gql`
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    CreateBooking(variables: CreateBookingMutationVariables, options?: C): Promise<CreateBookingMutation> {
+      return requester<CreateBookingMutation, CreateBookingMutationVariables>(CreateBookingDocument, variables, options);
+    },
+    DeleteBooking(variables: DeleteBookingMutationVariables, options?: C): Promise<DeleteBookingMutation> {
+      return requester<DeleteBookingMutation, DeleteBookingMutationVariables>(DeleteBookingDocument, variables, options);
+    },
     CreateAdmin(variables: CreateAdminMutationVariables, options?: C): Promise<CreateAdminMutation> {
       return requester<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument, variables, options);
     },

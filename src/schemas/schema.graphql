@@ -27,6 +27,13 @@ type Query {
 
   "Usada para buscar um hotel pelo id do hotel"
   roomsByHotel(hotel: ID!): [Room!]
+
+  ########## Reservas ################
+  "Usada para buscar uma reserva pelo id"
+  booking(id: ID!): [Booking!]!
+
+  "Usada para buscar reservas"
+  bookings: [Booking!]!
 }
 
 type Mutation {
@@ -72,7 +79,10 @@ type Mutation {
   "Usada para deletar um quarto de hotel"
   deleteRoom(id: ID!): String!
 
-  ########## Quartos ################
+  ########## Reservas ################
   "Usada para fazer uma reserva"
-  createBooking(data: CreateBookingInput): Booking!
+  createBooking(data: CreateBookingInput!): Booking!
+
+  "Usada para cancelar uma reserva"
+  deleteBooking(id: ID!): String!
 }

@@ -25,7 +25,6 @@ type Booking {
 }
 
 input CreateBookingInput {
-  user: ID!
   room: ID!
   price: Float!
   dateIn: String!

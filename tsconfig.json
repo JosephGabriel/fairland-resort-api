@@ -5,8 +5,7 @@
     "moduleResolution": "Node",
     "outDir": "./dist",
     "rootDir": "./src",
-    "lib": ["ESNext"],
-    "strict": false,
+    "lib": ["ES2022"],
     "esModuleInterop": true
   },
   "include": ["src/**/*"],

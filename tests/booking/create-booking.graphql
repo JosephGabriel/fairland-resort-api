@@ -1,0 +1,11 @@
+mutation CreateBooking($data: CreateBookingInput!) {
+  createBooking(data: $data) {
+    id
+    user {
+      id
+    }
+    room {
+      id
+    }
+  }
+}

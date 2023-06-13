@@ -1,7 +1,7 @@
-import { GraphQLScalarType, Kind, GraphQLError } from "graphql";
+import { GraphQLScalarType, Kind, GraphQLError, ValueNode } from "graphql";
 import validator from "validator";
 
-const validate = (value) => {
+const validate = (value: string) => {
   if (!validator.isPostalCode(value, "any")) {
     throw new GraphQLError(
       `Should receive a valid postal code but got: ${value}`
@@ -11,7 +11,7 @@ const validate = (value) => {
   return value;
 };
 
-const parseLiteral = (ast) => {
+const parseLiteral = (ast: ValueNode) => {
   if (ast.kind !== Kind.STRING) {
     throw new GraphQLError(`Expected a string but got: ${ast.kind}`);
   }
@@ -21,7 +21,7 @@ const parseLiteral = (ast) => {
 
 export const GraphQLPostalCode = new GraphQLScalarType({
   name: "PostalCode",
-  description: "A valid postal code",
+  description: "A valid brazilian postal code",
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,

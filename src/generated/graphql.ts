@@ -53,7 +53,6 @@ export type CreateBookingInput = {
   dateOut: Scalars['String'];
   price: Scalars['Float'];
   room: Scalars['ID'];
-  user: Scalars['ID'];
 };
 
 export type CreateHotelInput = {
@@ -143,6 +142,8 @@ export type Mutation = {
   createUser: AuthPayload;
   /** Usada para que o próprio usuário possa desativar a conta, mas não apagá-la */
   deactivateUser: Scalars['String'];
+  /** Usada para cancelar uma reserva */
+  deleteBooking: Scalars['String'];
   /** Usada para apagar um hotel */
   deleteHotel: Scalars['String'];
   /** Usada para deletar um quarto de hotel */
@@ -168,7 +169,7 @@ export type MutationCreateAdminArgs = {
 
 
 export type MutationCreateBookingArgs = {
-  data?: InputMaybe<CreateBookingInput>;
+  data: CreateBookingInput;
 };
 
 
@@ -184,6 +185,11 @@ export type MutationCreateRoomArgs = {
 
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
+};
+
+
+export type MutationDeleteBookingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -225,6 +231,10 @@ export type MutationUpdateUserPasswordArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Usada para buscar uma reserva pelo id */
+  booking: Array<Booking>;
+  /** Usada para buscar reservas */
+  bookings: Array<Booking>;
   /** Usada para buscar um hotel pelo id */
   hotel: Hotel;
   /** Usada para buscar um hotel pelo slug */
@@ -239,6 +249,11 @@ export type Query = {
   rooms?: Maybe<Array<Room>>;
   /** Usada para buscar um hotel pelo id do hotel */
   roomsByHotel?: Maybe<Array<Room>>;
+};
+
+
+export type QueryBookingArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -568,11 +583,12 @@ export interface LongitudeScalarConfig extends GraphQLScalarTypeConfig<Resolvers
 
 export type MutationResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createAdmin?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateAdminArgs, 'data'>>;
-  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, Partial<MutationCreateBookingArgs>>;
+  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'data'>>;
   createHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationCreateHotelArgs, 'data'>>;
   createRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'data'>>;
   createUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'data'>>;
   deactivateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  deleteBooking?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteBookingArgs, 'id'>>;
   deleteHotel?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteHotelArgs, 'id'>>;
   deleteRoom?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'id'>>;
   loginUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'data'>>;
@@ -592,6 +608,8 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 }
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  booking?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingArgs, 'id'>>;
+  bookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
   hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
   hotels?: Resolver<Maybe<Array<ResolversTypes['Hotel']>>, ParentType, ContextType>;

@@ -1,15 +1,9 @@
 import { GraphQLError } from "graphql";
 import slugify from "slugify";
 
-import { MutationResolvers } from "../../generated/graphql";
+import { Mutations } from "./types";
 
-interface Resolvers {
-  createHotel: MutationResolvers["createHotel"];
-  updateHotel: MutationResolvers["updateHotel"];
-  deleteHotel: MutationResolvers["deleteHotel"];
-}
-
-export const HotelMutations: Resolvers = {
+export const HotelMutations: Mutations = {
   async createHotel(parent, { data }, { prisma, user }, info) {
     const hotel = await prisma.hotel.create({
       data: {
@@ -20,6 +14,9 @@ export const HotelMutations: Resolvers = {
             id: user.id,
           },
         },
+      },
+      include: {
+        admin: true,
       },
     });
 

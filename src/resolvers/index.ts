@@ -1,6 +1,3 @@
-import { Query } from "./Query";
-import { Mutation } from "./Mutation";
-
 import { GraphQLEmailAddress } from "../scalars/email";
 import { GraphQLLatitude } from "../scalars/latitude";
 import { GraphQLLongitude } from "../scalars/longitude";
@@ -9,12 +6,31 @@ import { GraphQLPostalCode } from "../scalars/postal";
 
 import { Resolvers } from "../generated/graphql";
 
+import { UserMutations } from "./users/mutations";
+import { HotelMutations } from "./hotels/mutations";
+import { BookingMutations } from "./bookings/mutations";
+
+import { HotelQueries } from "./hotels/query";
+import { RoomQueries } from "./rooms/query";
+import { BookingQueries } from "./bookings/query";
+
+import { Booking } from "./bookings/entity";
+
 export const resolvers: Resolvers = {
-  Query,
-  Mutation,
+  Query: {
+    ...HotelQueries,
+    ...RoomQueries,
+    ...BookingQueries,
+  },
+  Mutation: {
+    ...UserMutations,
+    ...HotelMutations,
+    ...BookingMutations,
+  },
   Latitude: GraphQLLatitude,
   Longitude: GraphQLLongitude,
   EmailAddress: GraphQLEmailAddress,
   Password: GraphQLPassword,
   PostalCode: GraphQLPostalCode,
+  Booking: Booking,
 };

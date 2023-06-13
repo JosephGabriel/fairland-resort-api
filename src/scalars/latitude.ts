@@ -1,7 +1,7 @@
-import { GraphQLScalarType, Kind, GraphQLError } from "graphql";
+import { GraphQLScalarType, Kind, GraphQLError, ValueNode } from "graphql";
 import { latitude } from "is-valid-coordinates";
 
-const validate = (value) => {
+const validate = (value: number) => {
   if (!latitude(value)) {
     throw new GraphQLError(`Should receive a valid latitude but got: ${value}`);
   }
@@ -9,7 +9,7 @@ const validate = (value) => {
   return value;
 };
 
-const parseLiteral = (ast) => {
+const parseLiteral = (ast: ValueNode) => {
   if (ast.kind !== Kind.FLOAT) {
     throw new GraphQLError(`Expected a float but got: ${ast.kind}`);
   }
@@ -19,7 +19,7 @@ const parseLiteral = (ast) => {
 
 export const GraphQLLatitude = new GraphQLScalarType({
   name: "Latitude",
-  description: "A valid latitude",
+  description: "A valid latitude coordinate",
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,
