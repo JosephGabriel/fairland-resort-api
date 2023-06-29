@@ -229,8 +229,8 @@ export type MutationUpdateUserPasswordArgs = {
 export type Query = {
   __typename?: 'Query';
   /** Usada para buscar uma reserva pelo id */
-  booking: Array<Booking>;
-  /** Usada para buscar reservas */
+  booking: Booking;
+  /** Usada para buscar reservas de um usuário */
   bookings: Array<Booking>;
   /** Usada para buscar um hotel pelo id */
   hotel: Hotel;
@@ -396,6 +396,18 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type BookingByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type BookingByIdQuery = { __typename?: 'Query', booking: { __typename?: 'Booking', id: string } };
+
+export type BookingsByUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BookingsByUserQuery = { __typename?: 'Query', bookings: Array<{ __typename?: 'Booking', id: string }> };
+
 export type CreateBookingMutationVariables = Exact<{
   data: CreateBookingInput;
 }>;
@@ -456,6 +468,20 @@ export type VerifyUserMutationVariables = Exact<{ [key: string]: never; }>;
 export type VerifyUserMutation = { __typename?: 'Mutation', verifyUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', verified: boolean } } };
 
 
+export const BookingByIdDocument = gql`
+    query BookingById($id: ID!) {
+  booking(id: $id) {
+    id
+  }
+}
+    `;
+export const BookingsByUserDocument = gql`
+    query BookingsByUser {
+  bookings {
+    id
+  }
+}
+    `;
 export const CreateBookingDocument = gql`
     mutation CreateBooking($data: CreateBookingInput!) {
   createBooking(data: $data) {
@@ -538,6 +564,12 @@ export const VerifyUserDocument = gql`
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    BookingById(variables: BookingByIdQueryVariables, options?: C): Promise<BookingByIdQuery> {
+      return requester<BookingByIdQuery, BookingByIdQueryVariables>(BookingByIdDocument, variables, options);
+    },
+    BookingsByUser(variables?: BookingsByUserQueryVariables, options?: C): Promise<BookingsByUserQuery> {
+      return requester<BookingsByUserQuery, BookingsByUserQueryVariables>(BookingsByUserDocument, variables, options);
+    },
     CreateBooking(variables: CreateBookingMutationVariables, options?: C): Promise<CreateBookingMutation> {
       return requester<CreateBookingMutation, CreateBookingMutationVariables>(CreateBookingDocument, variables, options);
     },

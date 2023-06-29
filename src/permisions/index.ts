@@ -80,6 +80,10 @@ export const permisions = shield<any, ServerContext>(
       updateHotel: chain(isLoggedin, isAdmin),
       deleteHotel: chain(isLoggedin, isAdmin),
     },
+    Query: {
+      booking: isLoggedin,
+      bookings: isLoggedin,
+    },
   },
   {
     allowExternalErrors: process.env.NODE_ENV !== "production",

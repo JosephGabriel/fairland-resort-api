@@ -14,8 +14,6 @@ import { HotelQueries } from "./hotels/query";
 import { RoomQueries } from "./rooms/query";
 import { BookingQueries } from "./bookings/query";
 
-import { Booking } from "./bookings/entity";
-
 export const resolvers: Resolvers = {
   Query: {
     ...HotelQueries,
@@ -32,5 +30,4 @@ export const resolvers: Resolvers = {
   EmailAddress: GraphQLEmailAddress,
   Password: GraphQLPassword,
   PostalCode: GraphQLPostalCode,
-  Booking: Booking,
 };

@@ -6,5 +6,6 @@ export interface Mutations {
 }
 
 export interface Queries {
+  booking: QueryResolvers["booking"];
   bookings: QueryResolvers["bookings"];
 }

@@ -1,0 +1,5 @@
+query BookingById($id: ID!) {
+  booking(id: $id) {
+    id
+  }
+}

@@ -31,6 +31,10 @@ export const BookingMutations: Mutations = {
           },
         },
       },
+      include: {
+        room: true,
+        user: true,
+      },
     });
 
     return booking;

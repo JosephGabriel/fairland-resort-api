@@ -232,8 +232,8 @@ export type MutationUpdateUserPasswordArgs = {
 export type Query = {
   __typename?: 'Query';
   /** Usada para buscar uma reserva pelo id */
-  booking: Array<Booking>;
-  /** Usada para buscar reservas */
+  booking: Booking;
+  /** Usada para buscar reservas de um usuário */
   bookings: Array<Booking>;
   /** Usada para buscar um hotel pelo id */
   hotel: Hotel;
@@ -608,7 +608,7 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 }
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  booking?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingArgs, 'id'>>;
+  booking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<QueryBookingArgs, 'id'>>;
   bookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
   hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
