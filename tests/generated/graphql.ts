@@ -264,11 +264,6 @@ export type QueryHotelBySlugArgs = {
 };
 
 
-export type QueryHotelsByAdminArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryRoomArgs = {
   id: Scalars['ID'];
 };
@@ -422,6 +417,47 @@ export type DeleteBookingMutationVariables = Exact<{
 
 export type DeleteBookingMutation = { __typename?: 'Mutation', deleteBooking: string };
 
+export type CreateHotelMutationVariables = Exact<{
+  data: CreateHotelInput;
+}>;
+
+
+export type CreateHotelMutation = { __typename?: 'Mutation', createHotel: { __typename?: 'Hotel', id: string, name: string } };
+
+export type DeleteHotelMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteHotelMutation = { __typename?: 'Mutation', deleteHotel: string };
+
+export type GetHotelByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetHotelByIdQuery = { __typename?: 'Query', hotel: { __typename?: 'Hotel', id: string } };
+
+export type GetHotelBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetHotelBySlugQuery = { __typename?: 'Query', hotelBySlug: { __typename?: 'Hotel', slug: string } };
+
+export type GetHotelsByAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetHotelsByAdminQuery = { __typename?: 'Query', hotelsByAdmin?: Array<{ __typename?: 'Hotel', id: string }> | null };
+
+export type UpdateHotelMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: UpdateHotelInput;
+}>;
+
+
+export type UpdateHotelMutation = { __typename?: 'Mutation', updateHotel: { __typename?: 'Hotel', id: string, name: string } };
+
 export type CreateAdminMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
@@ -500,6 +536,48 @@ export const DeleteBookingDocument = gql`
   deleteBooking(id: $id)
 }
     `;
+export const CreateHotelDocument = gql`
+    mutation CreateHotel($data: CreateHotelInput!) {
+  createHotel(data: $data) {
+    id
+    name
+  }
+}
+    `;
+export const DeleteHotelDocument = gql`
+    mutation DeleteHotel($id: ID!) {
+  deleteHotel(id: $id)
+}
+    `;
+export const GetHotelByIdDocument = gql`
+    query GetHotelById($id: ID!) {
+  hotel(id: $id) {
+    id
+  }
+}
+    `;
+export const GetHotelBySlugDocument = gql`
+    query GetHotelBySlug($slug: String!) {
+  hotelBySlug(slug: $slug) {
+    slug
+  }
+}
+    `;
+export const GetHotelsByAdminDocument = gql`
+    query GetHotelsByAdmin {
+  hotelsByAdmin {
+    id
+  }
+}
+    `;
+export const UpdateHotelDocument = gql`
+    mutation UpdateHotel($id: ID!, $data: UpdateHotelInput!) {
+  updateHotel(id: $id, data: $data) {
+    id
+    name
+  }
+}
+    `;
 export const CreateAdminDocument = gql`
     mutation CreateAdmin($data: CreateUserInput!) {
   createAdmin(data: $data) {
@@ -575,6 +653,24 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteBooking(variables: DeleteBookingMutationVariables, options?: C): Promise<DeleteBookingMutation> {
       return requester<DeleteBookingMutation, DeleteBookingMutationVariables>(DeleteBookingDocument, variables, options);
+    },
+    CreateHotel(variables: CreateHotelMutationVariables, options?: C): Promise<CreateHotelMutation> {
+      return requester<CreateHotelMutation, CreateHotelMutationVariables>(CreateHotelDocument, variables, options);
+    },
+    DeleteHotel(variables: DeleteHotelMutationVariables, options?: C): Promise<DeleteHotelMutation> {
+      return requester<DeleteHotelMutation, DeleteHotelMutationVariables>(DeleteHotelDocument, variables, options);
+    },
+    GetHotelById(variables: GetHotelByIdQueryVariables, options?: C): Promise<GetHotelByIdQuery> {
+      return requester<GetHotelByIdQuery, GetHotelByIdQueryVariables>(GetHotelByIdDocument, variables, options);
+    },
+    GetHotelBySlug(variables: GetHotelBySlugQueryVariables, options?: C): Promise<GetHotelBySlugQuery> {
+      return requester<GetHotelBySlugQuery, GetHotelBySlugQueryVariables>(GetHotelBySlugDocument, variables, options);
+    },
+    GetHotelsByAdmin(variables?: GetHotelsByAdminQueryVariables, options?: C): Promise<GetHotelsByAdminQuery> {
+      return requester<GetHotelsByAdminQuery, GetHotelsByAdminQueryVariables>(GetHotelsByAdminDocument, variables, options);
+    },
+    UpdateHotel(variables: UpdateHotelMutationVariables, options?: C): Promise<UpdateHotelMutation> {
+      return requester<UpdateHotelMutation, UpdateHotelMutationVariables>(UpdateHotelDocument, variables, options);
     },
     CreateAdmin(variables: CreateAdminMutationVariables, options?: C): Promise<CreateAdminMutation> {
       return requester<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument, variables, options);

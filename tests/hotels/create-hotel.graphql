@@ -1,0 +1,6 @@
+mutation CreateHotel($data: CreateHotelInput!) {
+  createHotel(data: $data) {
+    id
+    name
+  }
+}

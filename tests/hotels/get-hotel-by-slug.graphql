@@ -1,0 +1,5 @@
+query GetHotelBySlug($slug: String!) {
+  hotelBySlug(slug: $slug) {
+    slug
+  }
+}

@@ -267,11 +267,6 @@ export type QueryHotelBySlugArgs = {
 };
 
 
-export type QueryHotelsByAdminArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryRoomArgs = {
   id: Scalars['ID'];
 };
@@ -613,7 +608,7 @@ export type QueryResolvers<ContextType = ServerContext, ParentType extends Resol
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
   hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
   hotels?: Resolver<Maybe<Array<ResolversTypes['Hotel']>>, ParentType, ContextType>;
-  hotelsByAdmin?: Resolver<Maybe<Array<ResolversTypes['Hotel']>>, ParentType, ContextType, RequireFields<QueryHotelsByAdminArgs, 'id'>>;
+  hotelsByAdmin?: Resolver<Maybe<Array<ResolversTypes['Hotel']>>, ParentType, ContextType>;
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryRoomArgs, 'id'>>;
   rooms?: Resolver<Maybe<Array<ResolversTypes['Room']>>, ParentType, ContextType, Partial<QueryRoomsArgs>>;
   roomsByHotel?: Resolver<Maybe<Array<ResolversTypes['Room']>>, ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;

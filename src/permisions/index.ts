@@ -83,6 +83,7 @@ export const permisions = shield<any, ServerContext>(
     Query: {
       booking: isLoggedin,
       bookings: isLoggedin,
+      hotelsByAdmin: chain(isLoggedin, isAdmin),
     },
   },
   {

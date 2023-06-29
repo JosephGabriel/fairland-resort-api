@@ -4,7 +4,12 @@ import { Queries } from "./types";
 
 export const HotelQueries: Queries = {
   async hotel(parent, { id }, { prisma }, info) {
-    const hotel = await prisma.hotel.findUnique({ where: { id } });
+    const hotel = await prisma.hotel.findUnique({
+      where: { id },
+      include: {
+        room: true,
+      },
+    });
 
     if (!hotel) {
       throw new GraphQLError("Hotel inválido");
@@ -19,11 +24,28 @@ export const HotelQueries: Queries = {
     return hotels;
   },
 
-  async hotelsByAdmin(parent, { id }, { prisma }, info) {
+  async hotelBySlug(parent, { slug }, { prisma }, info) {
+    const hotel = await prisma.hotel.findFirst({
+      where: {
+        slug,
+      },
+      include: {
+        room: true,
+      },
+    });
+
+    if (!hotel) {
+      throw new GraphQLError("Hotel inválido");
+    }
+
+    return hotel;
+  },
+
+  async hotelsByAdmin(parent, args, { prisma, user }, info) {
     const hotel = await prisma.hotel.findMany({
       where: {
         admin: {
-          id: id,
+          id: user.id,
         },
       },
     });

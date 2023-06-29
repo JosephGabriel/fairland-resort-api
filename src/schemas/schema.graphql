@@ -13,7 +13,7 @@ type Query {
   hotels: [Hotel!]
 
   "Usada para buscar um hotel pelo slug"
-  hotelsByAdmin(id: ID!): [Hotel!]
+  hotelsByAdmin: [Hotel!]
 
   "Usada para buscar um hotel pelo slug"
   hotelBySlug(slug: String!): Hotel!

@@ -1,4 +1,8 @@
-import { MutationResolvers, QueryResolvers } from "../../generated/graphql";
+import {
+  MutationResolvers,
+  QueryResolvers,
+  HotelResolvers,
+} from "../../generated/graphql";
 
 export interface Mutations {
   createHotel: MutationResolvers["createHotel"];
@@ -9,5 +13,6 @@ export interface Mutations {
 export interface Queries {
   hotel: QueryResolvers["hotel"];
   hotels: QueryResolvers["hotels"];
+  hotelBySlug: QueryResolvers["hotelBySlug"];
   hotelsByAdmin: QueryResolvers["hotelsByAdmin"];
 }

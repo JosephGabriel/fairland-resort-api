@@ -24,6 +24,25 @@ interface roomForTest {
   room: Room | null;
 }
 
+export const hotelInput = {
+  name: "Hotel Example2",
+  summary: "A luxurious hotel with excellent amenities",
+  description:
+    "This hotel offers spacious rooms, a swimming pool, a fitness center, and a restaurant.",
+  thumbnail: "https://example.com/thumbnail.jpg",
+  images: [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg",
+  ],
+  logo: "https://example.com/logo.jpg",
+  latitude: 123.456789,
+  longitude: -98.7654321,
+  address: "123 Main Street",
+  zipCode: "12345",
+  addressNumber: "Apt 101",
+};
+
 export const getClient = (authHeader?: string) =>
   authHeader
     ? new ApolloClient({

@@ -1,0 +1,6 @@
+mutation UpdateHotel($id: ID!, $data: UpdateHotelInput!) {
+  updateHotel(id: $id, data: $data) {
+    id
+    name
+  }
+}
