@@ -1,10 +1,10 @@
-import { GraphQLError } from "graphql";
-import slugify from "slugify";
+import { GraphQLError } from 'graphql';
+import slugify from 'slugify';
 
-import { Mutations } from "./types";
+import { Mutations } from './types';
 
 export const HotelMutations: Mutations = {
-  async createHotel(parent, { data }, { prisma, user }, info) {
+  async createHotel(parent, { data }, { prisma, user }) {
     const hotel = await prisma.hotel.create({
       data: {
         ...data,
@@ -17,19 +17,20 @@ export const HotelMutations: Mutations = {
       },
       include: {
         admin: true,
+        room: true,
       },
     });
 
     return hotel;
   },
 
-  async updateHotel(parent, { id, data }, { user, prisma }, info) {
+  async updateHotel(parent, { id, data }, { prisma }) {
     const hotel = await prisma.hotel.findUnique({
       where: { id },
     });
 
     if (!hotel) {
-      throw new GraphQLError("Este hotel não existe");
+      throw new GraphQLError('Este hotel não existe');
     }
 
     const updatedHotel = await prisma.hotel.update({
@@ -42,19 +43,19 @@ export const HotelMutations: Mutations = {
     return updatedHotel;
   },
 
-  async deleteHotel(parent, { id }, { prisma }, info) {
+  async deleteHotel(parent, { id }, { prisma }) {
     const hotel = await prisma.hotel.findUnique({
       where: { id },
     });
 
     if (!hotel) {
-      throw new GraphQLError("Este hotel não existe");
+      throw new GraphQLError('Este hotel não existe');
     }
 
     await prisma.hotel.delete({
       where: { id },
     });
 
-    return "Hotel apagado com sucesso";
+    return 'Hotel apagado com sucesso';
   },
 };

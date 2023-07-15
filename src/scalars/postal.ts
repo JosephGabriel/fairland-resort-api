@@ -1,8 +1,8 @@
-import { GraphQLScalarType, Kind, GraphQLError, ValueNode } from "graphql";
-import validator from "validator";
+import { GraphQLError, GraphQLScalarType, Kind, ValueNode } from 'graphql';
+import validator from 'validator';
 
 const validate = (value: string) => {
-  if (!validator.isPostalCode(value, "any")) {
+  if (!validator.isPostalCode(value, 'any')) {
     throw new GraphQLError(
       `Should receive a valid postal code but got: ${value}`
     );
@@ -20,8 +20,8 @@ const parseLiteral = (ast: ValueNode) => {
 };
 
 export const GraphQLPostalCode = new GraphQLScalarType({
-  name: "PostalCode",
-  description: "A valid brazilian postal code",
+  name: 'PostalCode',
+  description: 'A valid brazilian postal code',
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,

@@ -1,48 +1,57 @@
-import { createSchema, createYoga, YogaInitialContext } from "graphql-yoga";
-import { applyMiddleware } from "graphql-middleware";
-import { PrismaClient, User } from "@prisma/client";
-import express from "express";
-import cors from "cors";
+import { PrismaClient, User } from '@prisma/client';
+import cors from 'cors';
+import express from 'express';
+import { applyMiddleware } from 'graphql-middleware';
+import { YogaInitialContext, createSchema, createYoga } from 'graphql-yoga';
 
-import { typeDefs } from "./schemas";
-import { resolvers } from "./resolvers";
-import { permisions } from "./permisions";
+import { permisions } from './permisions';
+import { resolvers } from './resolvers';
+import { typeDefs } from './schemas';
 
-import { upload, uploadHotelImages, uploadUserAvatar } from "./utils/upload";
+import {
+	upload,
+	uploadImage,
+	uploadImages,
+	uploadUserAvatar,
+} from './utils/upload';
 
 export const prisma = new PrismaClient();
 
 export interface ServerContext extends YogaInitialContext {
-  prisma: PrismaClient;
-  user: User;
+	prisma: PrismaClient;
+	user: User;
 }
 
 const schema = createSchema({
-  typeDefs,
-  resolvers,
+	typeDefs,
+	resolvers,
 });
 
 export const yoga = createYoga<ServerContext>({
-  schema: applyMiddleware(schema, permisions),
-  context: (context) => ({
-    prisma,
-    ...context,
-  }),
+	schema: applyMiddleware(schema, permisions),
+	context: (context) => ({
+		prisma,
+		...context,
+	}),
 });
 
 export const app = express();
 
 app.use(cors());
 
-app.use(express.static("uploads"));
+app.use(express.static('uploads'));
 
-// @ts-ignore
+// @ts-expect-error ...
 app.use(yoga.graphqlEndpoint, yoga);
 
-app.post("/uploads/avatar", upload.single("avatar"), uploadUserAvatar);
+app.post('/uploads/avatar', upload.single('avatar'), uploadUserAvatar);
 
-app.post(
-  "/uploads/hotel",
-  upload.fields([{ name: "logo" }, { name: "thumbnail" }, { name: "photos" }]),
-  uploadHotelImages
-);
+// app.post(
+// 	'/uploads/hotel',
+// 	upload.fields([{ name: 'logo' }, { name: 'thumbnail' }, { name: 'photos' }]),
+// 	uploadHotelImages
+// );
+
+app.post('/uploads/file', upload.single('file'), uploadImage);
+
+app.post('/uploads/files', upload.fields([{ name: 'files' }]), uploadImages);

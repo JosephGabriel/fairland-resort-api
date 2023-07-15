@@ -1,10 +1,10 @@
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client/core";
-import { Booking, User, Hotel, Room } from "@prisma/client";
-import fetch from "cross-fetch";
-import bcrypt from "bcrypt";
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client/core';
+import { Booking, Hotel, Room, User } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import fetch from 'cross-fetch';
 
-import { prisma } from "../../src/index";
-import { signUpToken } from "../../src/utils/token";
+import { prisma } from '../../src/index';
+import { signUpToken } from '../../src/utils/token';
 
 interface userForTest {
   user: User | null;
@@ -25,22 +25,25 @@ interface roomForTest {
 }
 
 export const hotelInput = {
-  name: "Hotel Example2",
-  summary: "A luxurious hotel with excellent amenities",
+  name: 'Hotel Example2',
+  summary: 'A luxurious hotel with excellent amenities',
   description:
-    "This hotel offers spacious rooms, a swimming pool, a fitness center, and a restaurant.",
-  thumbnail: "https://example.com/thumbnail.jpg",
+    'This hotel offers spacious rooms, a swimming pool, a fitness center, and a restaurant.',
+  thumbnail: 'https://example.com/thumbnail.jpg',
   images: [
-    "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg",
-    "https://example.com/image3.jpg",
+    'https://example.com/image1.jpg',
+    'https://example.com/image2.jpg',
+    'https://example.com/image3.jpg',
   ],
-  logo: "https://example.com/logo.jpg",
+  logo: 'https://example.com/logo.jpg',
   latitude: 123.456789,
   longitude: -98.7654321,
-  address: "123 Main Street",
-  zipCode: "12345",
-  addressNumber: "Apt 101",
+  address: '123 Main Street',
+  zipCode: '12345',
+  addressNumber: 'Apt 101',
+  neighborhood: 'Qualquer',
+  state: 'Qualquer',
+  city: 'Qualquer',
 };
 
 export const getClient = (authHeader?: string) =>
@@ -63,27 +66,27 @@ export const getClient = (authHeader?: string) =>
         cache: new InMemoryCache(),
       });
 
-export let userForTest: userForTest = {
+export const userForTest: userForTest = {
   user: null,
-  token: "",
-  raw_password: "Daredevil95!",
+  token: '',
+  raw_password: 'Daredevil95!',
 };
 
-export let adminForTest: userForTest = {
+export const adminForTest: userForTest = {
   user: null,
-  token: "",
-  raw_password: "Daredevil95!",
+  token: '',
+  raw_password: 'Daredevil95!',
 };
 
-export let hotelForTest: hotelForTest = {
+export const hotelForTest: hotelForTest = {
   hotel: null,
 };
 
-export let roomForTest: roomForTest = {
+export const roomForTest: roomForTest = {
   room: null,
 };
 
-export let bookingForTest: bookingForTest = {
+export const bookingForTest: bookingForTest = {
   booking: null,
 };
 
@@ -98,50 +101,53 @@ export const setupDatabase = async () => {
 
   const user = await prisma.user.create({
     data: {
-      email: "test@test.com",
-      firstName: "Test",
-      lastName: "Test",
-      userName: "Test",
+      email: 'test@test.com',
+      firstName: 'Test',
+      lastName: 'Test',
+      userName: 'Test',
       active: true,
       verified: false,
-      role: "USER",
+      role: 'USER',
       password: passwordHashed,
     },
   });
 
   const admin = await prisma.user.create({
     data: {
-      email: "test3@test.com",
-      firstName: "Test3",
-      lastName: "Test3",
-      userName: "Test3",
+      email: 'test3@test.com',
+      firstName: 'Test3',
+      lastName: 'Test3',
+      userName: 'Test3',
       active: true,
       verified: true,
-      role: "ADMIN",
+      role: 'ADMIN',
       password: passwordHashed,
     },
   });
 
   const hotel = await prisma.hotel.create({
     data: {
-      name: "Hotel Example",
+      name: 'Hotel Example',
       rating: 4,
-      summary: "A luxurious hotel with excellent amenities",
+      summary: 'A luxurious hotel with excellent amenities',
       description:
-        "This hotel offers spacious rooms, a swimming pool, a fitness center, and a restaurant.",
-      thumbnail: "https://example.com/thumbnail.jpg",
+        'This hotel offers spacious rooms, a swimming pool, a fitness center, and a restaurant.',
+      thumbnail: 'https://example.com/thumbnail.jpg',
       images: [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-        "https://example.com/image3.jpg",
+        'https://example.com/image1.jpg',
+        'https://example.com/image2.jpg',
+        'https://example.com/image3.jpg',
       ],
-      logo: "https://example.com/logo.jpg",
-      slug: "hotel-example",
+      logo: 'https://example.com/logo.jpg',
+      slug: 'hotel-example',
       latitude: 123.456789,
       longitude: -98.7654321,
-      address: "123 Main Street",
-      zipCode: "12345",
-      addressNumber: "Apt 101",
+      address: '123 Main Street',
+      zipCode: '12345',
+      addressNumber: 'Apt 101',
+      city: 'Main city',
+      neighborhood: 'Main city',
+      state: 'Main city',
       admin: {
         connect: {
           id: admin.id,
@@ -152,15 +158,15 @@ export const setupDatabase = async () => {
 
   const room = await prisma.room.create({
     data: {
-      name: "Standard Room",
-      summary: "A comfortable room with essential amenities",
-      thumbnail: "https://example.com/thumbnail.jpg",
+      name: 'Standard Room',
+      summary: 'A comfortable room with essential amenities',
+      thumbnail: 'https://example.com/thumbnail.jpg',
       description:
-        "This room includes a queen-size bed, a private bathroom, and complimentary Wi-Fi.",
+        'This room includes a queen-size bed, a private bathroom, and complimentary Wi-Fi.',
       images: [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-        "https://example.com/image3.jpg",
+        'https://example.com/image1.jpg',
+        'https://example.com/image2.jpg',
+        'https://example.com/image3.jpg',
       ],
       price: 100.0,
       rating: 4.0,

@@ -1,12 +1,12 @@
-import { GraphQLError } from "graphql";
+import { GraphQLError } from 'graphql';
 
-import { Mutations } from "./types";
+import { Mutations } from './types';
 
-import { hashPassword, verifyPassword } from "../../utils/password";
-import { signUpToken } from "../../utils/token";
+import { hashPassword, verifyPassword } from '../../utils/password';
+import { signUpToken } from '../../utils/token';
 
 export const UserMutations: Mutations = {
-  async loginUser(parent, { data }, { prisma }, info) {
+  async loginUser(parent, { data }, { prisma }) {
     const user = await prisma.user.findUnique({
       where: {
         email: data.email,
@@ -14,13 +14,13 @@ export const UserMutations: Mutations = {
     });
 
     if (!user) {
-      throw new GraphQLError("Email ou senha inválida");
+      throw new GraphQLError('Email ou senha inválida');
     }
 
     const isPasswordRight = await verifyPassword(data.password, user.password);
 
     if (!isPasswordRight) {
-      throw new GraphQLError("Email ou senha inválida");
+      throw new GraphQLError('Email ou senha inválida');
     }
 
     const token = await signUpToken(user.id);
@@ -31,9 +31,9 @@ export const UserMutations: Mutations = {
     };
   },
 
-  async createUser(parent, { data }, { prisma }, info) {
+  async createUser(parent, { data }, { prisma }) {
     if (data.password !== data.passwordConfirm) {
-      throw new GraphQLError("As senhas não coincidem");
+      throw new GraphQLError('As senhas não coincidem');
     }
 
     delete data.passwordConfirm;
@@ -41,7 +41,7 @@ export const UserMutations: Mutations = {
     data.password = await hashPassword(data.password);
 
     const avatarUrl =
-      "https://www.nicepng.com/png/detail/73-730154_open-default-profile-picture-png.png";
+      'https://www.nicepng.com/png/detail/73-730154_open-default-profile-picture-png.png';
 
     const user = await prisma.user.create({
       data: {
@@ -66,9 +66,9 @@ export const UserMutations: Mutations = {
     };
   },
 
-  async createAdmin(parent, { data }, { prisma }, info) {
+  async createAdmin(parent, { data }, { prisma }) {
     if (data.password !== data.passwordConfirm) {
-      throw new GraphQLError("As senhas não coincidem");
+      throw new GraphQLError('As senhas não coincidem');
     }
 
     delete data.passwordConfirm;
@@ -76,13 +76,13 @@ export const UserMutations: Mutations = {
     data.password = await hashPassword(data.password);
 
     const avatarUrl =
-      "https://www.nicepng.com/png/detail/73-730154_open-default-profile-picture-png.png";
+      'https://www.nicepng.com/png/detail/73-730154_open-default-profile-picture-png.png';
 
     const user = await prisma.user.create({
       data: {
         ...data,
         active: true,
-        role: "ADMIN",
+        role: 'ADMIN',
         verified: true,
         avatar: data.avatar ?? avatarUrl,
       },
@@ -104,7 +104,7 @@ export const UserMutations: Mutations = {
     };
   },
 
-  async deactivateUser(parent, args, { user, prisma }, info) {
+  async deactivateUser(parent, args, { user, prisma }) {
     await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -112,10 +112,10 @@ export const UserMutations: Mutations = {
       },
     });
 
-    return "Usuário Desativado";
+    return 'Usuário Desativado';
   },
 
-  async updateUser(parent, { data }, { user, prisma }, info) {
+  async updateUser(parent, { data }, { user, prisma }) {
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -131,9 +131,9 @@ export const UserMutations: Mutations = {
     };
   },
 
-  async updateUserPassword(parent, { data }, { user, prisma }, info) {
+  async updateUserPassword(parent, { data }, { user, prisma }) {
     if (data.password !== data.passwordConfirm) {
-      throw new GraphQLError("As senhas não coincidem");
+      throw new GraphQLError('As senhas não coincidem');
     }
 
     delete data.passwordConfirm;
@@ -153,7 +153,7 @@ export const UserMutations: Mutations = {
     };
   },
 
-  async verifyUser(parent, args, { user, prisma }, info) {
+  async verifyUser(parent, args, { user, prisma }) {
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {

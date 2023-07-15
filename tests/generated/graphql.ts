@@ -55,12 +55,15 @@ export type CreateBookingInput = {
 export type CreateHotelInput = {
   address: Scalars['String'];
   addressNumber: Scalars['String'];
+  city: Scalars['String'];
   description: Scalars['String'];
   images?: InputMaybe<Array<Scalars['String']>>;
   latitude: Scalars['Latitude'];
   logo: Scalars['String'];
   longitude: Scalars['Longitude'];
   name: Scalars['String'];
+  neighborhood: Scalars['String'];
+  state: Scalars['String'];
   summary: Scalars['String'];
   thumbnail: Scalars['String'];
   zipCode: Scalars['PostalCode'];
@@ -88,10 +91,12 @@ export type CreateUserInput = {
 
 export type Hotel = {
   __typename?: 'Hotel';
-  /** Endereço do hotel */
-  address?: Maybe<Scalars['String']>;
+  /** Rua do hotel */
+  address: Scalars['String'];
   /** Número residencial do hotel */
-  addressNumber?: Maybe<Scalars['String']>;
+  addressNumber: Scalars['String'];
+  /** Cidade do hotel */
+  city: Scalars['String'];
   /** A descrição do hotel */
   description: Scalars['String'];
   /** Id do hotel */
@@ -99,25 +104,29 @@ export type Hotel = {
   /** Um array de url's de imagens de hoteis */
   images?: Maybe<Array<Scalars['String']>>;
   /** Latitude do hotel */
-  latitude?: Maybe<Scalars['Latitude']>;
+  latitude: Scalars['Latitude'];
   /** Url da logo do hotel */
   logo: Scalars['String'];
   /** Longitude do hotel */
-  longitude?: Maybe<Scalars['Longitude']>;
+  longitude: Scalars['Longitude'];
   /** Nome do hotel */
   name: Scalars['String'];
+  /** Bairro do hotel */
+  neighborhood: Scalars['String'];
   /** Classificação do hotel ex: 5 estrelas */
   rating?: Maybe<Scalars['Int']>;
   /** Array com os quartos do hotel */
   rooms?: Maybe<Array<Room>>;
   /** Slug do hotel baseado no nome */
   slug: Scalars['String'];
+  /** Estado do hotel */
+  state: Scalars['String'];
   /** Uma pequena descrição do hotel de 10 as 30 palavras */
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do hotel */
   thumbnail: Scalars['String'];
   /** Cep do hotel */
-  zipCode?: Maybe<Scalars['PostalCode']>;
+  zipCode: Scalars['PostalCode'];
 };
 
 export type LoginUserInput = {
@@ -324,12 +333,15 @@ export type RoomFilter = {
 export type UpdateHotelInput = {
   address?: InputMaybe<Scalars['String']>;
   addressNumber?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   images?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   latitude?: InputMaybe<Scalars['Latitude']>;
   logo?: InputMaybe<Scalars['String']>;
   longitude?: InputMaybe<Scalars['Longitude']>;
   name?: InputMaybe<Scalars['String']>;
+  neighborhood?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<Scalars['String']>;
   summary?: InputMaybe<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['PostalCode']>;

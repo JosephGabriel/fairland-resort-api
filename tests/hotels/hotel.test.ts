@@ -1,13 +1,19 @@
 import {
-  getClient,
-  setupDatabase,
-  hotelForTest,
   adminForTest,
-  userForTest,
+  getClient,
+  hotelForTest,
   hotelInput,
-} from "../utils/index";
+  setupDatabase,
+  userForTest,
+} from '../utils/index';
 
 import {
+  CreateHotelDocument,
+  CreateHotelMutation,
+  CreateHotelMutationVariables,
+  DeleteHotelDocument,
+  DeleteHotelMutation,
+  DeleteHotelMutationVariables,
   GetHotelByIdDocument,
   GetHotelByIdQuery,
   GetHotelByIdQueryVariables,
@@ -17,22 +23,16 @@ import {
   GetHotelsByAdminDocument,
   GetHotelsByAdminQuery,
   GetHotelsByAdminQueryVariables,
-  CreateHotelDocument,
-  CreateHotelMutation,
-  CreateHotelMutationVariables,
   UpdateHotelDocument,
   UpdateHotelMutation,
   UpdateHotelMutationVariables,
-  DeleteHotelDocument,
-  DeleteHotelMutation,
-  DeleteHotelMutationVariables,
-} from "../generated/graphql";
+} from '../generated/graphql';
 
 beforeEach(setupDatabase);
 
-describe("Hotel", () => {
-  describe("Mutations", () => {
-    it.skip("should create an hotel", async () => {
+describe('Hotel', () => {
+  describe('Mutations', () => {
+    it.skip('should create an hotel', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.mutate<
@@ -48,7 +48,7 @@ describe("Hotel", () => {
       expect(data!.createHotel.name).toBe(hotelInput.name);
     });
 
-    it("should update an hotel", async () => {
+    it('should update an hotel', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.mutate<
@@ -59,15 +59,15 @@ describe("Hotel", () => {
         variables: {
           id: hotelForTest.hotel!.id,
           data: {
-            name: "Hotel 2",
+            name: 'Hotel 2',
           },
         },
       });
 
-      expect(data!.updateHotel.name).toBe("Hotel 2");
+      expect(data!.updateHotel.name).toBe('Hotel 2');
     });
 
-    it("should delete an hotel", async () => {
+    it('should delete an hotel', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.mutate<
@@ -80,12 +80,12 @@ describe("Hotel", () => {
         },
       });
 
-      expect(data!.deleteHotel).toBe("Hotel apagado com sucesso");
+      expect(data!.deleteHotel).toBe('Hotel apagado com sucesso');
     });
   });
 
-  describe("Queries", () => {
-    it("should fetch a hotel by id", async () => {
+  describe('Queries', () => {
+    it('should fetch a hotel by id', async () => {
       const client = getClient();
 
       const { data } = await client.query<
@@ -101,7 +101,7 @@ describe("Hotel", () => {
       expect(data.hotel.id).toBe(hotelForTest.hotel!.id);
     });
 
-    it("should not fetch a hotel when provided with invalid id", async () => {
+    it('should not fetch a hotel when provided with invalid id', async () => {
       const client = getClient();
 
       try {
@@ -112,11 +112,11 @@ describe("Hotel", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLError[0].message).toBe("Hotel inválido");
+        expect(error.graphQLError[0].message).toBe('Hotel inválido');
       }
     });
 
-    it("should fetch an hotel by an slug", async () => {
+    it('should fetch an hotel by an slug', async () => {
       const client = getClient();
 
       const { data } = await client.query<
@@ -132,7 +132,7 @@ describe("Hotel", () => {
       expect(data.hotelBySlug.slug).toBe(hotelForTest.hotel!.slug);
     });
 
-    it("should not fetch an hotel when provided with invalid an slug", async () => {
+    it('should not fetch an hotel when provided with invalid an slug', async () => {
       const client = getClient();
 
       try {
@@ -143,11 +143,11 @@ describe("Hotel", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLError[0].message).toBe("Hotel inválido");
+        expect(error.graphQLError[0].message).toBe('Hotel inválido');
       }
     });
 
-    it("should fetch all hotels of an admin", async () => {
+    it('should fetch all hotels of an admin', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.query<
@@ -160,7 +160,7 @@ describe("Hotel", () => {
       expect(data.hotelsByAdmin!.length).toBe(1);
     });
 
-    it("should not fetch hotels of an admin when it is not logged in", async () => {
+    it('should not fetch hotels of an admin when it is not logged in', async () => {
       const client = getClient();
 
       try {
@@ -171,11 +171,11 @@ describe("Hotel", () => {
           query: GetHotelsByAdminDocument,
         });
       } catch (error) {
-        expect(error.message).toBe("Você não esta logado");
+        expect(error.message).toBe('Você não esta logado');
       }
     });
 
-    it("should not fetch hotels of an admin when it is not an admin", async () => {
+    it('should not fetch hotels of an admin when it is not an admin', async () => {
       const client = getClient(userForTest.token);
 
       try {
@@ -187,7 +187,7 @@ describe("Hotel", () => {
         });
       } catch (error) {
         expect(error.message).toBe(
-          "É necessário um administrador para continuar"
+          'É necessário um administrador para continuar'
         );
       }
     });

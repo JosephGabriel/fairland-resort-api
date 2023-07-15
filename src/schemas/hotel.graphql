@@ -35,19 +35,28 @@ type Hotel {
   slug: String!
 
   "Latitude do hotel"
-  latitude: Latitude
+  latitude: Latitude!
 
   "Longitude do hotel"
-  longitude: Longitude
+  longitude: Longitude!
 
-  "Endereço do hotel"
-  address: String
+  "Rua do hotel"
+  address: String!
 
   "Número residencial do hotel"
-  addressNumber: String
+  addressNumber: String!
 
   "Cep do hotel"
-  zipCode: PostalCode
+  zipCode: PostalCode!
+
+  "Bairro do hotel"
+  neighborhood: String!
+
+  "Estado do hotel"
+  state: String!
+
+  "Cidade do hotel"
+  city: String!
 
   "Array com os quartos do hotel"
   rooms: [Room!]
@@ -65,6 +74,9 @@ input CreateHotelInput {
   address: String!
   addressNumber: String!
   zipCode: PostalCode!
+  neighborhood: String!
+  state: String!
+  city: String!
 }
 
 input UpdateHotelInput {
@@ -79,4 +91,7 @@ input UpdateHotelInput {
   address: String
   addressNumber: String
   zipCode: PostalCode
+  neighborhood: String
+  state: String
+  city: String
 }
