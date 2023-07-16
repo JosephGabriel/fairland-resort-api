@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { app, yoga } from "../src";
+import dotenv from 'dotenv';
+import { app, yoga } from '../src';
 
 export default async () => {
   dotenv.config();

@@ -1,6 +1,6 @@
-import { GraphQLError } from "graphql";
+import { GraphQLError } from 'graphql';
 
-import { Queries } from "./types";
+import { Queries } from './types';
 
 export const BookingQueries: Queries = {
   async booking(parent, { id }, { prisma, user }, info) {
@@ -14,7 +14,7 @@ export const BookingQueries: Queries = {
     });
 
     if (!booking || booking.userId !== user.id) {
-      throw new GraphQLError("Reserva não encontrada");
+      throw new GraphQLError('Reserva não encontrada');
     }
 
     return booking;

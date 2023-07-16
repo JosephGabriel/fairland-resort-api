@@ -1,8 +1,8 @@
-import { GraphQLScalarType, GraphQLError, Kind, ValueNode } from "graphql";
-import validator from "validator";
+import { GraphQLScalarType, GraphQLError, Kind, ValueNode } from 'graphql';
+import validator from 'validator';
 
 const validate = (value: string) => {
-  if (typeof value !== "string") {
+  if (typeof value !== 'string') {
     throw new GraphQLError(`The value: ${value} is not a string`);
   }
 
@@ -22,8 +22,8 @@ const parseLiteral = (ast: ValueNode) => {
 };
 
 export const GraphQLEmailAddress = new GraphQLScalarType({
-  name: "EmailAddress",
-  description: "A valid email address",
+  name: 'EmailAddress',
+  description: 'A valid email address',
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,

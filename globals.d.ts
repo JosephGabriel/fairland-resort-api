@@ -1,4 +1,4 @@
-import { Server } from "http";
+import { Server } from 'http';
 
 declare global {
   var expressServer: Server;
@@ -7,7 +7,7 @@ declare global {
 declare namespace NodeJS {
   interface ProcessEnv {
     PORT: string;
-    NODE_ENV: "production" | "development" | "testing";
+    NODE_ENV: 'production' | 'development' | 'testing';
     SENDGRID_API_KEY: string;
     JWT_SECRET: string;
     JWT_EXPIRES_IN: string;

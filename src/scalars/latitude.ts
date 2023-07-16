@@ -1,5 +1,5 @@
-import { GraphQLScalarType, Kind, GraphQLError, ValueNode } from "graphql";
-import { latitude } from "is-valid-coordinates";
+import { GraphQLScalarType, Kind, GraphQLError, ValueNode } from 'graphql';
+import { latitude } from 'is-valid-coordinates';
 
 const validate = (value: number) => {
   if (!latitude(value)) {
@@ -18,8 +18,8 @@ const parseLiteral = (ast: ValueNode) => {
 };
 
 export const GraphQLLatitude = new GraphQLScalarType({
-  name: "Latitude",
-  description: "A valid latitude coordinate",
+  name: 'Latitude',
+  description: 'A valid latitude coordinate',
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,

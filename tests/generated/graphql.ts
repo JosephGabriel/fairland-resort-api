@@ -1,10 +1,15 @@
-import { DocumentNode } from 'graphql';
-import gql from 'graphql-tag';
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -168,68 +173,55 @@ export type Mutation = {
   verifyUser: AuthPayload;
 };
 
-
 export type MutationCreateAdminArgs = {
   data: CreateUserInput;
 };
-
 
 export type MutationCreateBookingArgs = {
   data: CreateBookingInput;
 };
 
-
 export type MutationCreateHotelArgs = {
   data: CreateHotelInput;
 };
-
 
 export type MutationCreateRoomArgs = {
   data: CreateRoomInput;
 };
 
-
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
 };
-
 
 export type MutationDeleteBookingArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationDeleteHotelArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteRoomArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationLoginUserArgs = {
   data: LoginUserInput;
 };
-
 
 export type MutationUpdateHotelArgs = {
   data: UpdateHotelInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateRoomArgs = {
   data: UpdateRoomInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
 };
-
 
 export type MutationUpdateUserPasswordArgs = {
   data: UpdateUserPasswordInput;
@@ -257,31 +249,25 @@ export type Query = {
   roomsByHotel?: Maybe<Array<Room>>;
 };
 
-
 export type QueryBookingArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryHotelArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryHotelBySlugArgs = {
   slug: Scalars['String'];
 };
-
 
 export type QueryRoomArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryRoomsArgs = {
   filter?: InputMaybe<RoomFilter>;
 };
-
 
 export type QueryRoomsByHotelArgs = {
   hotel: Scalars['ID'];
@@ -400,311 +386,1004 @@ export type User = {
 
 export enum UserRole {
   Admin = 'ADMIN',
-  User = 'USER'
+  User = 'USER',
 }
 
 export type BookingByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
+export type BookingByIdQuery = {
+  __typename?: 'Query';
+  booking: { __typename?: 'Booking'; id: string };
+};
 
-export type BookingByIdQuery = { __typename?: 'Query', booking: { __typename?: 'Booking', id: string } };
+export type BookingsByUserQueryVariables = Exact<{ [key: string]: never }>;
 
-export type BookingsByUserQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type BookingsByUserQuery = { __typename?: 'Query', bookings: Array<{ __typename?: 'Booking', id: string }> };
+export type BookingsByUserQuery = {
+  __typename?: 'Query';
+  bookings: Array<{ __typename?: 'Booking'; id: string }>;
+};
 
 export type CreateBookingMutationVariables = Exact<{
   data: CreateBookingInput;
 }>;
 
-
-export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'Booking', id: string, user: { __typename?: 'User', id: string }, room: { __typename?: 'Room', id: string } } };
+export type CreateBookingMutation = {
+  __typename?: 'Mutation';
+  createBooking: {
+    __typename?: 'Booking';
+    id: string;
+    user: { __typename?: 'User'; id: string };
+    room: { __typename?: 'Room'; id: string };
+  };
+};
 
 export type DeleteBookingMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
-export type DeleteBookingMutation = { __typename?: 'Mutation', deleteBooking: string };
+export type DeleteBookingMutation = {
+  __typename?: 'Mutation';
+  deleteBooking: string;
+};
 
 export type CreateHotelMutationVariables = Exact<{
   data: CreateHotelInput;
 }>;
 
-
-export type CreateHotelMutation = { __typename?: 'Mutation', createHotel: { __typename?: 'Hotel', id: string, name: string } };
+export type CreateHotelMutation = {
+  __typename?: 'Mutation';
+  createHotel: { __typename?: 'Hotel'; id: string; name: string };
+};
 
 export type DeleteHotelMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
-export type DeleteHotelMutation = { __typename?: 'Mutation', deleteHotel: string };
+export type DeleteHotelMutation = {
+  __typename?: 'Mutation';
+  deleteHotel: string;
+};
 
 export type GetHotelByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
-export type GetHotelByIdQuery = { __typename?: 'Query', hotel: { __typename?: 'Hotel', id: string } };
+export type GetHotelByIdQuery = {
+  __typename?: 'Query';
+  hotel: { __typename?: 'Hotel'; id: string };
+};
 
 export type GetHotelBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
+export type GetHotelBySlugQuery = {
+  __typename?: 'Query';
+  hotelBySlug: { __typename?: 'Hotel'; slug: string };
+};
 
-export type GetHotelBySlugQuery = { __typename?: 'Query', hotelBySlug: { __typename?: 'Hotel', slug: string } };
+export type GetHotelsByAdminQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetHotelsByAdminQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetHotelsByAdminQuery = { __typename?: 'Query', hotelsByAdmin?: Array<{ __typename?: 'Hotel', id: string }> | null };
+export type GetHotelsByAdminQuery = {
+  __typename?: 'Query';
+  hotelsByAdmin?: Array<{ __typename?: 'Hotel'; id: string }> | null;
+};
 
 export type UpdateHotelMutationVariables = Exact<{
   id: Scalars['ID'];
   data: UpdateHotelInput;
 }>;
 
-
-export type UpdateHotelMutation = { __typename?: 'Mutation', updateHotel: { __typename?: 'Hotel', id: string, name: string } };
+export type UpdateHotelMutation = {
+  __typename?: 'Mutation';
+  updateHotel: { __typename?: 'Hotel'; id: string; name: string };
+};
 
 export type CreateAdminMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
 
-
-export type CreateAdminMutation = { __typename?: 'Mutation', createAdmin: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
+export type CreateAdminMutation = {
+  __typename?: 'Mutation';
+  createAdmin: {
+    __typename?: 'AuthPayload';
+    user: { __typename?: 'User'; userName: string };
+  };
+};
 
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
 
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: {
+    __typename?: 'AuthPayload';
+    user: { __typename?: 'User'; userName: string };
+  };
+};
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
+export type DeactivateUserMutationVariables = Exact<{ [key: string]: never }>;
 
-export type DeactivateUserMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DeactivateUserMutation = { __typename?: 'Mutation', deactivateUser: string };
+export type DeactivateUserMutation = {
+  __typename?: 'Mutation';
+  deactivateUser: string;
+};
 
 export type LoginUserMutationVariables = Exact<{
   data: LoginUserInput;
 }>;
 
-
-export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
+export type LoginUserMutation = {
+  __typename?: 'Mutation';
+  loginUser: {
+    __typename?: 'AuthPayload';
+    user: { __typename?: 'User'; userName: string };
+  };
+};
 
 export type UpdateUserPasswordMutationVariables = Exact<{
   data: UpdateUserPasswordInput;
 }>;
 
-
-export type UpdateUserPasswordMutation = { __typename?: 'Mutation', updateUserPassword: { __typename?: 'AuthPayload', user: { __typename?: 'User', password: string } } };
+export type UpdateUserPasswordMutation = {
+  __typename?: 'Mutation';
+  updateUserPassword: {
+    __typename?: 'AuthPayload';
+    user: { __typename?: 'User'; password: string };
+  };
+};
 
 export type UpdateUserMutationVariables = Exact<{
   data: UpdateUserInput;
 }>;
 
-
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', firstName: string, lastName: string, userName: string } } };
-
-export type VerifyUserMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type VerifyUserMutation = { __typename?: 'Mutation', verifyUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', verified: boolean } } };
-
-
-export const BookingByIdDocument = gql`
-    query BookingById($id: ID!) {
-  booking(id: $id) {
-    id
-  }
-}
-    `;
-export const BookingsByUserDocument = gql`
-    query BookingsByUser {
-  bookings {
-    id
-  }
-}
-    `;
-export const CreateBookingDocument = gql`
-    mutation CreateBooking($data: CreateBookingInput!) {
-  createBooking(data: $data) {
-    id
-    user {
-      id
-    }
-    room {
-      id
-    }
-  }
-}
-    `;
-export const DeleteBookingDocument = gql`
-    mutation DeleteBooking($id: ID!) {
-  deleteBooking(id: $id)
-}
-    `;
-export const CreateHotelDocument = gql`
-    mutation CreateHotel($data: CreateHotelInput!) {
-  createHotel(data: $data) {
-    id
-    name
-  }
-}
-    `;
-export const DeleteHotelDocument = gql`
-    mutation DeleteHotel($id: ID!) {
-  deleteHotel(id: $id)
-}
-    `;
-export const GetHotelByIdDocument = gql`
-    query GetHotelById($id: ID!) {
-  hotel(id: $id) {
-    id
-  }
-}
-    `;
-export const GetHotelBySlugDocument = gql`
-    query GetHotelBySlug($slug: String!) {
-  hotelBySlug(slug: $slug) {
-    slug
-  }
-}
-    `;
-export const GetHotelsByAdminDocument = gql`
-    query GetHotelsByAdmin {
-  hotelsByAdmin {
-    id
-  }
-}
-    `;
-export const UpdateHotelDocument = gql`
-    mutation UpdateHotel($id: ID!, $data: UpdateHotelInput!) {
-  updateHotel(id: $id, data: $data) {
-    id
-    name
-  }
-}
-    `;
-export const CreateAdminDocument = gql`
-    mutation CreateAdmin($data: CreateUserInput!) {
-  createAdmin(data: $data) {
-    user {
-      userName
-    }
-  }
-}
-    `;
-export const CreateUserDocument = gql`
-    mutation CreateUser($data: CreateUserInput!) {
-  createUser(data: $data) {
-    user {
-      userName
-    }
-  }
-}
-    `;
-export const DeactivateUserDocument = gql`
-    mutation DeactivateUser {
-  deactivateUser
-}
-    `;
-export const LoginUserDocument = gql`
-    mutation LoginUser($data: LoginUserInput!) {
-  loginUser(data: $data) {
-    user {
-      userName
-    }
-  }
-}
-    `;
-export const UpdateUserPasswordDocument = gql`
-    mutation UpdateUserPassword($data: UpdateUserPasswordInput!) {
-  updateUserPassword(data: $data) {
-    user {
-      password
-    }
-  }
-}
-    `;
-export const UpdateUserDocument = gql`
-    mutation UpdateUser($data: UpdateUserInput!) {
-  updateUser(data: $data) {
-    user {
-      firstName
-      lastName
-      userName
-    }
-  }
-}
-    `;
-export const VerifyUserDocument = gql`
-    mutation VerifyUser {
-  verifyUser {
-    user {
-      verified
-    }
-  }
-}
-    `;
-export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
-export function getSdk<C, E>(requester: Requester<C, E>) {
-  return {
-    BookingById(variables: BookingByIdQueryVariables, options?: C): Promise<BookingByIdQuery> {
-      return requester<BookingByIdQuery, BookingByIdQueryVariables>(BookingByIdDocument, variables, options);
-    },
-    BookingsByUser(variables?: BookingsByUserQueryVariables, options?: C): Promise<BookingsByUserQuery> {
-      return requester<BookingsByUserQuery, BookingsByUserQueryVariables>(BookingsByUserDocument, variables, options);
-    },
-    CreateBooking(variables: CreateBookingMutationVariables, options?: C): Promise<CreateBookingMutation> {
-      return requester<CreateBookingMutation, CreateBookingMutationVariables>(CreateBookingDocument, variables, options);
-    },
-    DeleteBooking(variables: DeleteBookingMutationVariables, options?: C): Promise<DeleteBookingMutation> {
-      return requester<DeleteBookingMutation, DeleteBookingMutationVariables>(DeleteBookingDocument, variables, options);
-    },
-    CreateHotel(variables: CreateHotelMutationVariables, options?: C): Promise<CreateHotelMutation> {
-      return requester<CreateHotelMutation, CreateHotelMutationVariables>(CreateHotelDocument, variables, options);
-    },
-    DeleteHotel(variables: DeleteHotelMutationVariables, options?: C): Promise<DeleteHotelMutation> {
-      return requester<DeleteHotelMutation, DeleteHotelMutationVariables>(DeleteHotelDocument, variables, options);
-    },
-    GetHotelById(variables: GetHotelByIdQueryVariables, options?: C): Promise<GetHotelByIdQuery> {
-      return requester<GetHotelByIdQuery, GetHotelByIdQueryVariables>(GetHotelByIdDocument, variables, options);
-    },
-    GetHotelBySlug(variables: GetHotelBySlugQueryVariables, options?: C): Promise<GetHotelBySlugQuery> {
-      return requester<GetHotelBySlugQuery, GetHotelBySlugQueryVariables>(GetHotelBySlugDocument, variables, options);
-    },
-    GetHotelsByAdmin(variables?: GetHotelsByAdminQueryVariables, options?: C): Promise<GetHotelsByAdminQuery> {
-      return requester<GetHotelsByAdminQuery, GetHotelsByAdminQueryVariables>(GetHotelsByAdminDocument, variables, options);
-    },
-    UpdateHotel(variables: UpdateHotelMutationVariables, options?: C): Promise<UpdateHotelMutation> {
-      return requester<UpdateHotelMutation, UpdateHotelMutationVariables>(UpdateHotelDocument, variables, options);
-    },
-    CreateAdmin(variables: CreateAdminMutationVariables, options?: C): Promise<CreateAdminMutation> {
-      return requester<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument, variables, options);
-    },
-    CreateUser(variables: CreateUserMutationVariables, options?: C): Promise<CreateUserMutation> {
-      return requester<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, variables, options);
-    },
-    DeactivateUser(variables?: DeactivateUserMutationVariables, options?: C): Promise<DeactivateUserMutation> {
-      return requester<DeactivateUserMutation, DeactivateUserMutationVariables>(DeactivateUserDocument, variables, options);
-    },
-    LoginUser(variables: LoginUserMutationVariables, options?: C): Promise<LoginUserMutation> {
-      return requester<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, variables, options);
-    },
-    UpdateUserPassword(variables: UpdateUserPasswordMutationVariables, options?: C): Promise<UpdateUserPasswordMutation> {
-      return requester<UpdateUserPasswordMutation, UpdateUserPasswordMutationVariables>(UpdateUserPasswordDocument, variables, options);
-    },
-    UpdateUser(variables: UpdateUserMutationVariables, options?: C): Promise<UpdateUserMutation> {
-      return requester<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, variables, options);
-    },
-    VerifyUser(variables?: VerifyUserMutationVariables, options?: C): Promise<VerifyUserMutation> {
-      return requester<VerifyUserMutation, VerifyUserMutationVariables>(VerifyUserDocument, variables, options);
-    }
+export type UpdateUserMutation = {
+  __typename?: 'Mutation';
+  updateUser: {
+    __typename?: 'AuthPayload';
+    user: {
+      __typename?: 'User';
+      firstName: string;
+      lastName: string;
+      userName: string;
+    };
   };
-}
-export type Sdk = ReturnType<typeof getSdk>;
+};
+
+export type VerifyUserMutationVariables = Exact<{ [key: string]: never }>;
+
+export type VerifyUserMutation = {
+  __typename?: 'Mutation';
+  verifyUser: {
+    __typename?: 'AuthPayload';
+    user: { __typename?: 'User'; verified: boolean };
+  };
+};
+
+export const BookingByIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'BookingById' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'booking' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BookingByIdQuery, BookingByIdQueryVariables>;
+export const BookingsByUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'BookingsByUser' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'bookings' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BookingsByUserQuery, BookingsByUserQueryVariables>;
+export const CreateBookingDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateBooking' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateBookingInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createBooking' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'room' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateBookingMutation,
+  CreateBookingMutationVariables
+>;
+export const DeleteBookingDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'DeleteBooking' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteBooking' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteBookingMutation,
+  DeleteBookingMutationVariables
+>;
+export const CreateHotelDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateHotel' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateHotelInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createHotel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateHotelMutation, CreateHotelMutationVariables>;
+export const DeleteHotelDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'DeleteHotel' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteHotel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteHotelMutation, DeleteHotelMutationVariables>;
+export const GetHotelByIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetHotelById' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'hotel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetHotelByIdQuery, GetHotelByIdQueryVariables>;
+export const GetHotelBySlugDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetHotelBySlug' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'hotelBySlug' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'slug' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'slug' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetHotelBySlugQuery, GetHotelBySlugQueryVariables>;
+export const GetHotelsByAdminDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetHotelsByAdmin' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'hotelsByAdmin' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetHotelsByAdminQuery,
+  GetHotelsByAdminQueryVariables
+>;
+export const UpdateHotelDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateHotel' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'UpdateHotelInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateHotel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdateHotelMutation, UpdateHotelMutationVariables>;
+export const CreateAdminDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateAdmin' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateUserInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createAdmin' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'userName' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateAdminMutation, CreateAdminMutationVariables>;
+export const CreateUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateUserInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'userName' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateUserMutation, CreateUserMutationVariables>;
+export const DeactivateUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'DeactivateUser' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'deactivateUser' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeactivateUserMutation,
+  DeactivateUserMutationVariables
+>;
+export const LoginUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'LoginUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'LoginUserInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'loginUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'userName' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LoginUserMutation, LoginUserMutationVariables>;
+export const UpdateUserPasswordDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateUserPassword' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'UpdateUserPasswordInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateUserPassword' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'password' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateUserPasswordMutation,
+  UpdateUserPasswordMutationVariables
+>;
+export const UpdateUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateUser' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'data' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'UpdateUserInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateUser' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'data' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'firstName' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'lastName' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'userName' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
+export const VerifyUserDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'VerifyUser' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'verifyUser' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'verified' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<VerifyUserMutation, VerifyUserMutationVariables>;

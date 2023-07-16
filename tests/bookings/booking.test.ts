@@ -5,7 +5,7 @@ import {
   adminForTest,
   bookingForTest,
   roomForTest,
-} from "../utils";
+} from '../utils';
 
 import {
   CreateBookingMutation,
@@ -20,13 +20,13 @@ import {
   BookingsByUserDocument,
   BookingsByUserQuery,
   BookingsByUserQueryVariables,
-} from "../generated/graphql";
+} from '../generated/graphql';
 
 beforeEach(setupDatabase);
 
-describe("Bookings", () => {
-  describe("Mutations", () => {
-    it("should create a booking", async () => {
+describe('Bookings', () => {
+  describe('Mutations', () => {
+    it('should create a booking', async () => {
       const client = getClient(userForTest.token);
 
       const { data } = await client.mutate<
@@ -66,11 +66,11 @@ describe("Bookings", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Você não esta logado");
+        expect(error.graphQLErrors[0].message).toBe('Você não esta logado');
       }
     });
 
-    it("should not create a booking when send invalid room id", async () => {
+    it('should not create a booking when send invalid room id', async () => {
       const client = getClient(userForTest.token);
 
       try {
@@ -81,7 +81,7 @@ describe("Bookings", () => {
           mutation: CreateBookingDocument,
           variables: {
             data: {
-              room: "test",
+              room: 'test',
               dateIn: bookingForTest.booking!.dateIn.toString(),
               dateOut: bookingForTest.booking!.dateOut.toString(),
               price: bookingForTest.booking!.price,
@@ -89,11 +89,11 @@ describe("Bookings", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Quarto inválido");
+        expect(error.graphQLErrors[0].message).toBe('Quarto inválido');
       }
     });
 
-    it("should cancel a booking", async () => {
+    it('should cancel a booking', async () => {
       const client = getClient(userForTest.token);
 
       const { data } = await client.mutate<
@@ -106,10 +106,10 @@ describe("Bookings", () => {
         },
       });
 
-      expect(data?.deleteBooking).toBe("Reserva cancelada com sucesso");
+      expect(data?.deleteBooking).toBe('Reserva cancelada com sucesso');
     });
 
-    it("should not cancel a booking when passing invalid booking id", async () => {
+    it('should not cancel a booking when passing invalid booking id', async () => {
       const client = getClient(userForTest.token);
 
       try {
@@ -119,11 +119,11 @@ describe("Bookings", () => {
         >({
           mutation: DeleteBookingDocument,
           variables: {
-            id: "test",
+            id: 'test',
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Reserva não encontrada");
+        expect(error.graphQLErrors[0].message).toBe('Reserva não encontrada');
       }
     });
 
@@ -141,12 +141,12 @@ describe("Bookings", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Reserva não encontrada");
+        expect(error.graphQLErrors[0].message).toBe('Reserva não encontrada');
       }
     });
   });
-  describe("Queries", () => {
-    it("should fetch a booking", async () => {
+  describe('Queries', () => {
+    it('should fetch a booking', async () => {
       const client = getClient(userForTest.token);
 
       const { data } = await client.mutate<
@@ -162,22 +162,22 @@ describe("Bookings", () => {
       expect(data?.booking.id).toBe(bookingForTest.booking!.id);
     });
 
-    it("should not fetch a booking when provided a invalid id", async () => {
+    it('should not fetch a booking when provided a invalid id', async () => {
       const client = getClient(userForTest.token);
 
       try {
         await client.mutate<BookingByIdQuery, BookingByIdQueryVariables>({
           mutation: BookingByIdDocument,
           variables: {
-            id: "cdcrcko",
+            id: 'cdcrcko',
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Reserva não encontrada");
+        expect(error.graphQLErrors[0].message).toBe('Reserva não encontrada');
       }
     });
 
-    it("should not fetch a booking when the user is not logged in", async () => {
+    it('should not fetch a booking when the user is not logged in', async () => {
       const client = getClient();
 
       try {
@@ -188,11 +188,11 @@ describe("Bookings", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Você não esta logado");
+        expect(error.graphQLErrors[0].message).toBe('Você não esta logado');
       }
     });
 
-    it("should not fetch a booking when it does not belong to the user provided", async () => {
+    it('should not fetch a booking when it does not belong to the user provided', async () => {
       const client = getClient(adminForTest.token);
 
       try {
@@ -203,11 +203,11 @@ describe("Bookings", () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Reserva não encontrada");
+        expect(error.graphQLErrors[0].message).toBe('Reserva não encontrada');
       }
     });
 
-    it("should fetch bookings of an user", async () => {
+    it('should fetch bookings of an user', async () => {
       const client = getClient(userForTest.token);
 
       const { data } = await client.mutate<
@@ -220,7 +220,7 @@ describe("Bookings", () => {
       expect(data?.bookings.length).toBe(1);
     });
 
-    it("should not fetch bookings of an user when is not logged in", async () => {
+    it('should not fetch bookings of an user when is not logged in', async () => {
       const client = getClient();
 
       try {
@@ -228,7 +228,7 @@ describe("Bookings", () => {
           mutation: BookingsByUserDocument,
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe("Você não esta logado");
+        expect(error.graphQLErrors[0].message).toBe('Você não esta logado');
       }
     });
   });

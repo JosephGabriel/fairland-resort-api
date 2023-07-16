@@ -1,13 +1,25 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
 import { UserModel, RoomModel, BookingModel } from '../models/models';
 import { ServerContext } from '../index';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -171,68 +183,55 @@ export type Mutation = {
   verifyUser: AuthPayload;
 };
 
-
 export type MutationCreateAdminArgs = {
   data: CreateUserInput;
 };
-
 
 export type MutationCreateBookingArgs = {
   data: CreateBookingInput;
 };
 
-
 export type MutationCreateHotelArgs = {
   data: CreateHotelInput;
 };
-
 
 export type MutationCreateRoomArgs = {
   data: CreateRoomInput;
 };
 
-
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
 };
-
 
 export type MutationDeleteBookingArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationDeleteHotelArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteRoomArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationLoginUserArgs = {
   data: LoginUserInput;
 };
-
 
 export type MutationUpdateHotelArgs = {
   data: UpdateHotelInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateRoomArgs = {
   data: UpdateRoomInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
 };
-
 
 export type MutationUpdateUserPasswordArgs = {
   data: UpdateUserPasswordInput;
@@ -260,31 +259,25 @@ export type Query = {
   roomsByHotel?: Maybe<Array<Room>>;
 };
 
-
 export type QueryBookingArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryHotelArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryHotelBySlugArgs = {
   slug: Scalars['String'];
 };
-
 
 export type QueryRoomArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryRoomsArgs = {
   filter?: InputMaybe<RoomFilter>;
 };
-
 
 export type QueryRoomsByHotelArgs = {
   hotel: Scalars['ID'];
@@ -403,7 +396,7 @@ export type User = {
 
 export enum UserRole {
   Admin = 'ADMIN',
-  User = 'USER'
+  User = 'USER',
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -411,11 +404,12 @@ export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -438,9 +432,25 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -448,12 +458,26 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
@@ -462,11 +486,20 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+export type DirectiveResolverFn<
+  TResult = {},
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
@@ -476,7 +509,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  AuthPayload: ResolverTypeWrapper<Omit<AuthPayload, 'user'> & { user: ResolversTypes['User'] }>;
+  AuthPayload: ResolverTypeWrapper<
+    Omit<AuthPayload, 'user'> & { user: ResolversTypes['User'] }
+  >;
   Booking: ResolverTypeWrapper<BookingModel>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateBookingInput: CreateBookingInput;
@@ -485,7 +520,9 @@ export type ResolversTypes = ResolversObject<{
   CreateUserInput: CreateUserInput;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
-  Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms?: Maybe<Array<ResolversTypes['Room']>> }>;
+  Hotel: ResolverTypeWrapper<
+    Omit<Hotel, 'rooms'> & { rooms?: Maybe<Array<ResolversTypes['Room']>> }
+  >;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
@@ -495,7 +532,12 @@ export type ResolversTypes = ResolversObject<{
   Password: ResolverTypeWrapper<Scalars['Password']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Query: ResolverTypeWrapper<{}>;
-  Review: ResolverTypeWrapper<Omit<Review, 'room' | 'user'> & { room: ResolversTypes['Room'], user: ResolversTypes['User'] }>;
+  Review: ResolverTypeWrapper<
+    Omit<Review, 'room' | 'user'> & {
+      room: ResolversTypes['Room'];
+      user: ResolversTypes['User'];
+    }
+  >;
   Room: ResolverTypeWrapper<RoomModel>;
   RoomFilter: RoomFilter;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -509,7 +551,9 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  AuthPayload: Omit<AuthPayload, 'user'> & { user: ResolversParentTypes['User'] };
+  AuthPayload: Omit<AuthPayload, 'user'> & {
+    user: ResolversParentTypes['User'];
+  };
   Booking: BookingModel;
   Boolean: Scalars['Boolean'];
   CreateBookingInput: CreateBookingInput;
@@ -518,7 +562,9 @@ export type ResolversParentTypes = ResolversObject<{
   CreateUserInput: CreateUserInput;
   EmailAddress: Scalars['EmailAddress'];
   Float: Scalars['Float'];
-  Hotel: Omit<Hotel, 'rooms'> & { rooms?: Maybe<Array<ResolversParentTypes['Room']>> };
+  Hotel: Omit<Hotel, 'rooms'> & {
+    rooms?: Maybe<Array<ResolversParentTypes['Room']>>;
+  };
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Latitude: Scalars['Latitude'];
@@ -528,7 +574,10 @@ export type ResolversParentTypes = ResolversObject<{
   Password: Scalars['Password'];
   PostalCode: Scalars['PostalCode'];
   Query: {};
-  Review: Omit<Review, 'room' | 'user'> & { room: ResolversParentTypes['Room'], user: ResolversParentTypes['User'] };
+  Review: Omit<Review, 'room' | 'user'> & {
+    room: ResolversParentTypes['Room'];
+    user: ResolversParentTypes['User'];
+  };
   Room: RoomModel;
   RoomFilter: RoomFilter;
   String: Scalars['String'];
@@ -539,13 +588,19 @@ export type ResolversParentTypes = ResolversObject<{
   User: UserModel;
 }>;
 
-export type AuthPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = ResolversObject<{
+export type AuthPayloadResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']
+> = ResolversObject<{
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BookingResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = ResolversObject<{
+export type BookingResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']
+> = ResolversObject<{
   bookingDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   dateIn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   dateOut?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -557,24 +612,36 @@ export type BookingResolvers<ContextType = ServerContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
+export interface EmailAddressScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
 
-export type HotelResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Hotel'] = ResolversParentTypes['Hotel']> = ResolversObject<{
+export type HotelResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['Hotel'] = ResolversParentTypes['Hotel']
+> = ResolversObject<{
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   addressNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  images?: Resolver<
+    Maybe<Array<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
   latitude?: Resolver<ResolversTypes['Latitude'], ParentType, ContextType>;
   logo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   longitude?: Resolver<ResolversTypes['Longitude'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neighborhood?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  rooms?: Resolver<Maybe<Array<ResolversTypes['Room']>>, ParentType, ContextType>;
+  rooms?: Resolver<
+    Maybe<Array<ResolversTypes['Room']>>,
+    ParentType,
+    ContextType
+  >;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -583,53 +650,173 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
+export interface LatitudeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
   name: 'Latitude';
 }
 
-export interface LongitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Longitude'], any> {
+export interface LongitudeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Longitude'], any> {
   name: 'Longitude';
 }
 
-export type MutationResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createAdmin?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateAdminArgs, 'data'>>;
-  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'data'>>;
-  createHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationCreateHotelArgs, 'data'>>;
-  createRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'data'>>;
-  createUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'data'>>;
+export type MutationResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = ResolversObject<{
+  createAdmin?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateAdminArgs, 'data'>
+  >;
+  createBooking?: Resolver<
+    ResolversTypes['Booking'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateBookingArgs, 'data'>
+  >;
+  createHotel?: Resolver<
+    ResolversTypes['Hotel'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateHotelArgs, 'data'>
+  >;
+  createRoom?: Resolver<
+    ResolversTypes['Room'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateRoomArgs, 'data'>
+  >;
+  createUser?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateUserArgs, 'data'>
+  >;
   deactivateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  deleteBooking?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteBookingArgs, 'id'>>;
-  deleteHotel?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteHotelArgs, 'id'>>;
-  deleteRoom?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'id'>>;
-  loginUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'data'>>;
-  updateHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationUpdateHotelArgs, 'data' | 'id'>>;
-  updateRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationUpdateRoomArgs, 'data' | 'id'>>;
-  updateUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
-  updateUserPassword?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationUpdateUserPasswordArgs, 'data'>>;
+  deleteBooking?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteBookingArgs, 'id'>
+  >;
+  deleteHotel?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteHotelArgs, 'id'>
+  >;
+  deleteRoom?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteRoomArgs, 'id'>
+  >;
+  loginUser?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginUserArgs, 'data'>
+  >;
+  updateHotel?: Resolver<
+    ResolversTypes['Hotel'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateHotelArgs, 'data' | 'id'>
+  >;
+  updateRoom?: Resolver<
+    ResolversTypes['Room'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateRoomArgs, 'data' | 'id'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'data'>
+  >;
+  updateUserPassword?: Resolver<
+    ResolversTypes['AuthPayload'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserPasswordArgs, 'data'>
+  >;
   verifyUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType>;
 }>;
 
-export interface PasswordScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Password'], any> {
+export interface PasswordScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Password'], any> {
   name: 'Password';
 }
 
-export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PostalCode'], any> {
+export interface PostalCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['PostalCode'], any> {
   name: 'PostalCode';
 }
 
-export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  booking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<QueryBookingArgs, 'id'>>;
-  bookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
-  hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
-  hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
-  hotels?: Resolver<Maybe<Array<ResolversTypes['Hotel']>>, ParentType, ContextType>;
-  hotelsByAdmin?: Resolver<Maybe<Array<ResolversTypes['Hotel']>>, ParentType, ContextType>;
-  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryRoomArgs, 'id'>>;
-  rooms?: Resolver<Maybe<Array<ResolversTypes['Room']>>, ParentType, ContextType, Partial<QueryRoomsArgs>>;
-  roomsByHotel?: Resolver<Maybe<Array<ResolversTypes['Room']>>, ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;
+export type QueryResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = ResolversObject<{
+  booking?: Resolver<
+    ResolversTypes['Booking'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryBookingArgs, 'id'>
+  >;
+  bookings?: Resolver<
+    Array<ResolversTypes['Booking']>,
+    ParentType,
+    ContextType
+  >;
+  hotel?: Resolver<
+    ResolversTypes['Hotel'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryHotelArgs, 'id'>
+  >;
+  hotelBySlug?: Resolver<
+    ResolversTypes['Hotel'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryHotelBySlugArgs, 'slug'>
+  >;
+  hotels?: Resolver<
+    Maybe<Array<ResolversTypes['Hotel']>>,
+    ParentType,
+    ContextType
+  >;
+  hotelsByAdmin?: Resolver<
+    Maybe<Array<ResolversTypes['Hotel']>>,
+    ParentType,
+    ContextType
+  >;
+  room?: Resolver<
+    ResolversTypes['Room'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryRoomArgs, 'id'>
+  >;
+  rooms?: Resolver<
+    Maybe<Array<ResolversTypes['Room']>>,
+    ParentType,
+    ContextType,
+    Partial<QueryRoomsArgs>
+  >;
+  roomsByHotel?: Resolver<
+    Maybe<Array<ResolversTypes['Room']>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRoomsByHotelArgs, 'hotel'>
+  >;
 }>;
 
-export type ReviewResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = ResolversObject<{
+export type ReviewResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']
+> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   review?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -638,11 +825,18 @@ export type ReviewResolvers<ContextType = ServerContext, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type RoomResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = ResolversObject<{
+export type RoomResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']
+> = ResolversObject<{
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  images?: Resolver<
+    Maybe<Array<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -651,17 +845,32 @@ export type RoomResolvers<ContextType = ServerContext, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type UserResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+export type UserResolvers<
+  ContextType = ServerContext,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = ResolversObject<{
   active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  bookings?: Resolver<Maybe<Array<ResolversTypes['Booking']>>, ParentType, ContextType>;
+  bookings?: Resolver<
+    Maybe<Array<ResolversTypes['Booking']>>,
+    ParentType,
+    ContextType
+  >;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['Password'], ParentType, ContextType>;
-  passwordChangedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  reviews?: Resolver<Maybe<Array<ResolversTypes['Review']>>, ParentType, ContextType>;
+  passwordChangedAt?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  reviews?: Resolver<
+    Maybe<Array<ResolversTypes['Review']>>,
+    ParentType,
+    ContextType
+  >;
   role?: Resolver<ResolversTypes['userRole'], ParentType, ContextType>;
   userName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   verified?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -683,4 +892,3 @@ export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   Room?: RoomResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
-

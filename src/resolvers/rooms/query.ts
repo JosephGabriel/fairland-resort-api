@@ -1,13 +1,13 @@
-import { GraphQLError } from "graphql";
+import { GraphQLError } from 'graphql';
 
-import { Queries } from "./types";
+import { Queries } from './types';
 
 export const RoomQueries: Queries = {
   async room(parent, { id }, { prisma }, info) {
     const room = await prisma.room.findUnique({ where: { id } });
 
     if (!room) {
-      throw new GraphQLError("Quarto inválido");
+      throw new GraphQLError('Quarto inválido');
     }
 
     return room;

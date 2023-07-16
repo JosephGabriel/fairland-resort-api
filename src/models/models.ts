@@ -1,4 +1,4 @@
-import { User, Room, Booking } from "@prisma/client";
+import { User, Room, Booking } from '@prisma/client';
 
 export interface UserModel extends User {}
 export interface RoomModel extends Room {}

@@ -65,7 +65,7 @@ const isAdmin: ShieldRule = rule()(async (parent, args, { user }) => {
   return new GraphQLError('É necessário um administrador para continuar');
 });
 
-export const permisions = shield<unknown, ServerContext>(
+export const permisions = shield(
   {
     Mutation: {
       createUser: hasUser,

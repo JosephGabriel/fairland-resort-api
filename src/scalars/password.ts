@@ -1,5 +1,5 @@
-import { GraphQLScalarType, GraphQLError, Kind, ValueNode } from "graphql";
-import validator from "validator";
+import { GraphQLScalarType, GraphQLError, Kind, ValueNode } from 'graphql';
+import validator from 'validator';
 
 const validate = (value: string) => {
   if (!validator.isLength(value, { min: 8 })) {
@@ -14,7 +14,7 @@ const validate = (value: string) => {
     );
   }
 
-  if (validator.contains(value, "password", { ignoreCase: true })) {
+  if (validator.contains(value, 'password', { ignoreCase: true })) {
     throw new GraphQLError(`The password should not contain password`);
   }
 
@@ -30,9 +30,9 @@ const parseLiteral = (ast: ValueNode) => {
 };
 
 export const GraphQLPassword = new GraphQLScalarType({
-  name: "Password",
+  name: 'Password',
   description:
-    "A valid password should have at lest 8 characters, one special character, one capital letter, one lowercase letter, one number and should not contain the word password",
+    'A valid password should have at lest 8 characters, one special character, one capital letter, one lowercase letter, one number and should not contain the word password',
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,
