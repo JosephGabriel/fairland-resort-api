@@ -9,78 +9,57 @@ import {
 
 import {
   CreateHotelDocument,
-  CreateHotelMutation,
-  CreateHotelMutationVariables,
   DeleteHotelDocument,
-  DeleteHotelMutation,
-  DeleteHotelMutationVariables,
   GetHotelByIdDocument,
-  GetHotelByIdQuery,
-  GetHotelByIdQueryVariables,
   GetHotelBySlugDocument,
-  GetHotelBySlugQuery,
-  GetHotelBySlugQueryVariables,
   GetHotelsByAdminDocument,
-  GetHotelsByAdminQuery,
-  GetHotelsByAdminQueryVariables,
   UpdateHotelDocument,
-  UpdateHotelMutation,
-  UpdateHotelMutationVariables,
 } from '../generated/graphql';
 
 beforeEach(setupDatabase);
 
 describe('Hotel', () => {
   describe('Mutations', () => {
-    it.skip('should create an hotel', async () => {
+    it('should create an hotel', async () => {
       const client = getClient(adminForTest.token);
 
-      const { data } = await client.mutate<
-        CreateHotelMutation,
-        CreateHotelMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: CreateHotelDocument,
         variables: {
           data: hotelInput,
         },
       });
 
-      expect(data!.createHotel.name).toBe(hotelInput.name);
+      expect(data?.createHotel.name).toBe(hotelInput.name);
     });
 
     it('should update an hotel', async () => {
       const client = getClient(adminForTest.token);
 
-      const { data } = await client.mutate<
-        UpdateHotelMutation,
-        UpdateHotelMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: UpdateHotelDocument,
         variables: {
-          id: hotelForTest.hotel!.id,
+          id: String(hotelForTest.hotel?.id),
           data: {
             name: 'Hotel 2',
           },
         },
       });
 
-      expect(data!.updateHotel.name).toBe('Hotel 2');
+      expect(data?.updateHotel.name).toBe('Hotel 2');
     });
 
     it('should delete an hotel', async () => {
       const client = getClient(adminForTest.token);
 
-      const { data } = await client.mutate<
-        DeleteHotelMutation,
-        DeleteHotelMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: DeleteHotelDocument,
         variables: {
-          id: hotelForTest.hotel!.id,
+          id: String(hotelForTest.hotel?.id),
         },
       });
 
-      expect(data!.deleteHotel).toBe('Hotel apagado com sucesso');
+      expect(data?.deleteHotel).toBe('Hotel apagado com sucesso');
     });
   });
 
@@ -88,27 +67,24 @@ describe('Hotel', () => {
     it('should fetch a hotel by id', async () => {
       const client = getClient();
 
-      const { data } = await client.query<
-        GetHotelByIdQuery,
-        GetHotelByIdQueryVariables
-      >({
+      const { data } = await client.query({
         query: GetHotelByIdDocument,
         variables: {
-          id: hotelForTest.hotel!.id,
+          id: String(hotelForTest.hotel?.id),
         },
       });
 
-      expect(data.hotel.id).toBe(hotelForTest.hotel!.id);
+      expect(data.hotel.id).toBe(hotelForTest.hotel?.id);
     });
 
     it('should not fetch a hotel when provided with invalid id', async () => {
       const client = getClient();
 
       try {
-        await client.query<GetHotelByIdQuery, GetHotelByIdQueryVariables>({
+        await client.query({
           query: GetHotelByIdDocument,
           variables: {
-            id: hotelForTest.hotel!.id,
+            id: String(hotelForTest.hotel?.id),
           },
         });
       } catch (error) {
@@ -119,27 +95,24 @@ describe('Hotel', () => {
     it('should fetch an hotel by an slug', async () => {
       const client = getClient();
 
-      const { data } = await client.query<
-        GetHotelBySlugQuery,
-        GetHotelBySlugQueryVariables
-      >({
+      const { data } = await client.query({
         query: GetHotelBySlugDocument,
         variables: {
-          slug: hotelForTest.hotel!.slug,
+          slug: String(hotelForTest.hotel?.slug),
         },
       });
 
-      expect(data.hotelBySlug.slug).toBe(hotelForTest.hotel!.slug);
+      expect(data.hotelBySlug.slug).toBe(hotelForTest.hotel?.slug);
     });
 
     it('should not fetch an hotel when provided with invalid an slug', async () => {
       const client = getClient();
 
       try {
-        await client.query<GetHotelBySlugQuery, GetHotelBySlugQueryVariables>({
+        await client.query({
           query: GetHotelBySlugDocument,
           variables: {
-            slug: hotelForTest.hotel!.slug,
+            slug: String(hotelForTest.hotel?.slug),
           },
         });
       } catch (error) {
@@ -150,24 +123,18 @@ describe('Hotel', () => {
     it('should fetch all hotels of an admin', async () => {
       const client = getClient(adminForTest.token);
 
-      const { data } = await client.query<
-        GetHotelsByAdminQuery,
-        GetHotelsByAdminQueryVariables
-      >({
+      const { data } = await client.query({
         query: GetHotelsByAdminDocument,
       });
 
-      expect(data.hotelsByAdmin!.length).toBe(1);
+      expect(data.hotelsByAdmin?.length).toBe(1);
     });
 
     it('should not fetch hotels of an admin when it is not logged in', async () => {
       const client = getClient();
 
       try {
-        await client.query<
-          GetHotelsByAdminQuery,
-          GetHotelsByAdminQueryVariables
-        >({
+        await client.query({
           query: GetHotelsByAdminDocument,
         });
       } catch (error) {
@@ -179,10 +146,7 @@ describe('Hotel', () => {
       const client = getClient(userForTest.token);
 
       try {
-        await client.query<
-          GetHotelsByAdminQuery,
-          GetHotelsByAdminQueryVariables
-        >({
+        await client.query({
           query: GetHotelsByAdminDocument,
         });
       } catch (error) {

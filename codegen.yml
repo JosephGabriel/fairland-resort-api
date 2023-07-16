@@ -1,7 +1,7 @@
 overwrite: true
 watch: true
-schema: "./src/schemas/*.graphql"
-documents: "./tests/**/*.graphql"
+schema: './src/schemas/*.graphql'
+documents: './tests/**/*.graphql'
 generates:
   tests/generated/graphql.ts:
     config:
@@ -15,7 +15,7 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-generic-sdk
+      - typed-document-node
 
   src/generated/graphql.ts:
     config:
@@ -27,11 +27,11 @@ generates:
         Longitude: number
 
       useIndexSignature: true
-      contextType: "../index#ServerContext"
+      contextType: '../index#ServerContext'
       mappers:
-        User: "../models/models#UserModel"
-        Room: "../models/models#RoomModel"
-        Booking: "../models/models#BookingModel"
+        User: '../models/models#UserModel'
+        Room: '../models/models#RoomModel'
+        Booking: '../models/models#BookingModel'
 
     plugins:
       - typescript
