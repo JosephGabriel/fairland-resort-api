@@ -37,8 +37,6 @@ const isLoggedin: ShieldRule = rule()(
       where: { id: userId.id },
     });
 
-    console.log(userExists, userId.id, header);
-
     if (!userExists) {
       return new GraphQLError('Você não esta logado');
     }
