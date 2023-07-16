@@ -2,8 +2,9 @@ import { GraphQLError } from 'graphql';
 import { chain, rule, shield } from 'graphql-shield';
 import { ShieldRule } from 'graphql-shield/typings/types';
 
-import { ServerContext } from '../.';
 import { verifyToken } from '../utils/token';
+
+import { ServerContext } from '../.';
 
 const hasUser: ShieldRule = rule()(
   async (parent, { data }, { prisma }: ServerContext) => {
