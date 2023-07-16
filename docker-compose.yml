@@ -2,12 +2,12 @@ version: "3"
 
 services:
   database:
-      container_name: prince_postgres_db
-      image: postgres:alpine
-      restart: always
-      ports:
-        - "5432:5432"
-      environment:
-        POSTGRES_USER: "princeuser"
-        POSTGRES_DB: "princedb"
-        POSTGRES_PASSWORD: "princepassword"
+    container_name: fairland_postgres_db
+    image: postgres:alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "fairlanduser"
+      POSTGRES_DB: "fairlanddb"
+      POSTGRES_PASSWORD: "fairlandpassword"
