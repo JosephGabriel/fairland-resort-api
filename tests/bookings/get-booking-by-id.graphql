@@ -1,4 +1,4 @@
-query BookingById($id: ID!) {
+query GetBookingById($id: ID!) {
   booking(id: $id) {
     id
   }

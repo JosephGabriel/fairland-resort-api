@@ -2,40 +2,13 @@ import { getClient, setupDatabase, userForTest } from '../utils/index';
 import bcrypt from 'bcrypt';
 
 import {
-  //Login user
   LoginUserDocument,
-  LoginUserMutation,
-  LoginUserMutationVariables,
-
-  //Create user
   CreateUserDocument,
-  CreateUserMutation,
-  CreateUserMutationVariables,
-
-  //Admin
   CreateAdminDocument,
-  CreateAdminMutation,
-  CreateAdminMutationVariables,
-
-  //Deactvate User
   DeactivateUserDocument,
-  DeactivateUserMutation,
-  DeactivateUserMutationVariables,
-
-  //Update User
   UpdateUserDocument,
-  UpdateUserMutation,
-  UpdateUserMutationVariables,
-
-  //Update User Password
   UpdateUserPasswordDocument,
-  UpdateUserPasswordMutation,
-  UpdateUserPasswordMutationVariables,
-
-  //Verify User
   VerifyUserDocument,
-  VerifyUserMutation,
-  VerifyUserMutationVariables,
 } from '../generated/graphql';
 
 beforeEach(setupDatabase);
@@ -45,14 +18,11 @@ describe('Users', () => {
     it('should login', async () => {
       const client = getClient();
 
-      const { data } = await client.mutate<
-        LoginUserMutation,
-        LoginUserMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: LoginUserDocument,
         variables: {
           data: {
-            email: userForTest.user!.email,
+            email: String(userForTest.user?.email),
             password: userForTest.raw_password,
           },
         },
@@ -65,7 +35,7 @@ describe('Users', () => {
       const client = getClient();
 
       try {
-        await client.mutate<LoginUserMutation, LoginUserMutationVariables>({
+        await client.mutate({
           mutation: LoginUserDocument,
           variables: {
             data: {
@@ -83,11 +53,11 @@ describe('Users', () => {
       const client = getClient();
 
       try {
-        await client.mutate<LoginUserMutation, LoginUserMutationVariables>({
+        await client.mutate({
           mutation: LoginUserDocument,
           variables: {
             data: {
-              email: userForTest.user!.email,
+              email: String(userForTest.user?.email),
               password: 'Wrong_124566499!',
             },
           },
@@ -100,10 +70,7 @@ describe('Users', () => {
     it('should create one user', async () => {
       const client = getClient();
 
-      const { data } = await client.mutate<
-        CreateUserMutation,
-        CreateUserMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: CreateUserDocument,
         variables: {
           data: {
@@ -124,10 +91,7 @@ describe('Users', () => {
       const client = getClient();
 
       try {
-        const { data } = await client.mutate<
-          CreateUserMutation,
-          CreateUserMutationVariables
-        >({
+        await client.mutate({
           mutation: CreateUserDocument,
           variables: {
             data: {
@@ -149,14 +113,11 @@ describe('Users', () => {
       const client = getClient();
 
       try {
-        const { data } = await client.mutate<
-          CreateUserMutation,
-          CreateUserMutationVariables
-        >({
+        await client.mutate({
           mutation: CreateUserDocument,
           variables: {
             data: {
-              email: userForTest.user!.email,
+              email: String(userForTest.user?.email),
               firstName: 'Test2',
               lastName: 'Test2',
               userName: 'Test2',
@@ -175,10 +136,7 @@ describe('Users', () => {
     it('should create one admin', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        CreateAdminMutation,
-        CreateAdminMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: CreateAdminDocument,
         variables: {
           data: {
@@ -192,17 +150,14 @@ describe('Users', () => {
         },
       });
 
-      expect(data!.createAdmin.user.userName).toBe('Admin-test');
+      expect(data?.createAdmin.user.userName).toBe('Admin-test');
     });
 
     it('should not create one admin when passwords do not match', async () => {
       const client = getClient(userForTest.token);
 
       try {
-        const { data } = await client.mutate<
-          CreateAdminMutation,
-          CreateAdminMutationVariables
-        >({
+        await client.mutate({
           mutation: CreateAdminDocument,
           variables: {
             data: {
@@ -224,14 +179,11 @@ describe('Users', () => {
       const client = getClient(userForTest.token);
 
       try {
-        const { data } = await client.mutate<
-          CreateAdminMutation,
-          CreateAdminMutationVariables
-        >({
+        await client.mutate({
           mutation: CreateAdminDocument,
           variables: {
             data: {
-              email: userForTest.user!.email,
+              email: String(userForTest.user?.email),
               firstName: 'Admin-test',
               lastName: 'Admin-test',
               userName: 'Admin-test',
@@ -250,24 +202,18 @@ describe('Users', () => {
     it('should deactivate one user', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        DeactivateUserMutation,
-        DeactivateUserMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: DeactivateUserDocument,
       });
 
-      expect(data!.deactivateUser).toBe('Usuário Desativado');
+      expect(data?.deactivateUser).toBe('Usuário Desativado');
     });
 
     it('should not deactivate one user when there is no header', async () => {
       const client = getClient();
 
       try {
-        const { data } = await client.mutate<
-          DeactivateUserMutation,
-          DeactivateUserMutationVariables
-        >({
+        await client.mutate({
           mutation: DeactivateUserDocument,
         });
       } catch (error) {
@@ -279,10 +225,7 @@ describe('Users', () => {
       const client = getClient('xxxxxxxxxxx');
 
       try {
-        const { data } = await client.mutate<
-          DeactivateUserMutation,
-          DeactivateUserMutationVariables
-        >({
+        await client.mutate({
           mutation: DeactivateUserDocument,
         });
       } catch (error) {
@@ -293,10 +236,7 @@ describe('Users', () => {
     it('should update user', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        UpdateUserMutation,
-        UpdateUserMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: UpdateUserDocument,
         variables: {
           data: {
@@ -306,16 +246,16 @@ describe('Users', () => {
         },
       });
 
-      expect(data!.updateUser.user.firstName).toBe('Updated');
-      expect(data!.updateUser.user.userName).toBe('User');
-      expect(data!.updateUser.user.lastName).toBe(userForTest.user!.lastName);
+      expect(data?.updateUser.user.firstName).toBe('Updated');
+      expect(data?.updateUser.user.userName).toBe('User');
+      expect(data?.updateUser.user.lastName).toBe(userForTest.user?.lastName);
     });
 
     it('should not update user when there is an invalid header', async () => {
       const client = getClient('xxxxxxxx');
 
       try {
-        await client.mutate<UpdateUserMutation, UpdateUserMutationVariables>({
+        await client.mutate({
           mutation: UpdateUserDocument,
           variables: {
             data: {
@@ -333,7 +273,7 @@ describe('Users', () => {
       const client = getClient();
 
       try {
-        await client.mutate<UpdateUserMutation, UpdateUserMutationVariables>({
+        await client.mutate({
           mutation: UpdateUserDocument,
           variables: {
             data: {
@@ -350,10 +290,7 @@ describe('Users', () => {
     it('should update user password', async () => {
       const client = getClient(userForTest.token);
 
-      const { data, errors } = await client.mutate<
-        UpdateUserPasswordMutation,
-        UpdateUserPasswordMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: UpdateUserPasswordDocument,
         variables: {
           data: {
@@ -363,7 +300,7 @@ describe('Users', () => {
         },
       });
 
-      const password = data!.updateUserPassword.user.password;
+      const password = String(data?.updateUserPassword.user.password);
 
       const decodedPassword = await bcrypt.compare('Testing95!', password);
 
@@ -374,10 +311,7 @@ describe('Users', () => {
       const client = getClient(userForTest.token);
 
       try {
-        const { data } = await client.mutate<
-          UpdateUserPasswordMutation,
-          UpdateUserPasswordMutationVariables
-        >({
+        await client.mutate({
           mutation: UpdateUserPasswordDocument,
           variables: {
             data: {
@@ -395,10 +329,7 @@ describe('Users', () => {
       const client = getClient(userForTest.token);
 
       await expect(
-        client.mutate<
-          UpdateUserPasswordMutation,
-          UpdateUserPasswordMutationVariables
-        >({
+        client.mutate({
           mutation: UpdateUserPasswordDocument,
           variables: {
             data: {
@@ -413,14 +344,11 @@ describe('Users', () => {
     it('should verify an user', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        VerifyUserMutation,
-        VerifyUserMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: VerifyUserDocument,
       });
 
-      expect(data!.verifyUser.user.verified).toBe(true);
+      expect(data?.verifyUser.user.verified).toBe(true);
     });
   });
 });

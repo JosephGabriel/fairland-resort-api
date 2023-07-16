@@ -1,4 +1,4 @@
-query BookingsByUser {
+query GetBookingsByUser {
   bookings {
     id
   }

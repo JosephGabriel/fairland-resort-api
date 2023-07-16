@@ -8,18 +8,10 @@ import {
 } from '../utils';
 
 import {
-  CreateBookingMutation,
   CreateBookingDocument,
-  CreateBookingMutationVariables,
   DeleteBookingDocument,
-  DeleteBookingMutation,
-  DeleteBookingMutationVariables,
-  BookingByIdDocument,
-  BookingByIdQuery,
-  BookingByIdQueryVariables,
-  BookingsByUserDocument,
-  BookingsByUserQuery,
-  BookingsByUserQueryVariables,
+  GetBookingByIdDocument,
+  GetBookingsByUserDocument,
 } from '../generated/graphql';
 
 beforeEach(setupDatabase);
@@ -29,39 +21,33 @@ describe('Bookings', () => {
     it('should create a booking', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        CreateBookingMutation,
-        CreateBookingMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: CreateBookingDocument,
         variables: {
           data: {
-            room: roomForTest.room!.id,
-            dateIn: bookingForTest.booking!.dateIn.toString(),
-            dateOut: bookingForTest.booking!.dateOut.toString(),
-            price: bookingForTest.booking!.price,
+            room: String(roomForTest.room?.id),
+            dateIn: String(bookingForTest.booking?.dateIn),
+            dateOut: String(bookingForTest.booking?.dateOut),
+            price: Number(bookingForTest.booking?.price),
           },
         },
       });
 
-      expect(data?.createBooking.room.id).toBe(roomForTest.room!.id);
+      expect(data?.createBooking.room.id).toBe(roomForTest.room?.id);
     });
 
-    it("should not create a booking when doesn't send token", async () => {
+    it('should not create a booking when does not send token', async () => {
       const client = getClient();
 
       try {
-        await client.mutate<
-          CreateBookingMutation,
-          CreateBookingMutationVariables
-        >({
+        await client.mutate({
           mutation: CreateBookingDocument,
           variables: {
             data: {
-              room: roomForTest.room!.id,
-              dateIn: bookingForTest.booking!.dateIn.toString(),
-              dateOut: bookingForTest.booking!.dateOut.toString(),
-              price: bookingForTest.booking!.price,
+              room: String(roomForTest.room?.id),
+              dateIn: String(bookingForTest.booking?.dateIn),
+              dateOut: String(bookingForTest.booking?.dateOut),
+              price: Number(bookingForTest.booking?.price),
             },
           },
         });
@@ -74,17 +60,14 @@ describe('Bookings', () => {
       const client = getClient(userForTest.token);
 
       try {
-        await client.mutate<
-          CreateBookingMutation,
-          CreateBookingMutationVariables
-        >({
+        await client.mutate({
           mutation: CreateBookingDocument,
           variables: {
             data: {
               room: 'test',
-              dateIn: bookingForTest.booking!.dateIn.toString(),
-              dateOut: bookingForTest.booking!.dateOut.toString(),
-              price: bookingForTest.booking!.price,
+              dateIn: String(bookingForTest.booking?.dateIn),
+              dateOut: String(bookingForTest.booking?.dateOut),
+              price: Number(bookingForTest.booking?.price),
             },
           },
         });
@@ -96,13 +79,10 @@ describe('Bookings', () => {
     it('should cancel a booking', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        DeleteBookingMutation,
-        DeleteBookingMutationVariables
-      >({
+      const { data } = await client.mutate({
         mutation: DeleteBookingDocument,
         variables: {
-          id: bookingForTest.booking!.id,
+          id: String(bookingForTest.booking?.id),
         },
       });
 
@@ -113,10 +93,7 @@ describe('Bookings', () => {
       const client = getClient(userForTest.token);
 
       try {
-        await client.mutate<
-          DeleteBookingMutation,
-          DeleteBookingMutationVariables
-        >({
+        await client.mutate({
           mutation: DeleteBookingDocument,
           variables: {
             id: 'test',
@@ -127,17 +104,14 @@ describe('Bookings', () => {
       }
     });
 
-    it("should not cancel a booking when it doesn't belong to user", async () => {
+    it('should not cancel a booking when it does not belong to user', async () => {
       const client = getClient(adminForTest.token);
 
       try {
-        await client.mutate<
-          DeleteBookingMutation,
-          DeleteBookingMutationVariables
-        >({
+        await client.mutate({
           mutation: DeleteBookingDocument,
           variables: {
-            id: bookingForTest.booking!.id,
+            id: String(bookingForTest.booking?.id),
           },
         });
       } catch (error) {
@@ -149,25 +123,22 @@ describe('Bookings', () => {
     it('should fetch a booking', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        BookingByIdQuery,
-        BookingByIdQueryVariables
-      >({
-        mutation: BookingByIdDocument,
+      const { data } = await client.mutate({
+        mutation: GetBookingByIdDocument,
         variables: {
-          id: bookingForTest.booking!.id,
+          id: String(bookingForTest.booking?.id),
         },
       });
 
-      expect(data?.booking.id).toBe(bookingForTest.booking!.id);
+      expect(data?.booking.id).toBe(bookingForTest.booking?.id);
     });
 
     it('should not fetch a booking when provided a invalid id', async () => {
       const client = getClient(userForTest.token);
 
       try {
-        await client.mutate<BookingByIdQuery, BookingByIdQueryVariables>({
-          mutation: BookingByIdDocument,
+        await client.mutate({
+          mutation: GetBookingByIdDocument,
           variables: {
             id: 'cdcrcko',
           },
@@ -181,10 +152,10 @@ describe('Bookings', () => {
       const client = getClient();
 
       try {
-        await client.mutate<BookingByIdQuery, BookingByIdQueryVariables>({
-          mutation: BookingByIdDocument,
+        await client.mutate({
+          mutation: GetBookingByIdDocument,
           variables: {
-            id: bookingForTest.booking!.id,
+            id: String(bookingForTest.booking?.id),
           },
         });
       } catch (error) {
@@ -196,10 +167,10 @@ describe('Bookings', () => {
       const client = getClient(adminForTest.token);
 
       try {
-        await client.mutate<BookingByIdQuery, BookingByIdQueryVariables>({
-          mutation: BookingByIdDocument,
+        await client.mutate({
+          mutation: GetBookingByIdDocument,
           variables: {
-            id: bookingForTest.booking!.id,
+            id: String(bookingForTest.booking?.id),
           },
         });
       } catch (error) {
@@ -210,11 +181,8 @@ describe('Bookings', () => {
     it('should fetch bookings of an user', async () => {
       const client = getClient(userForTest.token);
 
-      const { data } = await client.mutate<
-        BookingsByUserQuery,
-        BookingsByUserQueryVariables
-      >({
-        mutation: BookingsByUserDocument,
+      const { data } = await client.mutate({
+        mutation: GetBookingsByUserDocument,
       });
 
       expect(data?.bookings.length).toBe(1);
@@ -224,8 +192,8 @@ describe('Bookings', () => {
       const client = getClient();
 
       try {
-        await client.mutate<BookingsByUserQuery, BookingsByUserQueryVariables>({
-          mutation: BookingsByUserDocument,
+        await client.mutate({
+          mutation: GetBookingsByUserDocument,
         });
       } catch (error) {
         expect(error.graphQLErrors[0].message).toBe('Você não esta logado');
