@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql';
 import { Queries } from './types';
 
 export const RoomQueries: Queries = {
-  async room(parent, { id }, { prisma }, info) {
+  async room(parent, { id }, { prisma }) {
     const room = await prisma.room.findUnique({ where: { id } });
 
     if (!room) {
@@ -13,7 +13,7 @@ export const RoomQueries: Queries = {
     return room;
   },
 
-  async rooms(parent, { filter }, { prisma }, info) {
+  async rooms(parent, { filter }, { prisma }) {
     const rooms = await prisma.room.findMany({
       where: {
         price: {
@@ -30,7 +30,7 @@ export const RoomQueries: Queries = {
     return rooms;
   },
 
-  async roomsByHotel(parent, { hotel }, { prisma }, info) {
+  async roomsByHotel(parent, { hotel }, { prisma }) {
     const rooms = await prisma.room.findMany({
       where: {
         hotel: {
