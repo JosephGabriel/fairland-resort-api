@@ -10,10 +10,10 @@ type Query {
   hotel(id: ID!): Hotel!
 
   "Usada para buscar hotéis"
-  hotels: [Hotel!]
+  hotels: [Hotel!]!
 
   "Usada para buscar um hotel pelo slug"
-  hotelsByAdmin: [Hotel!]
+  hotelsByAdmin: [Hotel!]!
 
   "Usada para buscar um hotel pelo slug"
   hotelBySlug(slug: String!): Hotel!
@@ -23,10 +23,10 @@ type Query {
   room(id: ID!): Room!
 
   "Usada para buscar um hotel pelo slug"
-  rooms(filter: RoomFilter): [Room!]
+  rooms(filter: RoomFilter): [Room!]!
 
   "Usada para buscar um hotel pelo id do hotel"
-  roomsByHotel(hotel: ID!): [Room!]
+  roomsByHotel(hotel: ID!): [Room!]!
 
   ########## Reservas ################
   "Usada para buscar uma reserva pelo id"
