@@ -4,7 +4,20 @@ scalar Longitude
 scalar Password
 scalar EmailAddress
 
+# scalar Upload
+
+# type FileUpload {
+#   file: Upload!
+# }
+
+# type ImageUrl {
+#   url: String!
+# }
+
+# union Media = FileUpload | ImageUrl
+
 type Query {
+  # images: [Media!]!
   ########## Hotel ################
   "Usada para buscar um hotel pelo id"
   hotel(id: ID!): Hotel!

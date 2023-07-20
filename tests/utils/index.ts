@@ -46,6 +46,20 @@ export const hotelInput = {
   city: 'Qualquer',
 };
 
+export const roomInput = {
+  name: 'Standard Room',
+  summary: 'A comfortable room with essential amenities',
+  thumbnail: 'https://example.com/thumbnail.jpg',
+  description:
+    'This room includes a queen-size bed, a private bathroom, and complimentary Wi-Fi.',
+  images: [
+    'https://example.com/image1.jpg',
+    'https://example.com/image2.jpg',
+    'https://example.com/image3.jpg',
+  ],
+  price: 100.0,
+};
+
 export const getClient = (authHeader?: string) =>
   authHeader
     ? new ApolloClient({
@@ -69,13 +83,13 @@ export const getClient = (authHeader?: string) =>
 export const userForTest: userForTest = {
   user: null,
   token: '',
-  raw_password: 'Daredevil95!',
+  raw_password: 'Aknckri44!',
 };
 
 export const adminForTest: userForTest = {
   user: null,
   token: '',
-  raw_password: 'Daredevil95!',
+  raw_password: 'Aknckri44!',
 };
 
 export const hotelForTest: hotelForTest = {
@@ -158,17 +172,7 @@ export const setupDatabase = async () => {
 
   const room = await prisma.room.create({
     data: {
-      name: 'Standard Room',
-      summary: 'A comfortable room with essential amenities',
-      thumbnail: 'https://example.com/thumbnail.jpg',
-      description:
-        'This room includes a queen-size bed, a private bathroom, and complimentary Wi-Fi.',
-      images: [
-        'https://example.com/image1.jpg',
-        'https://example.com/image2.jpg',
-        'https://example.com/image3.jpg',
-      ],
-      price: 100.0,
+      ...roomInput,
       rating: 4.0,
       hotel: {
         connect: {

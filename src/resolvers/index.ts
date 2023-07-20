@@ -9,6 +9,7 @@ import { Resolvers } from '../generated/graphql';
 import { UserMutations } from './users/mutations';
 import { HotelMutations } from './hotels/mutations';
 import { BookingMutations } from './bookings/mutations';
+import { RoomMutations } from './rooms/mutations';
 
 import { HotelQueries } from './hotels/query';
 import { RoomQueries } from './rooms/query';
@@ -24,6 +25,7 @@ export const resolvers: Resolvers = {
     ...UserMutations,
     ...HotelMutations,
     ...BookingMutations,
+    ...RoomMutations,
   },
   Latitude: GraphQLLatitude,
   Longitude: GraphQLLongitude,

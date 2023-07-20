@@ -80,6 +80,9 @@ export const permisions = shield(
       createHotel: chain(isLoggedin, isAdmin),
       updateHotel: chain(isLoggedin, isAdmin),
       deleteHotel: chain(isLoggedin, isAdmin),
+      createRoom: chain(isLoggedin, isAdmin),
+      updateRoom: chain(isLoggedin, isAdmin),
+      deleteRoom: chain(isLoggedin, isAdmin),
     },
     Query: {
       booking: isLoggedin,
