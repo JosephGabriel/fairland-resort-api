@@ -19,7 +19,11 @@ export const HotelQueries: Queries = {
   },
 
   async hotels(parent, args, { prisma }) {
-    const hotels = await prisma.hotel.findMany();
+    const hotels = await prisma.hotel.findMany({
+      include: {
+        room: true,
+      },
+    });
 
     return hotels;
   },
@@ -47,6 +51,9 @@ export const HotelQueries: Queries = {
         admin: {
           id: user.id,
         },
+      },
+      include: {
+        room: true,
       },
     });
 
