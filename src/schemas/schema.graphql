@@ -17,7 +17,6 @@ scalar EmailAddress
 # union Media = FileUpload | ImageUrl
 
 type Query {
-  # images: [Media!]!
   ########## Hotel ################
   "Usada para buscar um hotel pelo id"
   hotel(id: ID!): Hotel!
