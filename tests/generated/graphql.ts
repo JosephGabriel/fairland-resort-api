@@ -115,7 +115,7 @@ export type Hotel = {
   /** Classificação do hotel ex: 5 estrelas */
   rating?: Maybe<Scalars['Int']>;
   /** Array com os quartos do hotel */
-  rooms?: Maybe<Array<Room>>;
+  rooms: Array<Room>;
   /** Slug do hotel baseado no nome */
   slug: Scalars['String'];
   /** Estado do hotel */

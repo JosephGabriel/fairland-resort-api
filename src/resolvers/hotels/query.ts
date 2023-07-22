@@ -7,7 +7,7 @@ export const HotelQueries: Queries = {
     const hotel = await prisma.hotel.findUnique({
       where: { id },
       include: {
-        room: true,
+        rooms: true,
       },
     });
 
@@ -21,7 +21,7 @@ export const HotelQueries: Queries = {
   async hotels(parent, args, { prisma }) {
     const hotels = await prisma.hotel.findMany({
       include: {
-        room: true,
+        rooms: true,
       },
     });
 
@@ -34,7 +34,7 @@ export const HotelQueries: Queries = {
         slug,
       },
       include: {
-        room: true,
+        rooms: true,
       },
     });
 
@@ -53,7 +53,7 @@ export const HotelQueries: Queries = {
         },
       },
       include: {
-        room: true,
+        rooms: true,
       },
     });
 

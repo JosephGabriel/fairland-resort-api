@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql';
 import { Queries } from './types';
 
 export const BookingQueries: Queries = {
-  async booking(parent, { id }, { prisma, user }, info) {
+  async booking(parent, { id }, { prisma, user }) {
     const booking = await prisma.booking.findUnique({
       where: {
         id: id,
@@ -19,7 +19,7 @@ export const BookingQueries: Queries = {
 
     return booking;
   },
-  async bookings(parent, args, { prisma, user }, info) {
+  async bookings(parent, args, { prisma, user }) {
     const bookings = await prisma.booking.findMany({
       where: {
         userId: user.id,

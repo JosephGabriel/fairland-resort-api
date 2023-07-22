@@ -119,7 +119,7 @@ export type Hotel = {
   /** Classificação do hotel ex: 5 estrelas */
   rating?: Maybe<Scalars['Int']>;
   /** Array com os quartos do hotel */
-  rooms?: Maybe<Array<Room>>;
+  rooms: Array<Room>;
   /** Slug do hotel baseado no nome */
   slug: Scalars['String'];
   /** Estado do hotel */
@@ -485,7 +485,7 @@ export type ResolversTypes = ResolversObject<{
   CreateUserInput: CreateUserInput;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
-  Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms?: Maybe<Array<ResolversTypes['Room']>> }>;
+  Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
@@ -518,7 +518,7 @@ export type ResolversParentTypes = ResolversObject<{
   CreateUserInput: CreateUserInput;
   EmailAddress: Scalars['EmailAddress'];
   Float: Scalars['Float'];
-  Hotel: Omit<Hotel, 'rooms'> & { rooms?: Maybe<Array<ResolversParentTypes['Room']>> };
+  Hotel: Omit<Hotel, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Latitude: Scalars['Latitude'];
@@ -574,7 +574,7 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neighborhood?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  rooms?: Resolver<Maybe<Array<ResolversTypes['Room']>>, ParentType, ContextType>;
+  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

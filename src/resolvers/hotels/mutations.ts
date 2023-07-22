@@ -17,7 +17,7 @@ export const HotelMutations: Mutations = {
       },
       include: {
         admin: true,
-        room: true,
+        rooms: true,
       },
     });
 
@@ -38,6 +38,9 @@ export const HotelMutations: Mutations = {
       data: {
         ...data,
       },
+      include: {
+        rooms: true,
+      }
     });
 
     return updatedHotel;

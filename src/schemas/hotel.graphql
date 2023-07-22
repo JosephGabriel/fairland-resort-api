@@ -59,7 +59,7 @@ type Hotel {
   city: String!
 
   "Array com os quartos do hotel"
-  rooms: [Room!]
+  rooms: [Room!]!
 }
 
 input CreateHotelInput {
