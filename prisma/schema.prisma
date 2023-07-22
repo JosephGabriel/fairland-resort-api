@@ -25,7 +25,7 @@ model User {
   updatedAt         DateTime? @updatedAt
   bookings          Booking[]
   reviews           Review[]
-  hotel             Hotel[]
+  hotels            Hotel[]
 }
 
 enum userRole {
@@ -55,7 +55,7 @@ model Hotel {
   state         String
   city          String
 
-  room   Room[]
+  rooms  Room[]
   admin  User   @relation(fields: [userId], references: [id])
   userId String
 }
@@ -70,10 +70,10 @@ model Room {
   images      String[]
   price       Float
   rating      Int       @default(0)
-  hotelId     String?
-  hotel       Hotel?    @relation(fields: [hotelId], references: [id])
+  hotelId     String
+  hotel       Hotel     @relation(fields: [hotelId], references: [id])
   bookings    Booking[]
-  Review      Review[]
+  reviews     Review[]
 }
 
 //    Reservas    //
