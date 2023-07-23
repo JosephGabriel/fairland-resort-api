@@ -11,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
   EmailAddress: string;
   Latitude: number;
   Longitude: number;
@@ -96,6 +97,7 @@ export type Hotel = {
   addressNumber: Scalars['String'];
   /** Cidade do hotel */
   city: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
   /** A descrição do hotel */
   description: Scalars['String'];
   /** Id do hotel */
@@ -124,6 +126,7 @@ export type Hotel = {
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do hotel */
   thumbnail: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
   /** Cep do hotel */
   zipCode: Scalars['PostalCode'];
 };
@@ -234,6 +237,17 @@ export type MutationUpdateUserPasswordArgs = {
   data: UpdateUserPasswordInput;
 };
 
+export type Options = {
+  orderBy: OrderBy;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+};
+
+export enum OrderBy {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
 export type Query = {
   __typename?: 'Query';
   /** Usada para buscar uma reserva pelo id */
@@ -246,7 +260,7 @@ export type Query = {
   hotelBySlug: Hotel;
   /** Usada para buscar hotéis */
   hotels: Array<Hotel>;
-  /** Usada para buscar um hotel pelo slug */
+  /** Usada para buscar um hotel pelo id do admin */
   hotelsByAdmin: Array<Hotel>;
   /** Usada para buscar um quarto pelo id */
   room: Room;
@@ -264,6 +278,7 @@ export type QueryBookingArgs = {
 
 export type QueryHotelArgs = {
   id: Scalars['ID'];
+  options?: InputMaybe<Options>;
 };
 
 

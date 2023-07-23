@@ -60,6 +60,10 @@ type Hotel {
 
   "Array com os quartos do hotel"
   rooms: [Room!]!
+
+  createdAt: DateTime
+
+  updatedAt: DateTime
 }
 
 input CreateHotelInput {

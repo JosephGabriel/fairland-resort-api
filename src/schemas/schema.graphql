@@ -3,6 +3,7 @@ scalar PostalCode
 scalar Longitude
 scalar Password
 scalar EmailAddress
+scalar DateTime
 
 # scalar Upload
 
@@ -19,12 +20,12 @@ scalar EmailAddress
 type Query {
   ########## Hotel ################
   "Usada para buscar um hotel pelo id"
-  hotel(id: ID!): Hotel!
+  hotel(id: ID!, options: Options): Hotel!
 
   "Usada para buscar hotéis"
   hotels: [Hotel!]!
 
-  "Usada para buscar um hotel pelo slug"
+  "Usada para buscar um hotel pelo id do admin"
   hotelsByAdmin: [Hotel!]!
 
   "Usada para buscar um hotel pelo slug"
@@ -97,4 +98,15 @@ type Mutation {
 
   "Usada para cancelar uma reserva"
   deleteBooking(id: ID!): String!
+}
+
+input Options {
+  skip: Int!
+  take: Int!
+  orderBy: OrderBy!
+}
+
+enum OrderBy {
+  asc
+  desc
 }

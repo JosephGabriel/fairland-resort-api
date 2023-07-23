@@ -3,11 +3,17 @@ import { GraphQLError } from 'graphql';
 import { Queries } from './types';
 
 export const HotelQueries: Queries = {
-  async hotel(parent, { id }, { prisma }) {
+  async hotel(parent, { id, options }, { prisma }) {
     const hotel = await prisma.hotel.findUnique({
       where: { id },
       include: {
-        rooms: true,
+        rooms: {
+          take: options.take,
+          skip: options.skip,
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
 

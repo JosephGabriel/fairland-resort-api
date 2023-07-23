@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
   EmailAddress: string;
   Latitude: number;
   Longitude: number;
@@ -100,6 +101,7 @@ export type Hotel = {
   addressNumber: Scalars['String'];
   /** Cidade do hotel */
   city: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
   /** A descrição do hotel */
   description: Scalars['String'];
   /** Id do hotel */
@@ -128,6 +130,7 @@ export type Hotel = {
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do hotel */
   thumbnail: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
   /** Cep do hotel */
   zipCode: Scalars['PostalCode'];
 };
@@ -238,6 +241,17 @@ export type MutationUpdateUserPasswordArgs = {
   data: UpdateUserPasswordInput;
 };
 
+export type Options = {
+  orderBy: OrderBy;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+};
+
+export enum OrderBy {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
 export type Query = {
   __typename?: 'Query';
   /** Usada para buscar uma reserva pelo id */
@@ -250,7 +264,7 @@ export type Query = {
   hotelBySlug: Hotel;
   /** Usada para buscar hotéis */
   hotels: Array<Hotel>;
-  /** Usada para buscar um hotel pelo slug */
+  /** Usada para buscar um hotel pelo id do admin */
   hotelsByAdmin: Array<Hotel>;
   /** Usada para buscar um quarto pelo id */
   room: Room;
@@ -268,6 +282,7 @@ export type QueryBookingArgs = {
 
 export type QueryHotelArgs = {
   id: Scalars['ID'];
+  options?: InputMaybe<Options>;
 };
 
 
@@ -483,6 +498,7 @@ export type ResolversTypes = ResolversObject<{
   CreateHotelInput: CreateHotelInput;
   CreateRoomInput: CreateRoomInput;
   CreateUserInput: CreateUserInput;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
@@ -492,6 +508,8 @@ export type ResolversTypes = ResolversObject<{
   LoginUserInput: LoginUserInput;
   Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Options: Options;
+  OrderBy: OrderBy;
   Password: ResolverTypeWrapper<Scalars['Password']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Query: ResolverTypeWrapper<{}>;
@@ -516,6 +534,7 @@ export type ResolversParentTypes = ResolversObject<{
   CreateHotelInput: CreateHotelInput;
   CreateRoomInput: CreateRoomInput;
   CreateUserInput: CreateUserInput;
+  DateTime: Scalars['DateTime'];
   EmailAddress: Scalars['EmailAddress'];
   Float: Scalars['Float'];
   Hotel: Omit<Hotel, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
@@ -525,6 +544,7 @@ export type ResolversParentTypes = ResolversObject<{
   LoginUserInput: LoginUserInput;
   Longitude: Scalars['Longitude'];
   Mutation: {};
+  Options: Options;
   Password: Scalars['Password'];
   PostalCode: Scalars['PostalCode'];
   Query: {};
@@ -557,6 +577,10 @@ export type BookingResolvers<ContextType = ServerContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
 export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
@@ -565,6 +589,7 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   addressNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   images?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
@@ -579,6 +604,7 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   thumbnail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   zipCode?: Resolver<ResolversTypes['PostalCode'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -671,6 +697,7 @@ export type UserResolvers<ContextType = ServerContext, ParentType extends Resolv
 export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   AuthPayload?: AuthPayloadResolvers<ContextType>;
   Booking?: BookingResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
   Hotel?: HotelResolvers<ContextType>;
   Latitude?: GraphQLScalarType;
