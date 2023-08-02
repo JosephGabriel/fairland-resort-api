@@ -11,7 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
+  DateTime: Date;
   EmailAddress: string;
   Latitude: number;
   Longitude: number;
@@ -238,9 +238,9 @@ export type MutationUpdateUserPasswordArgs = {
 };
 
 export type Options = {
-  orderBy: OrderBy;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
+  orderBy?: InputMaybe<OrderBy>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export enum OrderBy {
@@ -278,12 +278,17 @@ export type QueryBookingArgs = {
 
 export type QueryHotelArgs = {
   id: Scalars['ID'];
-  options?: InputMaybe<Options>;
+  roomOptions?: InputMaybe<Options>;
 };
 
 
 export type QueryHotelBySlugArgs = {
   slug: Scalars['String'];
+};
+
+
+export type QueryHotelsArgs = {
+  roomOptions?: InputMaybe<Options>;
 };
 
 
@@ -317,6 +322,8 @@ export type Review = {
 
 export type Room = {
   __typename?: 'Room';
+  /** Data em que foi criado */
+  createdAt: Scalars['DateTime'];
   /** Uma descrição do quarto */
   description: Scalars['String'];
   /** Hotel a qual o quarto pertence */
@@ -335,6 +342,8 @@ export type Room = {
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do quarto */
   thumbnail: Scalars['String'];
+  /** Data da ultima atualização */
+  updatedAt: Scalars['DateTime'];
 };
 
 export type RoomFilter = {

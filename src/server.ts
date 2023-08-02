@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 import { app, yoga } from './index';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
 

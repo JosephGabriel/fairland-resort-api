@@ -25,6 +25,12 @@ type Room {
 
   "Hotel a qual o quarto pertence"
   hotel: Hotel!
+
+  "Data em que foi criado"
+  createdAt: DateTime!
+
+  "Data da ultima atualização"
+  updatedAt: DateTime!
 }
 
 input CreateRoomInput {

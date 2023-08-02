@@ -20,10 +20,10 @@ scalar DateTime
 type Query {
   ########## Hotel ################
   "Usada para buscar um hotel pelo id"
-  hotel(id: ID!, options: Options): Hotel!
+  hotel(id: ID!, roomOptions: Options): Hotel!
 
   "Usada para buscar hotéis"
-  hotels: [Hotel!]!
+  hotels(roomOptions: Options): [Hotel!]!
 
   "Usada para buscar um hotel pelo id do admin"
   hotelsByAdmin: [Hotel!]!
@@ -101,9 +101,9 @@ type Mutation {
 }
 
 input Options {
-  skip: Int!
-  take: Int!
-  orderBy: OrderBy!
+  skip: Int
+  take: Int
+  orderBy: OrderBy
 }
 
 enum OrderBy {

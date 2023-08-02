@@ -10,22 +10,24 @@ datasource db {
 
 //  Usuários    //
 model User {
-  id                String    @id @default(uuid())
+  id                String   @id @default(uuid())
   firstName         String
   lastName          String
-  userName          String    @unique
-  email             String    @unique
+  userName          String   @unique
+  email             String   @unique
   avatar            String?
   password          String
   passwordChangedAt String?
-  role              userRole  @default(USER)
-  active            Boolean   @default(true)
-  verified          Boolean   @default(false)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  bookings          Booking[]
-  reviews           Review[]
-  hotels            Hotel[]
+  role              userRole @default(USER)
+  active            Boolean  @default(true)
+  verified          Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings Booking[]
+  reviews  Review[]
+  hotels   Hotel[]
 }
 
 enum userRole {

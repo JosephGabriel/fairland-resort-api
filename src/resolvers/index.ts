@@ -3,6 +3,7 @@ import { GraphQLLatitude } from '../scalars/latitude';
 import { GraphQLLongitude } from '../scalars/longitude';
 import { GraphQLPassword } from '../scalars/password';
 import { GraphQLPostalCode } from '../scalars/postal';
+import { GraphQLDateTime } from '../scalars/datetime';
 
 import { Resolvers } from '../generated/graphql';
 
@@ -32,4 +33,5 @@ export const resolvers: Resolvers = {
   EmailAddress: GraphQLEmailAddress,
   Password: GraphQLPassword,
   PostalCode: GraphQLPostalCode,
+  DateTime: GraphQLDateTime,
 };

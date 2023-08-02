@@ -1,29 +1,35 @@
-import { GraphQLScalarType, Kind, ValueNode } from 'graphql';
+import { GraphQLError, GraphQLScalarType, Kind, ValueNode } from 'graphql';
 
-const serialize = (value) => {
-  if (value instanceof Date) {
-    return value.getTime(); // Convert outgoing Date to integer for JSON
+const serialize = (value: Date) => {
+  const isDate = value instanceof Date;
+
+  if (!isDate) {
+    throw new GraphQLError(
+      'GraphQL Date Scalar serializer expected a `Date` object'
+    );
   }
-  throw Error('GraphQL Date Scalar serializer expected a `Date` object');
+
+  return new Date(value).toLocaleDateString('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+  });
 };
 
-const parseValue = (value) => {
-  if (typeof value === 'number') {
-    return new Date(value); // Convert incoming integer to Date
+const parseValue = (value: Date) => {
+  if (typeof value !== 'string') {
+    throw new GraphQLError('GraphQL Date Scalar parser expected a `date`');
   }
-  throw new Error('GraphQL Date Scalar parser expected a `number`');
+  return new Date(value);
 };
 
-const parseLiteral = (value: ValueNode) => {
-  if (value.kind === Kind.STRING) {
-    // Convert hard-coded AST string to integer and then to Date
-    return new Date(parseInt(value.value, 10));
+const parseLiteral = (ast: ValueNode) => {
+  if (ast.kind !== Kind.STRING) {
+    throw new GraphQLError(`Can only parse strings but got ${ast.kind}`);
   }
-  // Invalid hard-coded value (not an integer)
-  return null;
+
+  return new Date(ast.value);
 };
 
-export const dateScalar = new GraphQLScalarType({
+export const GraphQLDateTime = new GraphQLScalarType({
   name: 'DateTime',
   description: 'DateTime custom scalar type',
   serialize,
