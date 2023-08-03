@@ -4,7 +4,7 @@ declare global {
   let expressServer: Server;
 
   namespace NodeJS {
-    export interface ProcessEnv {
+    interface ProcessEnv {
       PORT: string;
       NODE_ENV: 'production' | 'development' | 'testing';
       SENDGRID_API_KEY: string;
@@ -13,3 +13,5 @@ declare global {
     }
   }
 }
+
+export {};

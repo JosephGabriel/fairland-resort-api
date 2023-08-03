@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import { app, yoga } from './index';
+import { app, yoga } from '@src/.';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();

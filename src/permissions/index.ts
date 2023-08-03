@@ -2,9 +2,9 @@ import { GraphQLError } from 'graphql';
 import { chain, rule, shield } from 'graphql-shield';
 import { ShieldRule } from 'graphql-shield/typings/types';
 
-import { verifyToken } from '../utils/token';
+import { verifyToken } from '@utils/token';
 
-import { ServerContext } from '../.';
+import { ServerContext } from '@src/.';
 
 const hasUser: ShieldRule = rule()(
   async (parent, { data }, { prisma }: ServerContext) => {
@@ -66,7 +66,7 @@ const isAdmin: ShieldRule = rule()(async (parent, args, { user }) => {
   return new GraphQLError('É necessário um administrador para continuar');
 });
 
-export const permisions = shield(
+export const permissions = shield(
   {
     Mutation: {
       createUser: hasUser,

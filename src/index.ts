@@ -4,16 +4,16 @@ import { YogaInitialContext, createSchema, createYoga } from 'graphql-yoga';
 import express from 'express';
 import cors from 'cors';
 
-import { permisions } from './permisions';
-import { resolvers } from './resolvers';
-import { typeDefs } from './schemas';
+import { permissions } from '@permissions/.';
+import { resolvers } from '@resolvers/.';
+import { typeDefs } from '@schemas/.';
 
 import {
   upload,
   uploadImage,
   uploadImages,
   uploadUserAvatar,
-} from './utils/upload';
+} from '@utils/upload';
 
 export const prisma = new PrismaClient();
 
@@ -28,7 +28,7 @@ const schema = createSchema({
 });
 
 export const yoga = createYoga<ServerContext>({
-  schema: applyMiddleware(schema, permisions),
+  schema: applyMiddleware(schema, permissions),
   context: (context) => ({
     prisma,
     ...context,
