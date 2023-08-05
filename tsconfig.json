@@ -9,7 +9,6 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"],
       "@generated/*": ["src/generated/*"],
       "@models/*": ["src/models/*"],
       "@resolvers/*": ["src/resolvers/*"],
