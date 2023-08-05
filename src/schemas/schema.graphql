@@ -35,11 +35,11 @@ type Query {
   "Usada para buscar um quarto pelo id"
   room(id: ID!): Room!
 
-  "Usada para buscar um hotel pelo slug"
+  "Usada para buscar um quartos"
   rooms(filter: RoomFilter): [Room!]!
 
-  "Usada para buscar um hotel pelo id do hotel"
-  roomsByHotel(hotel: ID!): [Room!]!
+  "Usada para buscar quartos pelo id do hotel"
+  roomsByHotel(hotel: ID!, options: Options): [Room!]!
 
   ########## Reservas ################
   "Usada para buscar uma reserva pelo id"

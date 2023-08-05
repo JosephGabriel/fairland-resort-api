@@ -38,12 +38,20 @@ export const RoomQueries: Queries = {
     return rooms;
   },
 
-  async roomsByHotel(parent, { hotel }, { prisma }) {
+  async roomsByHotel(parent, { hotel, options }, { prisma }) {
     const rooms = await prisma.room.findMany({
+      orderBy: {
+        createdAt: options.orderBy,
+      },
+      skip: options.skip,
+      take: options.take,
       where: {
         hotel: {
           id: hotel,
         },
+      },
+      include: {
+        hotel: true,
       },
     });
 

@@ -268,9 +268,9 @@ export type Query = {
   hotelsByAdmin: Array<Hotel>;
   /** Usada para buscar um quarto pelo id */
   room: Room;
-  /** Usada para buscar um hotel pelo slug */
+  /** Usada para buscar um quartos */
   rooms: Array<Room>;
-  /** Usada para buscar um hotel pelo id do hotel */
+  /** Usada para buscar quartos pelo id do hotel */
   roomsByHotel: Array<Room>;
 };
 
@@ -308,6 +308,7 @@ export type QueryRoomsArgs = {
 
 export type QueryRoomsByHotelArgs = {
   hotel: Scalars['ID'];
+  options?: InputMaybe<Options>;
 };
 
 export type Review = {

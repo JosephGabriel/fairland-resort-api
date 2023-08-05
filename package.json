@@ -7,7 +7,7 @@
     "start": "node dist/server",
     "build": "tsc --build",
     "prestart": "npx prisma migrate deploy && npx prisma db push",
-    "dev": "nodemon -r tsconfig-paths/register src/server --ext graphql,ts",
+    "dev": "NODE_ENV=development nodemon -r tsconfig-paths/register src/server --ext graphql,ts",
     "test": "npx jest ----runInBand --watchAll",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -54,6 +54,7 @@
     "@types/express": "^4.17.13",
     "@types/graphql-upload": "^8.0.11",
     "@types/jest": "^29.5.2",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.11.10",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
@@ -67,6 +68,7 @@
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.0",
     "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^4.9.3"
   }
 }

@@ -16,21 +16,17 @@ export const signUpToken = async (payload: string): Promise<string> => {
 export const verifyToken = async (header: string): Promise<IJsonWebToken> => {
   const payload = header.replace('Bearer ', '');
 
-  return new Promise<IJsonWebToken>((res, rej) => {
-    jwt.verify(payload, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        switch (err.message) {
-          case 'jwt expired':
-            return rej(
-              new GraphQLError('Token expirado, faça login novamente')
-            );
+  try {
+    const decoded = await jwt.verify(payload, process.env.JWT_SECRET);
 
-          default:
-            return rej(new GraphQLError('Token inválido'));
-        }
-      }
+    return decoded as IJsonWebToken;
+  } catch (error) {
+    switch (error.message) {
+      case 'jwt expired':
+        throw new GraphQLError('Token expirado, faça login novamente');
 
-      res(decoded as IJsonWebToken);
-    });
-  });
+      default:
+        throw new GraphQLError('Token inválido');
+    }
+  }
 };
