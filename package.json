@@ -11,6 +11,15 @@
     "test": "npx jest ----runInBand --watchAll",
     "codegen": "graphql-codegen --config codegen.yml"
   },
+  "_moduleAliases": {
+    "@generated": "dist/src/generated",
+    "@models": "dist/src/models",
+    "@resolvers": "dist/src/resolvers",
+    "@permissions": "dist/src/permissions",
+    "@scalars": "dist/src/scalars",
+    "@utils": "dist/src/utils",
+    "@schemas": "dist/src/schemas"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -32,6 +41,7 @@
     "graphql-yoga": "^3.3.0",
     "is-valid-coordinates": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.3",
     "multer": "^1.4.5-lts.1",
     "prisma": "4.6.1",
     "sharp": "^0.29.3",
