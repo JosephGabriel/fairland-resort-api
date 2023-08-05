@@ -12,13 +12,13 @@
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "_moduleAliases": {
-    "@generated": "dist/src/generated",
-    "@models": "dist/src/models",
-    "@resolvers": "dist/src/resolvers",
-    "@permissions": "dist/src/permissions",
-    "@scalars": "dist/src/scalars",
-    "@utils": "dist/src/utils",
-    "@schemas": "dist/src/schemas"
+    "@generated": "dist/generated",
+    "@models": "dist/models",
+    "@resolvers": "dist/resolvers",
+    "@permissions": "dist/permissions",
+    "@scalars": "dist/scalars",
+    "@utils": "dist/utils",
+    "@schemas": "dist/schemas"
   },
   "keywords": [],
   "author": "",
