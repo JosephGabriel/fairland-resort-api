@@ -1,7 +1,7 @@
 import { PrismaClient, User } from '@prisma/client';
 import { applyMiddleware } from 'graphql-middleware';
 import { YogaInitialContext, createSchema, createYoga } from 'graphql-yoga';
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import cors from 'cors';
 
 import { permissions } from '@permissions/.';
@@ -41,8 +41,7 @@ app.use(cors());
 
 app.use(express.static('uploads'));
 
-// @ts-expect-error ...
-app.use(yoga.graphqlEndpoint, yoga);
+app.use(yoga.graphqlEndpoint, yoga as RequestHandler);
 
 app.post('/uploads/avatar', upload.single('avatar'), uploadUserAvatar);
 

@@ -8,7 +8,6 @@
     "lib": ["ES2022"],
     "esModuleInterop": true,
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types", "globals.d.ts"],
     "paths": {
       "@generated/*": ["src/generated/*"],
       "@models/*": ["src/models/*"],
@@ -19,6 +18,6 @@
       "@schemas/*": ["src/schemas/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "globals.d.ts"],
   "exclude": ["node_modules"]
 }
