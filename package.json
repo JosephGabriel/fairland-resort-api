@@ -8,7 +8,7 @@
     "build": "tsc --build",
     "prestart": "npx prisma migrate deploy && npx prisma db push",
     "dev": "NODE_ENV=development nodemon -r tsconfig-paths/register src/server --ext graphql,ts",
-    "test": "npx jest ----runInBand --watchAll",
+    "test": "npx jest --runInBand --watchAll",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "_moduleAliases": {
