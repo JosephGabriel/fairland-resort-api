@@ -6,8 +6,8 @@ const config: Config = {
   watchAll: true,
   verbose: true,
   collectCoverage: true,
-  globalSetup: './config/globalSetup.ts',
-  globalTeardown: './config/globalTeardown.ts',
+  globalSetup: './config/global-setup.ts',
+  globalTeardown: './config/global-teardown.ts',
 };
 
 export default config;
