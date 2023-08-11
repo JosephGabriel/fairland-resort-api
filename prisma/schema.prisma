@@ -80,7 +80,7 @@ model Room {
   updatedAt DateTime @default(now()) @updatedAt
 
   hotelId  String
-  hotel    Hotel     @relation(fields: [hotelId], references: [id])
+  hotel    Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   bookings Booking[]
   reviews  Review[]
 }

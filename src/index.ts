@@ -4,16 +4,16 @@ import { YogaInitialContext, createSchema, createYoga } from 'graphql-yoga';
 import express, { RequestHandler } from 'express';
 import cors from 'cors';
 
-import { permissions } from '@permissions/.';
-import { resolvers } from '@resolvers/.';
-import { typeDefs } from '@schemas/.';
+import { permissions } from './permissions/.';
+import { resolvers } from './resolvers/.';
+import { typeDefs } from './schemas/.';
 
 import {
   upload,
   uploadImage,
   uploadImages,
   uploadUserAvatar,
-} from '@utils/upload';
+} from './utils/upload';
 
 export const prisma = new PrismaClient();
 

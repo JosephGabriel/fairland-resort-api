@@ -135,6 +135,12 @@ export type Hotel = {
   zipCode: Scalars['PostalCode'];
 };
 
+export type HotelsPayload = {
+  __typename?: 'HotelsPayload';
+  count: Scalars['Int'];
+  hotels: Array<Hotel>;
+};
+
 export type LoginUserInput = {
   email: Scalars['EmailAddress'];
   password: Scalars['Password'];
@@ -265,7 +271,7 @@ export type Query = {
   /** Usada para buscar hotéis */
   hotels: Array<Hotel>;
   /** Usada para buscar um hotel pelo id do admin */
-  hotelsByAdmin: Array<Hotel>;
+  hotelsByAdmin: HotelsPayload;
   /** Usada para buscar um quarto pelo id */
   room: Room;
   /** Usada para buscar um quartos */
@@ -293,6 +299,11 @@ export type QueryHotelBySlugArgs = {
 
 export type QueryHotelsArgs = {
   roomOptions?: InputMaybe<Options>;
+};
+
+
+export type QueryHotelsByAdminArgs = {
+  options?: InputMaybe<Options>;
 };
 
 
@@ -512,6 +523,7 @@ export type ResolversTypes = ResolversObject<{
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
+  HotelsPayload: ResolverTypeWrapper<Omit<HotelsPayload, 'hotels'> & { hotels: Array<ResolversTypes['Hotel']> }>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
@@ -548,6 +560,7 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars['EmailAddress'];
   Float: Scalars['Float'];
   Hotel: Omit<Hotel, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
+  HotelsPayload: Omit<HotelsPayload, 'hotels'> & { hotels: Array<ResolversParentTypes['Hotel']> };
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Latitude: Scalars['Latitude'];
@@ -619,6 +632,12 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type HotelsPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['HotelsPayload'] = ResolversParentTypes['HotelsPayload']> = ResolversObject<{
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  hotels?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
   name: 'Latitude';
 }
@@ -659,7 +678,7 @@ export type QueryResolvers<ContextType = ServerContext, ParentType extends Resol
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
   hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
   hotels?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType, Partial<QueryHotelsArgs>>;
-  hotelsByAdmin?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType>;
+  hotelsByAdmin?: Resolver<ResolversTypes['HotelsPayload'], ParentType, ContextType, Partial<QueryHotelsByAdminArgs>>;
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryRoomArgs, 'id'>>;
   rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryRoomsArgs>>;
   roomsByHotel?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;
@@ -712,6 +731,7 @@ export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
   Hotel?: HotelResolvers<ContextType>;
+  HotelsPayload?: HotelsPayloadResolvers<ContextType>;
   Latitude?: GraphQLScalarType;
   Longitude?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;

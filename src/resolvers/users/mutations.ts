@@ -2,8 +2,8 @@ import { GraphQLError } from 'graphql';
 
 import { Mutations } from './types';
 
-import { hashPassword, verifyPassword } from '@utils/password';
-import { signUpToken } from '@utils/token';
+import { hashPassword, verifyPassword } from '../../utils/password';
+import { signUpToken } from '../../utils/token';
 
 export const UserMutations: Mutations = {
   async loginUser(parent, { data }, { prisma }) {

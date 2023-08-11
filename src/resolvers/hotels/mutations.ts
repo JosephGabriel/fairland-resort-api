@@ -40,7 +40,7 @@ export const HotelMutations: Mutations = {
       },
       include: {
         rooms: true,
-      }
+      },
     });
 
     return updatedHotel;

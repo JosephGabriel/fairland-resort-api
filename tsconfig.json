@@ -6,17 +6,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "lib": ["ES2022"],
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "@generated/*": ["src/generated/*"],
-      "@models/*": ["src/models/*"],
-      "@resolvers/*": ["src/resolvers/*"],
-      "@permissions/*": ["src/permissions/*"],
-      "@scalars/*": ["src/scalars/*"],
-      "@utils/*": ["src/utils/*"],
-      "@schemas/*": ["src/schemas/*"]
-    },
     "typeRoots": ["node_modules/@types", "globals.d.ts"]
   },
   "include": ["src/**/*"],

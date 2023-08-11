@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql';
 import { chain, rule, shield } from 'graphql-shield';
 import { ShieldRule } from 'graphql-shield/typings/types';
 
-import { verifyToken } from '@utils/token';
+import { verifyToken } from '../utils/token';
 
 import { ServerContext } from '../index';
 

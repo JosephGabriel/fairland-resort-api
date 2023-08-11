@@ -127,7 +127,7 @@ describe('Hotel', () => {
         query: GetHotelsByAdminDocument,
       });
 
-      expect(data.hotelsByAdmin?.length).toBe(1);
+      expect(data.hotelsByAdmin?.hotels.length).toBe(1);
     });
 
     it('should not fetch hotels of an admin when it is not logged in', async () => {

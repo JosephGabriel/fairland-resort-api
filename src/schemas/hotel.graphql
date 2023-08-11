@@ -66,6 +66,11 @@ type Hotel {
   updatedAt: DateTime
 }
 
+type HotelsPayload {
+  hotels: [Hotel!]!
+  count: Int!
+}
+
 input CreateHotelInput {
   name: String!
   summary: String!

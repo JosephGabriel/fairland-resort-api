@@ -26,7 +26,7 @@ type Query {
   hotels(roomOptions: Options): [Hotel!]!
 
   "Usada para buscar um hotel pelo id do admin"
-  hotelsByAdmin: [Hotel!]!
+  hotelsByAdmin(options: Options): HotelsPayload!
 
   "Usada para buscar um hotel pelo slug"
   hotelBySlug(slug: String!): Hotel!

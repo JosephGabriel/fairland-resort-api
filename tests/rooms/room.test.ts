@@ -17,7 +17,7 @@ beforeEach(setupDatabase);
 
 describe('Rooms', () => {
   describe('Mutations', () => {
-    test('should create a room', async () => {
+    it('should create a room', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.mutate({
@@ -33,7 +33,7 @@ describe('Rooms', () => {
       expect(data?.createRoom.name).toBe(roomInput.name);
     });
 
-    test('should not create a room when hotel does not exist', async () => {
+    it('should not create a room when hotel does not exist', async () => {
       const client = getClient(adminForTest.token);
 
       try {
@@ -48,12 +48,13 @@ describe('Rooms', () => {
         });
       } catch (error) {
         expect(error.message).toBe('Hotel inválido');
+        return;
       }
 
       throw new Error('Should not reach this point');
     });
 
-    test('should update a room', async () => {
+    it('should update a room', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.mutate({
@@ -69,7 +70,7 @@ describe('Rooms', () => {
       expect(data?.updateRoom.name).toBe('Teste');
     });
 
-    test('should not update a room when room does not exist', async () => {
+    it('should not update a room when room does not exist', async () => {
       const client = getClient(adminForTest.token);
 
       try {
@@ -84,12 +85,13 @@ describe('Rooms', () => {
         });
       } catch (error) {
         expect(error.message).toBe('Quarto inválido');
+        return;
       }
 
       throw new Error('Should not reach this point');
     });
 
-    test('should delete a room', async () => {
+    it('should delete a room', async () => {
       const client = getClient(adminForTest.token);
 
       const { data } = await client.mutate({
@@ -102,7 +104,7 @@ describe('Rooms', () => {
       expect(data?.deleteRoom).toBe('Quarto deletado com sucesso');
     });
 
-    test('should not delete a room when room does not exist', async () => {
+    it('should not delete a room when room does not exist', async () => {
       const client = getClient(adminForTest.token);
 
       try {
@@ -114,6 +116,7 @@ describe('Rooms', () => {
         });
       } catch (error) {
         expect(error.message).toBe('Quarto inválido');
+        return;
       }
 
       throw new Error('Should not reach this point');

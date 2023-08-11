@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+
 import { app, yoga } from '../src';
 
 export default async () => {
@@ -6,9 +7,11 @@ export default async () => {
 
   const port = process.env.PORT || 4000;
 
-  global.expressServer = app.listen({ port }, () => {
+  const expressServer = app.listen({ port }, () => {
     console.log(
-      `🚀 Server ready at http://localhost:${port}${yoga.graphqlEndpoint}`
+      `>🚀 Server ready at http://localhost:${port}${yoga.graphqlEndpoint}`
     );
   });
+
+  global.expressServer = expressServer;
 };

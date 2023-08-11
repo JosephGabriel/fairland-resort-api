@@ -1,5 +1,7 @@
 query GetHotelsByAdmin {
   hotelsByAdmin {
-    id
+    hotels {
+      id
+    }
   }
 }
