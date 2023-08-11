@@ -59,7 +59,7 @@ describe('Hotel', () => {
         },
       });
 
-      expect(data?.deleteHotel).toBe('Hotel apagado com sucesso');
+      expect(data?.deleteHotel.id).toBe(String(hotelForTest.hotel?.id));
     });
   });
 

@@ -80,7 +80,7 @@ type Mutation {
   updateHotel(id: ID!, data: UpdateHotelInput!): Hotel!
 
   "Usada para apagar um hotel"
-  deleteHotel(id: ID!): String!
+  deleteHotel(id: ID!): Hotel!
 
   ########## Quartos ################
   "Usada para criar um quarto de hotel"

@@ -55,10 +55,13 @@ export const HotelMutations: Mutations = {
       throw new GraphQLError('Este hotel não existe');
     }
 
-    await prisma.hotel.delete({
-      where: { id },
+    const deletedHotel = await prisma.hotel.delete({
+      where: { id: hotel.id },
+      include: {
+        rooms: true,
+      },
     });
 
-    return 'Hotel apagado com sucesso';
+    return deletedHotel;
   },
 };

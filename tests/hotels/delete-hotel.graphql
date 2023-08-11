@@ -1,3 +1,5 @@
 mutation DeleteHotel($id: ID!) {
-  deleteHotel(id: $id)
+  deleteHotel(id: $id) {
+    id
+  }
 }

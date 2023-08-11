@@ -163,7 +163,7 @@ export type Mutation = {
   /** Usada para cancelar uma reserva */
   deleteBooking: Scalars['String'];
   /** Usada para apagar um hotel */
-  deleteHotel: Scalars['String'];
+  deleteHotel: Hotel;
   /** Usada para deletar um quarto de hotel */
   deleteRoom: Scalars['String'];
   /** Usada para fazer login */
@@ -654,7 +654,7 @@ export type MutationResolvers<ContextType = ServerContext, ParentType extends Re
   createUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'data'>>;
   deactivateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   deleteBooking?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteBookingArgs, 'id'>>;
-  deleteHotel?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteHotelArgs, 'id'>>;
+  deleteHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationDeleteHotelArgs, 'id'>>;
   deleteRoom?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'id'>>;
   loginUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'data'>>;
   updateHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationUpdateHotelArgs, 'data' | 'id'>>;
