@@ -9,9 +9,7 @@ const serialize = (value: Date) => {
     );
   }
 
-  return new Date(value).toLocaleDateString('pt-BR', {
-    timeZone: 'America/Sao_Paulo',
-  });
+  return new Date(value);
 };
 
 const parseValue = (value: Date) => {
