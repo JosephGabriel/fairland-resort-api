@@ -273,7 +273,7 @@ export type Query = {
   /** Usada para buscar um quartos */
   rooms: Array<Room>;
   /** Usada para buscar quartos pelo id do hotel */
-  roomsByHotel: Array<Room>;
+  roomsByHotel: RoomPayload;
 };
 
 
@@ -363,6 +363,12 @@ export type RoomFilter = {
   maxRating?: InputMaybe<Scalars['Int']>;
   minPrice?: InputMaybe<Scalars['Float']>;
   minRating?: InputMaybe<Scalars['Int']>;
+};
+
+export type RoomPayload = {
+  __typename?: 'RoomPayload';
+  count: Scalars['Int'];
+  rooms: Array<Room>;
 };
 
 export type UpdateHotelInput = {

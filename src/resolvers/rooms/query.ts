@@ -39,22 +39,34 @@ export const RoomQueries: Queries = {
   },
 
   async roomsByHotel(parent, { hotel, options }, { prisma }) {
-    const rooms = await prisma.room.findMany({
-      orderBy: {
-        createdAt: options.orderBy,
-      },
-      skip: options.skip,
-      take: options.take,
-      where: {
-        hotel: {
-          id: hotel,
+    const [count, rooms] = await prisma.$transaction([
+      prisma.room.count({
+        where: {
+          hotel: {
+            id: hotel,
+          },
         },
-      },
-      include: {
-        hotel: true,
-      },
-    });
+      }),
+      prisma.room.findMany({
+        orderBy: {
+          createdAt: options.orderBy,
+        },
+        skip: options.skip,
+        take: options.take,
+        where: {
+          hotel: {
+            id: hotel,
+          },
+        },
+        include: {
+          hotel: true,
+        },
+      }),
+    ]);
 
-    return rooms;
+    return {
+      count,
+      rooms,
+    };
   },
 };

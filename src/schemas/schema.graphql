@@ -39,7 +39,7 @@ type Query {
   rooms(filter: RoomFilter): [Room!]!
 
   "Usada para buscar quartos pelo id do hotel"
-  roomsByHotel(hotel: ID!, options: Options): [Room!]!
+  roomsByHotel(hotel: ID!, options: Options): RoomPayload!
 
   ########## Reservas ################
   "Usada para buscar uma reserva pelo id"

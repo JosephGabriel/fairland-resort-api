@@ -33,6 +33,11 @@ type Room {
   updatedAt: DateTime!
 }
 
+type RoomPayload {
+  rooms: [Room!]!
+  count: Int!
+}
+
 input CreateRoomInput {
   name: String!
   summary: String!

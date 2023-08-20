@@ -277,7 +277,7 @@ export type Query = {
   /** Usada para buscar um quartos */
   rooms: Array<Room>;
   /** Usada para buscar quartos pelo id do hotel */
-  roomsByHotel: Array<Room>;
+  roomsByHotel: RoomPayload;
 };
 
 
@@ -367,6 +367,12 @@ export type RoomFilter = {
   maxRating?: InputMaybe<Scalars['Int']>;
   minPrice?: InputMaybe<Scalars['Float']>;
   minRating?: InputMaybe<Scalars['Int']>;
+};
+
+export type RoomPayload = {
+  __typename?: 'RoomPayload';
+  count: Scalars['Int'];
+  rooms: Array<Room>;
 };
 
 export type UpdateHotelInput = {
@@ -538,6 +544,7 @@ export type ResolversTypes = ResolversObject<{
   Review: ResolverTypeWrapper<Omit<Review, 'room' | 'user'> & { room: ResolversTypes['Room'], user: ResolversTypes['User'] }>;
   Room: ResolverTypeWrapper<RoomModel>;
   RoomFilter: RoomFilter;
+  RoomPayload: ResolverTypeWrapper<Omit<RoomPayload, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateHotelInput: UpdateHotelInput;
   UpdateRoomInput: UpdateRoomInput;
@@ -574,6 +581,7 @@ export type ResolversParentTypes = ResolversObject<{
   Review: Omit<Review, 'room' | 'user'> & { room: ResolversParentTypes['Room'], user: ResolversParentTypes['User'] };
   Room: RoomModel;
   RoomFilter: RoomFilter;
+  RoomPayload: Omit<RoomPayload, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
   String: Scalars['String'];
   UpdateHotelInput: UpdateHotelInput;
   UpdateRoomInput: UpdateRoomInput;
@@ -681,7 +689,7 @@ export type QueryResolvers<ContextType = ServerContext, ParentType extends Resol
   hotelsByAdmin?: Resolver<ResolversTypes['HotelsPayload'], ParentType, ContextType, Partial<QueryHotelsByAdminArgs>>;
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryRoomArgs, 'id'>>;
   rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryRoomsArgs>>;
-  roomsByHotel?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;
+  roomsByHotel?: Resolver<ResolversTypes['RoomPayload'], ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;
 }>;
 
 export type ReviewResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = ResolversObject<{
@@ -705,6 +713,12 @@ export type RoomResolvers<ContextType = ServerContext, ParentType extends Resolv
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   thumbnail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type RoomPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['RoomPayload'] = ResolversParentTypes['RoomPayload']> = ResolversObject<{
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -740,6 +754,7 @@ export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Review?: ReviewResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
+  RoomPayload?: RoomPayloadResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 
