@@ -4,18 +4,22 @@ import validator from 'validator';
 const validate = (value: string) => {
   if (!validator.isLength(value, { min: 8 })) {
     throw new GraphQLError(
-      `The password should be at lest 8 characters, but got: ${value.length}`
+      `A senha deve ter no mínimo 8 caracteres, mas tem: ${value.length}`
     );
   }
 
   if (!validator.isStrongPassword(value)) {
     throw new GraphQLError(
-      `For the password to be valid it must have at lest 8 characters, have at least 1 special character, 1 capital letter, 1 number`
+      'Para a senha ser válida ela deve ter no mínimo 8 caracteres, ter no mínimo 1 caractere especial, 1 letra maiúscula, 1 número'
     );
   }
 
   if (validator.contains(value, 'password', { ignoreCase: true })) {
-    throw new GraphQLError(`The password should not contain password`);
+    throw new GraphQLError('A senha não deve conter password');
+  }
+
+  if (validator.contains(value, 'senha', { ignoreCase: true })) {
+    throw new GraphQLError('A senha não deve conter senha');
   }
 
   return value;
@@ -23,7 +27,9 @@ const validate = (value: string) => {
 
 const parseLiteral = (ast: ValueNode) => {
   if (ast.kind !== Kind.STRING) {
-    throw new GraphQLError(`Can only parse strings but got ${ast.kind}`);
+    throw new GraphQLError(
+      `Formato inválido! necessário um texto, mas obteve ${ast.kind}`
+    );
   }
 
   return ast.value;
@@ -32,7 +38,7 @@ const parseLiteral = (ast: ValueNode) => {
 export const GraphQLPassword = new GraphQLScalarType({
   name: 'Password',
   description:
-    'A valid password should have at lest 8 characters, one special character, one capital letter, one lowercase letter, one number and should not contain the word password',
+    'A valid password should have at lest 8 characters, one special character, one capital letter, one lowercase letter, one number and should not contain the word "password" or "senha"',
   serialize: validate,
   parseValue: validate,
   parseLiteral: parseLiteral,
