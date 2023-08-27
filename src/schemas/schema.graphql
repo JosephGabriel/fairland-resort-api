@@ -100,6 +100,10 @@ type Mutation {
   deleteBooking(id: ID!): String!
 }
 
+interface QueryPayload {
+  count: Int!
+}
+
 input Options {
   skip: Int
   take: Int

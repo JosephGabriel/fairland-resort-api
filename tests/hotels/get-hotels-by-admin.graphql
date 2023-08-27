@@ -1,6 +1,6 @@
 query GetHotelsByAdmin {
   hotelsByAdmin {
-    hotels {
+    nodes {
       id
     }
   }

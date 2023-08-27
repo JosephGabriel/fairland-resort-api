@@ -66,7 +66,7 @@ export const RoomQueries: Queries = {
 
     return {
       count,
-      rooms,
+      nodes: rooms,
     };
   },
 };

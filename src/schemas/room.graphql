@@ -33,9 +33,12 @@ type Room {
   updatedAt: DateTime!
 }
 
-type RoomPayload {
-  rooms: [Room!]!
+type RoomPayload implements QueryPayload {
+  "Quantidade total de quartos criados"
   count: Int!
+
+  "Array com quartos"
+  nodes: [Room!]!
 }
 
 input CreateRoomInput {

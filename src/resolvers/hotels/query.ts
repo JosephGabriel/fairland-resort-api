@@ -84,7 +84,7 @@ export const HotelQueries: Queries = {
     ]);
 
     return {
-      hotels,
+      nodes: hotels,
       count,
     };
   },

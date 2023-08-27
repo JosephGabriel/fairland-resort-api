@@ -6,7 +6,7 @@ type Hotel {
   name: String!
 
   "Classificação do hotel ex: 5 estrelas"
-  rating: Int
+  rating: Int!
 
   "Uma pequena descrição do hotel de 10 as 30 palavras"
   summary: String!
@@ -18,7 +18,7 @@ type Hotel {
   thumbnail: String!
 
   "Um array de url's de imagens de hoteis"
-  images: [String!]
+  images: [String!]!
 
   #commodities: [String!]
 
@@ -61,14 +61,19 @@ type Hotel {
   "Array com os quartos do hotel"
   rooms: [Room!]!
 
+  "Data de criação do hotel"
   createdAt: DateTime
 
+  "Data da ultima atualização do hotel"
   updatedAt: DateTime
 }
 
-type HotelsPayload {
-  hotels: [Hotel!]!
+type HotelsPayload implements QueryPayload {
+  "Quantidade total de hotéis criados"
   count: Int!
+
+  "Array com hotéis"
+  nodes: [Hotel!]!
 }
 
 input CreateHotelInput {

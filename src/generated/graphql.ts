@@ -101,13 +101,14 @@ export type Hotel = {
   addressNumber: Scalars['String'];
   /** Cidade do hotel */
   city: Scalars['String'];
+  /** Data de criação do hotel */
   createdAt?: Maybe<Scalars['DateTime']>;
   /** A descrição do hotel */
   description: Scalars['String'];
   /** Id do hotel */
   id: Scalars['ID'];
   /** Um array de url's de imagens de hoteis */
-  images?: Maybe<Array<Scalars['String']>>;
+  images: Array<Scalars['String']>;
   /** Latitude do hotel */
   latitude: Scalars['Latitude'];
   /** Url da logo do hotel */
@@ -119,7 +120,7 @@ export type Hotel = {
   /** Bairro do hotel */
   neighborhood: Scalars['String'];
   /** Classificação do hotel ex: 5 estrelas */
-  rating?: Maybe<Scalars['Int']>;
+  rating: Scalars['Int'];
   /** Array com os quartos do hotel */
   rooms: Array<Room>;
   /** Slug do hotel baseado no nome */
@@ -130,15 +131,18 @@ export type Hotel = {
   summary: Scalars['String'];
   /** Thumbnail a ser exibida do hotel */
   thumbnail: Scalars['String'];
+  /** Data da ultima atualização do hotel */
   updatedAt?: Maybe<Scalars['DateTime']>;
   /** Cep do hotel */
   zipCode: Scalars['PostalCode'];
 };
 
-export type HotelsPayload = {
+export type HotelsPayload = QueryPayload & {
   __typename?: 'HotelsPayload';
+  /** Quantidade total de hotéis criados */
   count: Scalars['Int'];
-  hotels: Array<Hotel>;
+  /** Array com hotéis */
+  nodes: Array<Hotel>;
 };
 
 export type LoginUserInput = {
@@ -322,6 +326,10 @@ export type QueryRoomsByHotelArgs = {
   options?: InputMaybe<Options>;
 };
 
+export type QueryPayload = {
+  count: Scalars['Int'];
+};
+
 export type Review = {
   __typename?: 'Review';
   /** Id da review */
@@ -369,10 +377,12 @@ export type RoomFilter = {
   minRating?: InputMaybe<Scalars['Int']>;
 };
 
-export type RoomPayload = {
+export type RoomPayload = QueryPayload & {
   __typename?: 'RoomPayload';
+  /** Quantidade total de quartos criados */
   count: Scalars['Int'];
-  rooms: Array<Room>;
+  /** Array com quartos */
+  nodes: Array<Room>;
 };
 
 export type UpdateHotelInput = {
@@ -529,7 +539,7 @@ export type ResolversTypes = ResolversObject<{
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
-  HotelsPayload: ResolverTypeWrapper<Omit<HotelsPayload, 'hotels'> & { hotels: Array<ResolversTypes['Hotel']> }>;
+  HotelsPayload: ResolverTypeWrapper<Omit<HotelsPayload, 'nodes'> & { nodes: Array<ResolversTypes['Hotel']> }>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
@@ -541,10 +551,11 @@ export type ResolversTypes = ResolversObject<{
   Password: ResolverTypeWrapper<Scalars['Password']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
   Query: ResolverTypeWrapper<{}>;
+  QueryPayload: ResolversTypes['HotelsPayload'] | ResolversTypes['RoomPayload'];
   Review: ResolverTypeWrapper<Omit<Review, 'room' | 'user'> & { room: ResolversTypes['Room'], user: ResolversTypes['User'] }>;
   Room: ResolverTypeWrapper<RoomModel>;
   RoomFilter: RoomFilter;
-  RoomPayload: ResolverTypeWrapper<Omit<RoomPayload, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
+  RoomPayload: ResolverTypeWrapper<Omit<RoomPayload, 'nodes'> & { nodes: Array<ResolversTypes['Room']> }>;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateHotelInput: UpdateHotelInput;
   UpdateRoomInput: UpdateRoomInput;
@@ -567,7 +578,7 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars['EmailAddress'];
   Float: Scalars['Float'];
   Hotel: Omit<Hotel, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
-  HotelsPayload: Omit<HotelsPayload, 'hotels'> & { hotels: Array<ResolversParentTypes['Hotel']> };
+  HotelsPayload: Omit<HotelsPayload, 'nodes'> & { nodes: Array<ResolversParentTypes['Hotel']> };
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Latitude: Scalars['Latitude'];
@@ -578,10 +589,11 @@ export type ResolversParentTypes = ResolversObject<{
   Password: Scalars['Password'];
   PostalCode: Scalars['PostalCode'];
   Query: {};
+  QueryPayload: ResolversParentTypes['HotelsPayload'] | ResolversParentTypes['RoomPayload'];
   Review: Omit<Review, 'room' | 'user'> & { room: ResolversParentTypes['Room'], user: ResolversParentTypes['User'] };
   Room: RoomModel;
   RoomFilter: RoomFilter;
-  RoomPayload: Omit<RoomPayload, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
+  RoomPayload: Omit<RoomPayload, 'nodes'> & { nodes: Array<ResolversParentTypes['Room']> };
   String: Scalars['String'];
   UpdateHotelInput: UpdateHotelInput;
   UpdateRoomInput: UpdateRoomInput;
@@ -623,13 +635,13 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   latitude?: Resolver<ResolversTypes['Latitude'], ParentType, ContextType>;
   logo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   longitude?: Resolver<ResolversTypes['Longitude'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neighborhood?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -642,7 +654,7 @@ export type HotelResolvers<ContextType = ServerContext, ParentType extends Resol
 
 export type HotelsPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['HotelsPayload'] = ResolversParentTypes['HotelsPayload']> = ResolversObject<{
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  hotels?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType>;
+  nodes?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -692,6 +704,11 @@ export type QueryResolvers<ContextType = ServerContext, ParentType extends Resol
   roomsByHotel?: Resolver<ResolversTypes['RoomPayload'], ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;
 }>;
 
+export type QueryPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['QueryPayload'] = ResolversParentTypes['QueryPayload']> = ResolversObject<{
+  __resolveType: TypeResolveFn<'HotelsPayload' | 'RoomPayload', ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+}>;
+
 export type ReviewResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -718,7 +735,7 @@ export type RoomResolvers<ContextType = ServerContext, ParentType extends Resolv
 
 export type RoomPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['RoomPayload'] = ResolversParentTypes['RoomPayload']> = ResolversObject<{
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
+  nodes?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -752,6 +769,7 @@ export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   Password?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
+  QueryPayload?: QueryPayloadResolvers<ContextType>;
   Review?: ReviewResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
   RoomPayload?: RoomPayloadResolvers<ContextType>;
