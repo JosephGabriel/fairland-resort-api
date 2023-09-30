@@ -4,9 +4,9 @@ import { YogaInitialContext, createSchema, createYoga } from 'graphql-yoga';
 import express, { RequestHandler } from 'express';
 import cors from 'cors';
 
-import { permissions } from './permissions/.';
-import { resolvers } from './resolvers/.';
-import { typeDefs } from './schemas/.';
+import { permissions } from './permissions';
+import { resolvers } from './resolvers';
+import { typeDefs } from './schemas';
 
 import {
   upload,
