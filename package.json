@@ -2,20 +2,19 @@
   "name": "fairland-resort-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "server.ts",
   "scripts": {
     "start": "node dist/server",
     "build": "tsc --build",
     "prestart": "npx prisma migrate deploy && npx prisma db push",
     "dev": "nodemon src/server --ext graphql,ts",
     "test": "npx jest --runInBand --watchAll",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-codegen/cli": "^2.6.2",
     "@graphql-tools/graphql-file-loader": "^7.3.7",
     "@graphql-tools/load": "^7.5.5",
     "@graphql-tools/merge": "^8.2.1",
@@ -34,18 +33,16 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.5-lts.1",
     "prisma": "4.6.1",
-    "sharp": "^0.29.3",
     "slugify": "^1.6.5",
-    "sucrase": "^3.20.3",
-    "uuid": "^8.3.2",
     "validator": "^13.7.0"
   },
   "devDependencies": {
     "@apollo/client": "^3.5.10",
+    "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/typed-document-node": "^5.0.1",
-    "@graphql-codegen/typescript": "2.4.8",
+    "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-operations": "^2.3.5",
-    "@graphql-codegen/typescript-resolvers": "2.6.1",
+    "@graphql-codegen/typescript-resolvers": "4.0.1",
     "@graphql-eslint/eslint-plugin": "^3.8.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
@@ -56,6 +53,7 @@
     "@types/module-alias": "^2.0.1",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.11.10",
+    "@types/validator": "^13.11.2",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "babel-jest": "^29.5.0",
@@ -66,7 +64,7 @@
     "nodemon": "^2.0.15",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.1",
-    "ts-node-dev": "^1.1.8",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.3"
   }
 }
