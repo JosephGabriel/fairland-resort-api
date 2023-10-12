@@ -1,11 +1,11 @@
-import { MutationResolvers } from '../../generated/graphql';
+import { TMutationResolvers } from '../../generated/graphql';
 
 export interface Mutations {
-  loginUser: MutationResolvers['loginUser'];
-  createUser: MutationResolvers['createUser'];
-  createAdmin: MutationResolvers['createAdmin'];
-  deactivateUser: MutationResolvers['deactivateUser'];
-  updateUser: MutationResolvers['updateUser'];
-  updateUserPassword: MutationResolvers['updateUserPassword'];
-  verifyUser: MutationResolvers['verifyUser'];
+  loginUser: TMutationResolvers['loginUser'];
+  createUser: TMutationResolvers['createUser'];
+  createAdmin: TMutationResolvers['createAdmin'];
+  deactivateUser: TMutationResolvers['deactivateUser'];
+  updateUser: TMutationResolvers['updateUser'];
+  updateUserPassword: TMutationResolvers['updateUserPassword'];
+  verifyUser: TMutationResolvers['verifyUser'];
 }

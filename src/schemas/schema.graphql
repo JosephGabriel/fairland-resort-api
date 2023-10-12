@@ -4,18 +4,17 @@ scalar Longitude
 scalar Password
 scalar EmailAddress
 scalar DateTime
+scalar File
 
-# scalar Upload
+type FileUpload {
+  file: File!
+}
 
-# type FileUpload {
-#   file: Upload!
-# }
+type ImageUrl {
+  url: String!
+}
 
-# type ImageUrl {
-#   url: String!
-# }
-
-# union Media = FileUpload | ImageUrl
+union Media = FileUpload | ImageUrl
 
 type Query {
   ########## Hotel ################

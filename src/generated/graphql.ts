@@ -1,459 +1,462 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { UserModel, RoomModel, BookingModel } from '../models/models';
-import { ServerContext } from '../index';
+import { UserModel, RoomModel, BookingModel, FileUploadModel } from '../models/models';
+import { ServerContext } from '../../globals';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  DateTime: Date;
-  EmailAddress: string;
-  Latitude: number;
-  Longitude: number;
-  Password: string;
-  PostalCode: string;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  DateTime: { input: Date; output: Date; }
+  EmailAddress: { input: string; output: string; }
+  File: { input: File; output: File; }
+  Latitude: { input: number; output: number; }
+  Longitude: { input: number; output: number; }
+  Password: { input: string; output: string; }
+  PostalCode: { input: string; output: string; }
 };
 
-export type AuthPayload = {
+export type TAuthPayload = {
   __typename?: 'AuthPayload';
-  token: Scalars['String'];
-  user: User;
+  token: Scalars['String']['output'];
+  user: TUser;
 };
 
-export type Booking = {
+export type TBooking = {
   __typename?: 'Booking';
   /** Data em qua a reserva foi feita */
-  bookingDate: Scalars['String'];
+  bookingDate: Scalars['String']['output'];
   /** Data de entrada da reserva */
-  dateIn: Scalars['String'];
+  dateIn: Scalars['String']['output'];
   /** Data de saida da reserva */
-  dateOut: Scalars['String'];
+  dateOut: Scalars['String']['output'];
   /** Id da reserva */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Booleano que mostra se foi pago ou não */
-  paid: Scalars['Boolean'];
+  paid: Scalars['Boolean']['output'];
   /** Preço da reserva */
-  price: Scalars['Float'];
+  price: Scalars['Float']['output'];
   /** Quarto reservado */
-  room: Room;
+  room: TRoom;
   /** Usuário que fez a reserva */
-  user: User;
+  user: TUser;
 };
 
-export type CreateBookingInput = {
-  dateIn: Scalars['String'];
-  dateOut: Scalars['String'];
-  price: Scalars['Float'];
-  room: Scalars['ID'];
+export type TCreateBookingInput = {
+  dateIn: Scalars['String']['input'];
+  dateOut: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
+  room: Scalars['ID']['input'];
 };
 
-export type CreateHotelInput = {
-  address: Scalars['String'];
-  addressNumber: Scalars['String'];
-  city: Scalars['String'];
-  description: Scalars['String'];
-  images?: InputMaybe<Array<Scalars['String']>>;
-  latitude: Scalars['Latitude'];
-  logo: Scalars['String'];
-  longitude: Scalars['Longitude'];
-  name: Scalars['String'];
-  neighborhood: Scalars['String'];
-  state: Scalars['String'];
-  summary: Scalars['String'];
-  thumbnail: Scalars['String'];
-  zipCode: Scalars['PostalCode'];
+export type TCreateHotelInput = {
+  address: Scalars['String']['input'];
+  addressNumber: Scalars['String']['input'];
+  city: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
+  latitude: Scalars['Latitude']['input'];
+  logo: Scalars['String']['input'];
+  longitude: Scalars['Longitude']['input'];
+  name: Scalars['String']['input'];
+  neighborhood: Scalars['String']['input'];
+  state: Scalars['String']['input'];
+  summary: Scalars['String']['input'];
+  thumbnail: Scalars['String']['input'];
+  zipCode: Scalars['PostalCode']['input'];
 };
 
-export type CreateRoomInput = {
-  description: Scalars['String'];
-  hotel: Scalars['ID'];
-  images?: InputMaybe<Array<Scalars['String']>>;
-  name: Scalars['String'];
-  price: Scalars['Float'];
-  summary: Scalars['String'];
-  thumbnail: Scalars['String'];
+export type TCreateRoomInput = {
+  description: Scalars['String']['input'];
+  hotel: Scalars['ID']['input'];
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
+  name: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
+  summary: Scalars['String']['input'];
+  thumbnail: Scalars['String']['input'];
 };
 
-export type CreateUserInput = {
-  avatar?: InputMaybe<Scalars['String']>;
-  email: Scalars['EmailAddress'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  password: Scalars['Password'];
-  passwordConfirm: Scalars['Password'];
-  userName: Scalars['String'];
+export type TCreateUserInput = {
+  avatar?: InputMaybe<Scalars['File']['input']>;
+  email: Scalars['EmailAddress']['input'];
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
+  password: Scalars['Password']['input'];
+  passwordConfirm: Scalars['Password']['input'];
+  userName: Scalars['String']['input'];
 };
 
-export type Hotel = {
+export type THotel = {
   __typename?: 'Hotel';
   /** Rua do hotel */
-  address: Scalars['String'];
+  address: Scalars['String']['output'];
   /** Número residencial do hotel */
-  addressNumber: Scalars['String'];
+  addressNumber: Scalars['String']['output'];
   /** Cidade do hotel */
-  city: Scalars['String'];
+  city: Scalars['String']['output'];
   /** Data de criação do hotel */
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
   /** A descrição do hotel */
-  description: Scalars['String'];
+  description: Scalars['String']['output'];
   /** Id do hotel */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Um array de url's de imagens de hoteis */
-  images: Array<Scalars['String']>;
+  images: Array<Scalars['String']['output']>;
   /** Latitude do hotel */
-  latitude: Scalars['Latitude'];
+  latitude: Scalars['Latitude']['output'];
   /** Url da logo do hotel */
-  logo: Scalars['String'];
+  logo: Scalars['String']['output'];
   /** Longitude do hotel */
-  longitude: Scalars['Longitude'];
+  longitude: Scalars['Longitude']['output'];
   /** Nome do hotel */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** Bairro do hotel */
-  neighborhood: Scalars['String'];
+  neighborhood: Scalars['String']['output'];
   /** Classificação do hotel ex: 5 estrelas */
-  rating: Scalars['Int'];
+  rating: Scalars['Int']['output'];
   /** Array com os quartos do hotel */
-  rooms: Array<Room>;
+  rooms: Array<TRoom>;
   /** Slug do hotel baseado no nome */
-  slug: Scalars['String'];
+  slug: Scalars['String']['output'];
   /** Estado do hotel */
-  state: Scalars['String'];
+  state: Scalars['String']['output'];
   /** Uma pequena descrição do hotel de 10 as 30 palavras */
-  summary: Scalars['String'];
+  summary: Scalars['String']['output'];
   /** Thumbnail a ser exibida do hotel */
-  thumbnail: Scalars['String'];
+  thumbnail: Scalars['String']['output'];
   /** Data da ultima atualização do hotel */
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
   /** Cep do hotel */
-  zipCode: Scalars['PostalCode'];
+  zipCode: Scalars['PostalCode']['output'];
 };
 
-export type HotelsPayload = QueryPayload & {
+export type THotelsPayload = TQueryPayload & {
   __typename?: 'HotelsPayload';
   /** Quantidade total de hotéis criados */
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   /** Array com hotéis */
-  nodes: Array<Hotel>;
+  nodes: Array<THotel>;
 };
 
-export type LoginUserInput = {
-  email: Scalars['EmailAddress'];
-  password: Scalars['Password'];
+export type TLoginUserInput = {
+  email: Scalars['EmailAddress']['input'];
+  password: Scalars['Password']['input'];
 };
 
-export type Mutation = {
+export type TMutation = {
   __typename?: 'Mutation';
   /** Usada para criar um admin */
-  createAdmin: AuthPayload;
+  createAdmin: TAuthPayload;
   /** Usada para fazer uma reserva */
-  createBooking: Booking;
+  createBooking: TBooking;
   /** Usada para criar um hotel */
-  createHotel: Hotel;
+  createHotel: THotel;
   /** Usada para criar um quarto de hotel */
-  createRoom: Room;
+  createRoom: TRoom;
   /** Usada para criar um usuário */
-  createUser: AuthPayload;
+  createUser: TAuthPayload;
   /** Usada para que o próprio usuário possa desativar a conta, mas não apagá-la */
-  deactivateUser: Scalars['String'];
+  deactivateUser: Scalars['String']['output'];
   /** Usada para cancelar uma reserva */
-  deleteBooking: Scalars['String'];
+  deleteBooking: Scalars['String']['output'];
   /** Usada para apagar um hotel */
-  deleteHotel: Hotel;
+  deleteHotel: THotel;
   /** Usada para deletar um quarto de hotel */
-  deleteRoom: Scalars['String'];
+  deleteRoom: Scalars['String']['output'];
   /** Usada para fazer login */
-  loginUser: AuthPayload;
+  loginUser: TAuthPayload;
   /** Usada para atualizar um hotel */
-  updateHotel: Hotel;
+  updateHotel: THotel;
   /** Usada para atualizar um quarto de hotel */
-  updateRoom: Room;
+  updateRoom: TRoom;
   /** Usada para atualizar informações não sensiveis (ex: senhas) */
-  updateUser: AuthPayload;
+  updateUser: TAuthPayload;
   /** Usada para alterar a senha do usuário */
-  updateUserPassword: AuthPayload;
+  updateUserPassword: TAuthPayload;
   /** Usada para verificar um usuário */
-  verifyUser: AuthPayload;
+  verifyUser: TAuthPayload;
 };
 
 
-export type MutationCreateAdminArgs = {
-  data: CreateUserInput;
+export type TMutationCreateAdminArgs = {
+  data: TCreateUserInput;
 };
 
 
-export type MutationCreateBookingArgs = {
-  data: CreateBookingInput;
+export type TMutationCreateBookingArgs = {
+  data: TCreateBookingInput;
 };
 
 
-export type MutationCreateHotelArgs = {
-  data: CreateHotelInput;
+export type TMutationCreateHotelArgs = {
+  data: TCreateHotelInput;
 };
 
 
-export type MutationCreateRoomArgs = {
-  data: CreateRoomInput;
+export type TMutationCreateRoomArgs = {
+  data: TCreateRoomInput;
 };
 
 
-export type MutationCreateUserArgs = {
-  data: CreateUserInput;
+export type TMutationCreateUserArgs = {
+  data: TCreateUserInput;
 };
 
 
-export type MutationDeleteBookingArgs = {
-  id: Scalars['ID'];
+export type TMutationDeleteBookingArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type MutationDeleteHotelArgs = {
-  id: Scalars['ID'];
+export type TMutationDeleteHotelArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type MutationDeleteRoomArgs = {
-  id: Scalars['ID'];
+export type TMutationDeleteRoomArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type MutationLoginUserArgs = {
-  data: LoginUserInput;
+export type TMutationLoginUserArgs = {
+  data: TLoginUserInput;
 };
 
 
-export type MutationUpdateHotelArgs = {
-  data: UpdateHotelInput;
-  id: Scalars['ID'];
+export type TMutationUpdateHotelArgs = {
+  data: TUpdateHotelInput;
+  id: Scalars['ID']['input'];
 };
 
 
-export type MutationUpdateRoomArgs = {
-  data: UpdateRoomInput;
-  id: Scalars['ID'];
+export type TMutationUpdateRoomArgs = {
+  data: TUpdateRoomInput;
+  id: Scalars['ID']['input'];
 };
 
 
-export type MutationUpdateUserArgs = {
-  data: UpdateUserInput;
+export type TMutationUpdateUserArgs = {
+  data: TUpdateUserInput;
 };
 
 
-export type MutationUpdateUserPasswordArgs = {
-  data: UpdateUserPasswordInput;
+export type TMutationUpdateUserPasswordArgs = {
+  data: TUpdateUserPasswordInput;
 };
 
-export type Options = {
-  orderBy?: InputMaybe<OrderBy>;
-  skip?: InputMaybe<Scalars['Int']>;
-  take?: InputMaybe<Scalars['Int']>;
+export type TOptions = {
+  orderBy?: InputMaybe<TOrderBy>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export enum OrderBy {
+export enum TOrderBy {
   Asc = 'asc',
   Desc = 'desc'
 }
 
-export type Query = {
+export type TQuery = {
   __typename?: 'Query';
   /** Usada para buscar uma reserva pelo id */
-  booking: Booking;
+  booking: TBooking;
   /** Usada para buscar reservas de um usuário */
-  bookings: Array<Booking>;
+  bookings: Array<TBooking>;
   /** Usada para buscar um hotel pelo id */
-  hotel: Hotel;
+  hotel: THotel;
   /** Usada para buscar um hotel pelo slug */
-  hotelBySlug: Hotel;
+  hotelBySlug: THotel;
   /** Usada para buscar hotéis */
-  hotels: Array<Hotel>;
+  hotels: Array<THotel>;
   /** Usada para buscar um hotel pelo id do admin */
-  hotelsByAdmin: HotelsPayload;
+  hotelsByAdmin: THotelsPayload;
   /** Usada para buscar um quarto pelo id */
-  room: Room;
+  room: TRoom;
   /** Usada para buscar um quartos */
-  rooms: Array<Room>;
+  rooms: Array<TRoom>;
   /** Usada para buscar quartos pelo id do hotel */
-  roomsByHotel: RoomPayload;
+  roomsByHotel: TRoomPayload;
 };
 
 
-export type QueryBookingArgs = {
-  id: Scalars['ID'];
+export type TQueryBookingArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type QueryHotelArgs = {
-  id: Scalars['ID'];
-  roomOptions?: InputMaybe<Options>;
+export type TQueryHotelArgs = {
+  id: Scalars['ID']['input'];
+  roomOptions?: InputMaybe<TOptions>;
 };
 
 
-export type QueryHotelBySlugArgs = {
-  slug: Scalars['String'];
+export type TQueryHotelBySlugArgs = {
+  slug: Scalars['String']['input'];
 };
 
 
-export type QueryHotelsArgs = {
-  roomOptions?: InputMaybe<Options>;
+export type TQueryHotelsArgs = {
+  roomOptions?: InputMaybe<TOptions>;
 };
 
 
-export type QueryHotelsByAdminArgs = {
-  options?: InputMaybe<Options>;
+export type TQueryHotelsByAdminArgs = {
+  options?: InputMaybe<TOptions>;
 };
 
 
-export type QueryRoomArgs = {
-  id: Scalars['ID'];
+export type TQueryRoomArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type QueryRoomsArgs = {
-  filter?: InputMaybe<RoomFilter>;
+export type TQueryRoomsArgs = {
+  filter?: InputMaybe<TRoomFilter>;
 };
 
 
-export type QueryRoomsByHotelArgs = {
-  hotel: Scalars['ID'];
-  options?: InputMaybe<Options>;
+export type TQueryRoomsByHotelArgs = {
+  hotel: Scalars['ID']['input'];
+  options?: InputMaybe<TOptions>;
 };
 
-export type QueryPayload = {
-  count: Scalars['Int'];
+export type TQueryPayload = {
+  count: Scalars['Int']['output'];
 };
 
-export type Review = {
+export type TReview = {
   __typename?: 'Review';
   /** Id da review */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Classificação da review */
-  rating: Scalars['Int'];
+  rating: Scalars['Int']['output'];
   /** Texto da review */
-  review: Scalars['String'];
+  review: Scalars['String']['output'];
   /** Quarto que recebeu a review */
-  room: Room;
+  room: TRoom;
   /** Usuário que fez a review */
-  user: User;
+  user: TUser;
 };
 
-export type Room = {
+export type TRoom = {
   __typename?: 'Room';
   /** Data em que foi criado */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Uma descrição do quarto */
-  description: Scalars['String'];
+  description: Scalars['String']['output'];
   /** Hotel a qual o quarto pertence */
-  hotel: Hotel;
+  hotel: THotel;
   /** Id do quarto */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Um array de url's de imagens do quarto */
-  images?: Maybe<Array<Scalars['String']>>;
+  images?: Maybe<Array<Scalars['String']['output']>>;
   /** Nome do quarto */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** Preço por noite do quarto */
-  price: Scalars['Float'];
+  price: Scalars['Float']['output'];
   /** Classificação do quarto ex: 5 estrelas */
-  rating?: Maybe<Scalars['Int']>;
+  rating?: Maybe<Scalars['Int']['output']>;
   /** Uma pequena descrição do quarto */
-  summary: Scalars['String'];
+  summary: Scalars['String']['output'];
   /** Thumbnail a ser exibida do quarto */
-  thumbnail: Scalars['String'];
+  thumbnail: Scalars['String']['output'];
   /** Data da ultima atualização */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
-export type RoomFilter = {
-  maxPrice?: InputMaybe<Scalars['Float']>;
-  maxRating?: InputMaybe<Scalars['Int']>;
-  minPrice?: InputMaybe<Scalars['Float']>;
-  minRating?: InputMaybe<Scalars['Int']>;
+export type TRoomFilter = {
+  maxPrice?: InputMaybe<Scalars['Float']['input']>;
+  maxRating?: InputMaybe<Scalars['Int']['input']>;
+  minPrice?: InputMaybe<Scalars['Float']['input']>;
+  minRating?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type RoomPayload = QueryPayload & {
+export type TRoomPayload = TQueryPayload & {
   __typename?: 'RoomPayload';
   /** Quantidade total de quartos criados */
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   /** Array com quartos */
-  nodes: Array<Room>;
+  nodes: Array<TRoom>;
 };
 
-export type UpdateHotelInput = {
-  address?: InputMaybe<Scalars['String']>;
-  addressNumber?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  images?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  latitude?: InputMaybe<Scalars['Latitude']>;
-  logo?: InputMaybe<Scalars['String']>;
-  longitude?: InputMaybe<Scalars['Longitude']>;
-  name?: InputMaybe<Scalars['String']>;
-  neighborhood?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
-  summary?: InputMaybe<Scalars['String']>;
-  thumbnail?: InputMaybe<Scalars['String']>;
-  zipCode?: InputMaybe<Scalars['PostalCode']>;
+export type TUpdateHotelInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  addressNumber?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  latitude?: InputMaybe<Scalars['Latitude']['input']>;
+  logo?: InputMaybe<Scalars['String']['input']>;
+  longitude?: InputMaybe<Scalars['Longitude']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  neighborhood?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  thumbnail?: InputMaybe<Scalars['String']['input']>;
+  zipCode?: InputMaybe<Scalars['PostalCode']['input']>;
 };
 
-export type UpdateRoomInput = {
-  images?: InputMaybe<Array<Scalars['String']>>;
-  name?: InputMaybe<Scalars['String']>;
-  price?: InputMaybe<Scalars['Float']>;
-  summary?: InputMaybe<Scalars['String']>;
-  thumbnail?: InputMaybe<Scalars['String']>;
+export type TUpdateRoomInput = {
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  price?: InputMaybe<Scalars['Float']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  thumbnail?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateUserInput = {
-  avatar?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['EmailAddress']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  userName?: InputMaybe<Scalars['String']>;
+export type TUpdateUserInput = {
+  avatar?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['EmailAddress']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  userName?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateUserPasswordInput = {
-  password: Scalars['Password'];
-  passwordConfirm: Scalars['Password'];
+export type TUpdateUserPasswordInput = {
+  password: Scalars['Password']['input'];
+  passwordConfirm: Scalars['Password']['input'];
 };
 
-export type User = {
+export type TUser = {
   __typename?: 'User';
   /** Mostra se o usuário esta ativo ou não */
-  active: Scalars['Boolean'];
+  active: Scalars['Boolean']['output'];
   /** Url da imagem de perfil de cada usuário */
-  avatar?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']['output']>;
   /** Reservas do usúario */
-  bookings?: Maybe<Array<Booking>>;
+  bookings?: Maybe<Array<TBooking>>;
   /** Email único de cada usuário */
-  email: Scalars['EmailAddress'];
+  email: Scalars['EmailAddress']['output'];
   /** Primeiro nome do usuário */
-  firstName: Scalars['String'];
+  firstName: Scalars['String']['output'];
   /** Id único de cada usuário */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Sobrenome nome do usuário */
-  lastName: Scalars['String'];
+  lastName: Scalars['String']['output'];
   /** Senha criptografada de cada usuário */
-  password: Scalars['Password'];
+  password: Scalars['Password']['output'];
   /** Timestamp do momento em que o usuário mudou a senha */
-  passwordChangedAt?: Maybe<Scalars['String']>;
+  passwordChangedAt?: Maybe<Scalars['String']['output']>;
   /** Review feitas pelo usuário */
-  reviews?: Maybe<Array<Review>>;
+  reviews?: Maybe<Array<TReview>>;
   /** Enum do tipo de função (ADMIN | USER) */
-  role: UserRole;
+  role: TUserRole;
   /** Nome de usuário único de cada usuário */
-  userName: Scalars['String'];
+  userName: Scalars['String']['output'];
   /** Mostra se o usuário verificou o email ou não */
-  verified: Scalars['Boolean'];
+  verified: Scalars['Boolean']['output'];
 };
 
-export enum UserRole {
+export enum TUserRole {
   Admin = 'ADMIN',
   User = 'USER'
 }
@@ -526,253 +529,266 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+
+/** Mapping of interface types */
+export type TResolversInterfaceTypes<RefType extends Record<string, unknown>> = ResolversObject<{
+  QueryPayload: ( Omit<THotelsPayload, 'nodes'> & { nodes: Array<RefType['Hotel']> } ) | ( Omit<TRoomPayload, 'nodes'> & { nodes: Array<RefType['Room']> } );
+}>;
+
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = ResolversObject<{
-  AuthPayload: ResolverTypeWrapper<Omit<AuthPayload, 'user'> & { user: ResolversTypes['User'] }>;
+export type TResolversTypes = ResolversObject<{
+  AuthPayload: ResolverTypeWrapper<Omit<TAuthPayload, 'user'> & { user: TResolversTypes['User'] }>;
   Booking: ResolverTypeWrapper<BookingModel>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  CreateBookingInput: CreateBookingInput;
-  CreateHotelInput: CreateHotelInput;
-  CreateRoomInput: CreateRoomInput;
-  CreateUserInput: CreateUserInput;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
-  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
-  Hotel: ResolverTypeWrapper<Omit<Hotel, 'rooms'> & { rooms: Array<ResolversTypes['Room']> }>;
-  HotelsPayload: ResolverTypeWrapper<Omit<HotelsPayload, 'nodes'> & { nodes: Array<ResolversTypes['Hotel']> }>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
-  Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
-  LoginUserInput: LoginUserInput;
-  Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CreateBookingInput: TCreateBookingInput;
+  CreateHotelInput: TCreateHotelInput;
+  CreateRoomInput: TCreateRoomInput;
+  CreateUserInput: TCreateUserInput;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
+  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
+  File: ResolverTypeWrapper<FileUploadModel>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  Hotel: ResolverTypeWrapper<Omit<THotel, 'rooms'> & { rooms: Array<TResolversTypes['Room']> }>;
+  HotelsPayload: ResolverTypeWrapper<Omit<THotelsPayload, 'nodes'> & { nodes: Array<TResolversTypes['Hotel']> }>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Latitude: ResolverTypeWrapper<Scalars['Latitude']['output']>;
+  LoginUserInput: TLoginUserInput;
+  Longitude: ResolverTypeWrapper<Scalars['Longitude']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
-  Options: Options;
-  OrderBy: OrderBy;
-  Password: ResolverTypeWrapper<Scalars['Password']>;
-  PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
+  Options: TOptions;
+  OrderBy: TOrderBy;
+  Password: ResolverTypeWrapper<Scalars['Password']['output']>;
+  PostalCode: ResolverTypeWrapper<Scalars['PostalCode']['output']>;
   Query: ResolverTypeWrapper<{}>;
-  QueryPayload: ResolversTypes['HotelsPayload'] | ResolversTypes['RoomPayload'];
-  Review: ResolverTypeWrapper<Omit<Review, 'room' | 'user'> & { room: ResolversTypes['Room'], user: ResolversTypes['User'] }>;
+  QueryPayload: ResolverTypeWrapper<TResolversInterfaceTypes<TResolversTypes>['QueryPayload']>;
+  Review: ResolverTypeWrapper<Omit<TReview, 'room' | 'user'> & { room: TResolversTypes['Room'], user: TResolversTypes['User'] }>;
   Room: ResolverTypeWrapper<RoomModel>;
-  RoomFilter: RoomFilter;
-  RoomPayload: ResolverTypeWrapper<Omit<RoomPayload, 'nodes'> & { nodes: Array<ResolversTypes['Room']> }>;
-  String: ResolverTypeWrapper<Scalars['String']>;
-  UpdateHotelInput: UpdateHotelInput;
-  UpdateRoomInput: UpdateRoomInput;
-  UpdateUserInput: UpdateUserInput;
-  UpdateUserPasswordInput: UpdateUserPasswordInput;
+  RoomFilter: TRoomFilter;
+  RoomPayload: ResolverTypeWrapper<Omit<TRoomPayload, 'nodes'> & { nodes: Array<TResolversTypes['Room']> }>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UpdateHotelInput: TUpdateHotelInput;
+  UpdateRoomInput: TUpdateRoomInput;
+  UpdateUserInput: TUpdateUserInput;
+  UpdateUserPasswordInput: TUpdateUserPasswordInput;
   User: ResolverTypeWrapper<UserModel>;
-  userRole: UserRole;
+  userRole: TUserRole;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = ResolversObject<{
-  AuthPayload: Omit<AuthPayload, 'user'> & { user: ResolversParentTypes['User'] };
+export type TResolversParentTypes = ResolversObject<{
+  AuthPayload: Omit<TAuthPayload, 'user'> & { user: TResolversParentTypes['User'] };
   Booking: BookingModel;
-  Boolean: Scalars['Boolean'];
-  CreateBookingInput: CreateBookingInput;
-  CreateHotelInput: CreateHotelInput;
-  CreateRoomInput: CreateRoomInput;
-  CreateUserInput: CreateUserInput;
-  DateTime: Scalars['DateTime'];
-  EmailAddress: Scalars['EmailAddress'];
-  Float: Scalars['Float'];
-  Hotel: Omit<Hotel, 'rooms'> & { rooms: Array<ResolversParentTypes['Room']> };
-  HotelsPayload: Omit<HotelsPayload, 'nodes'> & { nodes: Array<ResolversParentTypes['Hotel']> };
-  ID: Scalars['ID'];
-  Int: Scalars['Int'];
-  Latitude: Scalars['Latitude'];
-  LoginUserInput: LoginUserInput;
-  Longitude: Scalars['Longitude'];
+  Boolean: Scalars['Boolean']['output'];
+  CreateBookingInput: TCreateBookingInput;
+  CreateHotelInput: TCreateHotelInput;
+  CreateRoomInput: TCreateRoomInput;
+  CreateUserInput: TCreateUserInput;
+  DateTime: Scalars['DateTime']['output'];
+  EmailAddress: Scalars['EmailAddress']['output'];
+  File: FileUploadModel;
+  Float: Scalars['Float']['output'];
+  Hotel: Omit<THotel, 'rooms'> & { rooms: Array<TResolversParentTypes['Room']> };
+  HotelsPayload: Omit<THotelsPayload, 'nodes'> & { nodes: Array<TResolversParentTypes['Hotel']> };
+  ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
+  Latitude: Scalars['Latitude']['output'];
+  LoginUserInput: TLoginUserInput;
+  Longitude: Scalars['Longitude']['output'];
   Mutation: {};
-  Options: Options;
-  Password: Scalars['Password'];
-  PostalCode: Scalars['PostalCode'];
+  Options: TOptions;
+  Password: Scalars['Password']['output'];
+  PostalCode: Scalars['PostalCode']['output'];
   Query: {};
-  QueryPayload: ResolversParentTypes['HotelsPayload'] | ResolversParentTypes['RoomPayload'];
-  Review: Omit<Review, 'room' | 'user'> & { room: ResolversParentTypes['Room'], user: ResolversParentTypes['User'] };
+  QueryPayload: TResolversInterfaceTypes<TResolversParentTypes>['QueryPayload'];
+  Review: Omit<TReview, 'room' | 'user'> & { room: TResolversParentTypes['Room'], user: TResolversParentTypes['User'] };
   Room: RoomModel;
-  RoomFilter: RoomFilter;
-  RoomPayload: Omit<RoomPayload, 'nodes'> & { nodes: Array<ResolversParentTypes['Room']> };
-  String: Scalars['String'];
-  UpdateHotelInput: UpdateHotelInput;
-  UpdateRoomInput: UpdateRoomInput;
-  UpdateUserInput: UpdateUserInput;
-  UpdateUserPasswordInput: UpdateUserPasswordInput;
+  RoomFilter: TRoomFilter;
+  RoomPayload: Omit<TRoomPayload, 'nodes'> & { nodes: Array<TResolversParentTypes['Room']> };
+  String: Scalars['String']['output'];
+  UpdateHotelInput: TUpdateHotelInput;
+  UpdateRoomInput: TUpdateRoomInput;
+  UpdateUserInput: TUpdateUserInput;
+  UpdateUserPasswordInput: TUpdateUserPasswordInput;
   User: UserModel;
 }>;
 
-export type AuthPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = ResolversObject<{
-  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+export type TAuthPayloadResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['AuthPayload'] = TResolversParentTypes['AuthPayload']> = ResolversObject<{
+  token?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<TResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BookingResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = ResolversObject<{
-  bookingDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  dateIn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  dateOut?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  paid?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+export type TBookingResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Booking'] = TResolversParentTypes['Booking']> = ResolversObject<{
+  bookingDate?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  dateIn?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  dateOut?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<TResolversTypes['ID'], ParentType, ContextType>;
+  paid?: Resolver<TResolversTypes['Boolean'], ParentType, ContextType>;
+  price?: Resolver<TResolversTypes['Float'], ParentType, ContextType>;
+  room?: Resolver<TResolversTypes['Room'], ParentType, ContextType>;
+  user?: Resolver<TResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+export interface TDateTimeScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
 
-export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
+export interface TEmailAddressScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
 
-export type HotelResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Hotel'] = ResolversParentTypes['Hotel']> = ResolversObject<{
-  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  addressNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  latitude?: Resolver<ResolversTypes['Latitude'], ParentType, ContextType>;
-  logo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  longitude?: Resolver<ResolversTypes['Longitude'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  neighborhood?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  thumbnail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  zipCode?: Resolver<ResolversTypes['PostalCode'], ParentType, ContextType>;
+export interface TFileScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['File'], any> {
+  name: 'File';
+}
+
+export type THotelResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Hotel'] = TResolversParentTypes['Hotel']> = ResolversObject<{
+  address?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  addressNumber?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  city?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<TResolversTypes['DateTime']>, ParentType, ContextType>;
+  description?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<TResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<TResolversTypes['String']>, ParentType, ContextType>;
+  latitude?: Resolver<TResolversTypes['Latitude'], ParentType, ContextType>;
+  logo?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  longitude?: Resolver<TResolversTypes['Longitude'], ParentType, ContextType>;
+  name?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  neighborhood?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  rating?: Resolver<TResolversTypes['Int'], ParentType, ContextType>;
+  rooms?: Resolver<Array<TResolversTypes['Room']>, ParentType, ContextType>;
+  slug?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  state?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  summary?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  thumbnail?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<TResolversTypes['DateTime']>, ParentType, ContextType>;
+  zipCode?: Resolver<TResolversTypes['PostalCode'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type HotelsPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['HotelsPayload'] = ResolversParentTypes['HotelsPayload']> = ResolversObject<{
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  nodes?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType>;
+export type THotelsPayloadResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['HotelsPayload'] = TResolversParentTypes['HotelsPayload']> = ResolversObject<{
+  count?: Resolver<TResolversTypes['Int'], ParentType, ContextType>;
+  nodes?: Resolver<Array<TResolversTypes['Hotel']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
+export interface TLatitudeScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['Latitude'], any> {
   name: 'Latitude';
 }
 
-export interface LongitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Longitude'], any> {
+export interface TLongitudeScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['Longitude'], any> {
   name: 'Longitude';
 }
 
-export type MutationResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createAdmin?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateAdminArgs, 'data'>>;
-  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'data'>>;
-  createHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationCreateHotelArgs, 'data'>>;
-  createRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'data'>>;
-  createUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'data'>>;
-  deactivateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  deleteBooking?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteBookingArgs, 'id'>>;
-  deleteHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationDeleteHotelArgs, 'id'>>;
-  deleteRoom?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'id'>>;
-  loginUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'data'>>;
-  updateHotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<MutationUpdateHotelArgs, 'data' | 'id'>>;
-  updateRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationUpdateRoomArgs, 'data' | 'id'>>;
-  updateUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
-  updateUserPassword?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationUpdateUserPasswordArgs, 'data'>>;
-  verifyUser?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType>;
+export type TMutationResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Mutation'] = TResolversParentTypes['Mutation']> = ResolversObject<{
+  createAdmin?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<TMutationCreateAdminArgs, 'data'>>;
+  createBooking?: Resolver<TResolversTypes['Booking'], ParentType, ContextType, RequireFields<TMutationCreateBookingArgs, 'data'>>;
+  createHotel?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType, RequireFields<TMutationCreateHotelArgs, 'data'>>;
+  createRoom?: Resolver<TResolversTypes['Room'], ParentType, ContextType, RequireFields<TMutationCreateRoomArgs, 'data'>>;
+  createUser?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<TMutationCreateUserArgs, 'data'>>;
+  deactivateUser?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  deleteBooking?: Resolver<TResolversTypes['String'], ParentType, ContextType, RequireFields<TMutationDeleteBookingArgs, 'id'>>;
+  deleteHotel?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType, RequireFields<TMutationDeleteHotelArgs, 'id'>>;
+  deleteRoom?: Resolver<TResolversTypes['String'], ParentType, ContextType, RequireFields<TMutationDeleteRoomArgs, 'id'>>;
+  loginUser?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<TMutationLoginUserArgs, 'data'>>;
+  updateHotel?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType, RequireFields<TMutationUpdateHotelArgs, 'data' | 'id'>>;
+  updateRoom?: Resolver<TResolversTypes['Room'], ParentType, ContextType, RequireFields<TMutationUpdateRoomArgs, 'data' | 'id'>>;
+  updateUser?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<TMutationUpdateUserArgs, 'data'>>;
+  updateUserPassword?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<TMutationUpdateUserPasswordArgs, 'data'>>;
+  verifyUser?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType>;
 }>;
 
-export interface PasswordScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Password'], any> {
+export interface TPasswordScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['Password'], any> {
   name: 'Password';
 }
 
-export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PostalCode'], any> {
+export interface TPostalCodeScalarConfig extends GraphQLScalarTypeConfig<TResolversTypes['PostalCode'], any> {
   name: 'PostalCode';
 }
 
-export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  booking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<QueryBookingArgs, 'id'>>;
-  bookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
-  hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
-  hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
-  hotels?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType, Partial<QueryHotelsArgs>>;
-  hotelsByAdmin?: Resolver<ResolversTypes['HotelsPayload'], ParentType, ContextType, Partial<QueryHotelsByAdminArgs>>;
-  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryRoomArgs, 'id'>>;
-  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryRoomsArgs>>;
-  roomsByHotel?: Resolver<ResolversTypes['RoomPayload'], ParentType, ContextType, RequireFields<QueryRoomsByHotelArgs, 'hotel'>>;
+export type TQueryResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Query'] = TResolversParentTypes['Query']> = ResolversObject<{
+  booking?: Resolver<TResolversTypes['Booking'], ParentType, ContextType, RequireFields<TQueryBookingArgs, 'id'>>;
+  bookings?: Resolver<Array<TResolversTypes['Booking']>, ParentType, ContextType>;
+  hotel?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType, RequireFields<TQueryHotelArgs, 'id'>>;
+  hotelBySlug?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType, RequireFields<TQueryHotelBySlugArgs, 'slug'>>;
+  hotels?: Resolver<Array<TResolversTypes['Hotel']>, ParentType, ContextType, Partial<TQueryHotelsArgs>>;
+  hotelsByAdmin?: Resolver<TResolversTypes['HotelsPayload'], ParentType, ContextType, Partial<TQueryHotelsByAdminArgs>>;
+  room?: Resolver<TResolversTypes['Room'], ParentType, ContextType, RequireFields<TQueryRoomArgs, 'id'>>;
+  rooms?: Resolver<Array<TResolversTypes['Room']>, ParentType, ContextType, Partial<TQueryRoomsArgs>>;
+  roomsByHotel?: Resolver<TResolversTypes['RoomPayload'], ParentType, ContextType, RequireFields<TQueryRoomsByHotelArgs, 'hotel'>>;
 }>;
 
-export type QueryPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['QueryPayload'] = ResolversParentTypes['QueryPayload']> = ResolversObject<{
+export type TQueryPayloadResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['QueryPayload'] = TResolversParentTypes['QueryPayload']> = ResolversObject<{
   __resolveType: TypeResolveFn<'HotelsPayload' | 'RoomPayload', ParentType, ContextType>;
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  count?: Resolver<TResolversTypes['Int'], ParentType, ContextType>;
 }>;
 
-export type ReviewResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  review?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+export type TReviewResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Review'] = TResolversParentTypes['Review']> = ResolversObject<{
+  id?: Resolver<TResolversTypes['ID'], ParentType, ContextType>;
+  rating?: Resolver<TResolversTypes['Int'], ParentType, ContextType>;
+  review?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  room?: Resolver<TResolversTypes['Room'], ParentType, ContextType>;
+  user?: Resolver<TResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type RoomResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = ResolversObject<{
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  thumbnail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+export type TRoomResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Room'] = TResolversParentTypes['Room']> = ResolversObject<{
+  createdAt?: Resolver<TResolversTypes['DateTime'], ParentType, ContextType>;
+  description?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  hotel?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType>;
+  id?: Resolver<TResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Maybe<Array<TResolversTypes['String']>>, ParentType, ContextType>;
+  name?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<TResolversTypes['Float'], ParentType, ContextType>;
+  rating?: Resolver<Maybe<TResolversTypes['Int']>, ParentType, ContextType>;
+  summary?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  thumbnail?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<TResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type RoomPayloadResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['RoomPayload'] = ResolversParentTypes['RoomPayload']> = ResolversObject<{
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  nodes?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
+export type TRoomPayloadResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['RoomPayload'] = TResolversParentTypes['RoomPayload']> = ResolversObject<{
+  count?: Resolver<TResolversTypes['Int'], ParentType, ContextType>;
+  nodes?: Resolver<Array<TResolversTypes['Room']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type UserResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  bookings?: Resolver<Maybe<Array<ResolversTypes['Booking']>>, ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
-  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  password?: Resolver<ResolversTypes['Password'], ParentType, ContextType>;
-  passwordChangedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  reviews?: Resolver<Maybe<Array<ResolversTypes['Review']>>, ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['userRole'], ParentType, ContextType>;
-  userName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  verified?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type TUserResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['User'] = TResolversParentTypes['User']> = ResolversObject<{
+  active?: Resolver<TResolversTypes['Boolean'], ParentType, ContextType>;
+  avatar?: Resolver<Maybe<TResolversTypes['String']>, ParentType, ContextType>;
+  bookings?: Resolver<Maybe<Array<TResolversTypes['Booking']>>, ParentType, ContextType>;
+  email?: Resolver<TResolversTypes['EmailAddress'], ParentType, ContextType>;
+  firstName?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<TResolversTypes['ID'], ParentType, ContextType>;
+  lastName?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  password?: Resolver<TResolversTypes['Password'], ParentType, ContextType>;
+  passwordChangedAt?: Resolver<Maybe<TResolversTypes['String']>, ParentType, ContextType>;
+  reviews?: Resolver<Maybe<Array<TResolversTypes['Review']>>, ParentType, ContextType>;
+  role?: Resolver<TResolversTypes['userRole'], ParentType, ContextType>;
+  userName?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
+  verified?: Resolver<TResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = ServerContext> = ResolversObject<{
-  AuthPayload?: AuthPayloadResolvers<ContextType>;
-  Booking?: BookingResolvers<ContextType>;
+export type TResolvers<ContextType = ServerContext> = ResolversObject<{
+  AuthPayload?: TAuthPayloadResolvers<ContextType>;
+  Booking?: TBookingResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
-  Hotel?: HotelResolvers<ContextType>;
-  HotelsPayload?: HotelsPayloadResolvers<ContextType>;
+  File?: GraphQLScalarType;
+  Hotel?: THotelResolvers<ContextType>;
+  HotelsPayload?: THotelsPayloadResolvers<ContextType>;
   Latitude?: GraphQLScalarType;
   Longitude?: GraphQLScalarType;
-  Mutation?: MutationResolvers<ContextType>;
+  Mutation?: TMutationResolvers<ContextType>;
   Password?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
-  Query?: QueryResolvers<ContextType>;
-  QueryPayload?: QueryPayloadResolvers<ContextType>;
-  Review?: ReviewResolvers<ContextType>;
-  Room?: RoomResolvers<ContextType>;
-  RoomPayload?: RoomPayloadResolvers<ContextType>;
-  User?: UserResolvers<ContextType>;
+  Query?: TQueryResolvers<ContextType>;
+  QueryPayload?: TQueryPayloadResolvers<ContextType>;
+  Review?: TReviewResolvers<ContextType>;
+  Room?: TRoomResolvers<ContextType>;
+  RoomPayload?: TRoomPayloadResolvers<ContextType>;
+  User?: TUserResolvers<ContextType>;
 }>;
 

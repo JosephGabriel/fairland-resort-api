@@ -4,7 +4,7 @@ import { ShieldRule } from 'graphql-shield/typings/types';
 
 import { verifyToken } from '../utils/token';
 
-import { ServerContext } from '../index';
+import { ServerContext } from '../../globals';
 
 const hasUser: ShieldRule = rule()(
   async (parent, { data }, { prisma }: ServerContext) => {

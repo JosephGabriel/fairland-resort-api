@@ -5,8 +5,6 @@ import { GraphQLPassword } from '../scalars/password';
 import { GraphQLPostalCode } from '../scalars/postal';
 import { GraphQLDateTime } from '../scalars/datetime';
 
-import { Resolvers } from '../generated/graphql';
-
 import { UserMutations } from '../resolvers/users/mutations';
 import { HotelMutations } from '../resolvers/hotels/mutations';
 import { BookingMutations } from '../resolvers/bookings/mutations';
@@ -16,7 +14,9 @@ import { HotelQueries } from '../resolvers/hotels/query';
 import { RoomQueries } from '../resolvers/rooms/query';
 import { BookingQueries } from '../resolvers/bookings/query';
 
-export const resolvers: Resolvers = {
+import { TResolvers } from '../generated/graphql';
+
+export const resolvers: TResolvers = {
   Query: {
     ...HotelQueries,
     ...RoomQueries,

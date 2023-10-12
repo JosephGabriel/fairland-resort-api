@@ -56,7 +56,7 @@ input CreateUserInput {
   userName: String!
   password: Password!
   passwordConfirm: Password!
-  avatar: String
+  avatar: File
 }
 
 input UpdateUserInput {
