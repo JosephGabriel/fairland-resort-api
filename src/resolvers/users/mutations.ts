@@ -1,11 +1,13 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { GraphQLError } from 'graphql';
 
 import { Mutations } from './types';
 
 import { hashPassword, verifyPassword } from '../../utils/password';
+
 import { signUpToken } from '../../utils/token';
-import { s3 } from '../../utils/bucket';
+import { uploadImage } from '../../utils/upload';
+
+import { TUserRole } from '../../generated/graphql';
 
 export const UserMutations: Mutations = {
   async loginUser(parent, { data }, { prisma }) {
@@ -33,7 +35,7 @@ export const UserMutations: Mutations = {
     };
   },
 
-  async createUser(parent, { data }, { prisma }) {
+  async createUser(parent, { data }, { prisma, request }) {
     if (data.password !== data.passwordConfirm) {
       throw new GraphQLError('As senhas não coincidem');
     }
@@ -42,100 +44,21 @@ export const UserMutations: Mutations = {
 
     data.password = await hashPassword(data.password);
 
-    let avatarUrl = '';
-
-    if (!data.avatar?.name) {
-      avatarUrl =
-        'https://www.nicepng.com/png/detail/73-730154_open-default-profile-picture-png.png';
-    } else {
-      const fileArrayBuffer = await data.avatar.arrayBuffer();
-
-      const imageName = `${new Date().getTime()}-${data.avatar?.name}`;
-
-      const avatar = new PutObjectCommand({
-        Bucket: process.env.BUCKET_NAME,
-        Key: imageName,
-        Body: Buffer.from(fileArrayBuffer),
-        ContentType: data.avatar.type,
-      });
-
-      await s3.send(avatar);
-
-      avatarUrl = imageName;
-    }
+    const avatarUrl = data.avatar?.name
+      ? await uploadImage(request, data.avatar)
+      : `${request.headers.get('host')}/default-profile.jpeg`;
 
     const user = await prisma.user.create({
       data: {
         ...data,
         avatar: avatarUrl,
+        role: data.role,
+        active: data.role === TUserRole.Admin,
+        verified: data.role === TUserRole.Admin,
       },
     });
 
     const token = await signUpToken(user.id);
-
-    // const url = `${req.protocol}://${req.get("host")}${
-    //   req.originalUrl
-    // }/verifyUser/${token}`;
-
-    // if (process.env.NODE_ENV === "production") {
-    //   await sendWelcomeMail(user.email, url, user.firstName);
-    // }
-
-    return {
-      token,
-      user,
-    };
-  },
-
-  async createAdmin(parent, { data }, { prisma }) {
-    if (data.password !== data.passwordConfirm) {
-      throw new GraphQLError('As senhas não coincidem');
-    }
-
-    delete data.passwordConfirm;
-
-    data.password = await hashPassword(data.password);
-
-    let avatarUrl = '';
-
-    if (!data.avatar?.name) {
-      avatarUrl = `${process.env.BUCKET_URL}/default-profile.jpg`;
-    } else {
-      const fileArrayBuffer = await data.avatar.arrayBuffer();
-
-      const imageName = `${new Date().getTime()}-${data.avatar?.name}`;
-
-      const avatar = new PutObjectCommand({
-        Bucket: process.env.BUCKET_NAME,
-        Key: imageName,
-        Body: Buffer.from(fileArrayBuffer),
-        ContentType: data.avatar.type,
-      });
-
-      await s3.send(avatar);
-
-      avatarUrl = `${process.env.BUCKET_URL}`;
-    }
-
-    const user = await prisma.user.create({
-      data: {
-        ...data,
-        active: true,
-        role: 'ADMIN',
-        verified: true,
-        avatar: avatarUrl,
-      },
-    });
-
-    const token = await signUpToken(user.id);
-
-    // const url = `${req.protocol}://${req.get("host")}${
-    //   req.originalUrl
-    // }/verifyUser/${token}`;
-
-    // if (process.env.NODE_ENV === "production") {
-    //   await sendWelcomeMail(user.email, url, user.firstName);
-    // }
 
     return {
       token,

@@ -15,7 +15,7 @@ type User {
   email: EmailAddress!
 
   "Url da imagem de perfil de cada usuário"
-  avatar: String
+  avatar: String!
 
   "Senha criptografada de cada usuário"
   password: Password!
@@ -24,7 +24,7 @@ type User {
   passwordChangedAt: String
 
   "Enum do tipo de função (ADMIN | USER)"
-  role: userRole!
+  role: UserRole!
 
   "Mostra se o usuário esta ativo ou não"
   active: Boolean!
@@ -56,7 +56,8 @@ input CreateUserInput {
   userName: String!
   password: Password!
   passwordConfirm: Password!
-  avatar: File
+  avatar: File!
+  role: UserRole!
 }
 
 input UpdateUserInput {
@@ -72,7 +73,7 @@ input UpdateUserPasswordInput {
   passwordConfirm: Password!
 }
 
-enum userRole {
+enum UserRole {
   ADMIN
   USER
 }

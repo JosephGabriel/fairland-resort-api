@@ -1,5 +1,5 @@
 mutation CreateAdmin($data: CreateUserInput!) {
-  createAdmin(data: $data) {
+  createUser(data: $data) {
     user {
       userName
     }

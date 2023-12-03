@@ -70,7 +70,6 @@ export const permissions = shield(
   {
     Mutation: {
       createUser: hasUser,
-      createAdmin: hasUser,
       verifyUser: isLoggedin,
       updateUser: isLoggedin,
       deactivateUser: isLoggedin,

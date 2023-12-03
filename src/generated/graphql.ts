@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { UserModel, RoomModel, BookingModel, FileUploadModel } from '../models/models';
+import { UserModel, RoomModel, BookingModel } from '../models/models';
 import { ServerContext } from '../../globals';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -87,12 +87,13 @@ export type TCreateRoomInput = {
 };
 
 export type TCreateUserInput = {
-  avatar?: InputMaybe<Scalars['File']['input']>;
+  avatar: Scalars['File']['input'];
   email: Scalars['EmailAddress']['input'];
   firstName: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
   password: Scalars['Password']['input'];
   passwordConfirm: Scalars['Password']['input'];
+  role: TUserRole;
   userName: Scalars['String']['input'];
 };
 
@@ -155,8 +156,6 @@ export type TLoginUserInput = {
 
 export type TMutation = {
   __typename?: 'Mutation';
-  /** Usada para criar um admin */
-  createAdmin: TAuthPayload;
   /** Usada para fazer uma reserva */
   createBooking: TBooking;
   /** Usada para criar um hotel */
@@ -185,11 +184,6 @@ export type TMutation = {
   updateUserPassword: TAuthPayload;
   /** Usada para verificar um usuário */
   verifyUser: TAuthPayload;
-};
-
-
-export type TMutationCreateAdminArgs = {
-  data: TCreateUserInput;
 };
 
 
@@ -431,7 +425,7 @@ export type TUser = {
   /** Mostra se o usuário esta ativo ou não */
   active: Scalars['Boolean']['output'];
   /** Url da imagem de perfil de cada usuário */
-  avatar?: Maybe<Scalars['String']['output']>;
+  avatar: Scalars['String']['output'];
   /** Reservas do usúario */
   bookings?: Maybe<Array<TBooking>>;
   /** Email único de cada usuário */
@@ -546,7 +540,7 @@ export type TResolversTypes = ResolversObject<{
   CreateUserInput: TCreateUserInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
-  File: ResolverTypeWrapper<FileUploadModel>;
+  File: ResolverTypeWrapper<Scalars['File']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Hotel: ResolverTypeWrapper<Omit<THotel, 'rooms'> & { rooms: Array<TResolversTypes['Room']> }>;
   HotelsPayload: ResolverTypeWrapper<Omit<THotelsPayload, 'nodes'> & { nodes: Array<TResolversTypes['Hotel']> }>;
@@ -572,7 +566,7 @@ export type TResolversTypes = ResolversObject<{
   UpdateUserInput: TUpdateUserInput;
   UpdateUserPasswordInput: TUpdateUserPasswordInput;
   User: ResolverTypeWrapper<UserModel>;
-  userRole: TUserRole;
+  UserRole: TUserRole;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -586,7 +580,7 @@ export type TResolversParentTypes = ResolversObject<{
   CreateUserInput: TCreateUserInput;
   DateTime: Scalars['DateTime']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
-  File: FileUploadModel;
+  File: Scalars['File']['output'];
   Float: Scalars['Float']['output'];
   Hotel: Omit<THotel, 'rooms'> & { rooms: Array<TResolversParentTypes['Room']> };
   HotelsPayload: Omit<THotelsPayload, 'nodes'> & { nodes: Array<TResolversParentTypes['Hotel']> };
@@ -682,7 +676,6 @@ export interface TLongitudeScalarConfig extends GraphQLScalarTypeConfig<TResolve
 }
 
 export type TMutationResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['Mutation'] = TResolversParentTypes['Mutation']> = ResolversObject<{
-  createAdmin?: Resolver<TResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<TMutationCreateAdminArgs, 'data'>>;
   createBooking?: Resolver<TResolversTypes['Booking'], ParentType, ContextType, RequireFields<TMutationCreateBookingArgs, 'data'>>;
   createHotel?: Resolver<TResolversTypes['Hotel'], ParentType, ContextType, RequireFields<TMutationCreateHotelArgs, 'data'>>;
   createRoom?: Resolver<TResolversTypes['Room'], ParentType, ContextType, RequireFields<TMutationCreateRoomArgs, 'data'>>;
@@ -756,7 +749,7 @@ export type TRoomPayloadResolvers<ContextType = ServerContext, ParentType extend
 
 export type TUserResolvers<ContextType = ServerContext, ParentType extends TResolversParentTypes['User'] = TResolversParentTypes['User']> = ResolversObject<{
   active?: Resolver<TResolversTypes['Boolean'], ParentType, ContextType>;
-  avatar?: Resolver<Maybe<TResolversTypes['String']>, ParentType, ContextType>;
+  avatar?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
   bookings?: Resolver<Maybe<Array<TResolversTypes['Booking']>>, ParentType, ContextType>;
   email?: Resolver<TResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
@@ -765,7 +758,7 @@ export type TUserResolvers<ContextType = ServerContext, ParentType extends TReso
   password?: Resolver<TResolversTypes['Password'], ParentType, ContextType>;
   passwordChangedAt?: Resolver<Maybe<TResolversTypes['String']>, ParentType, ContextType>;
   reviews?: Resolver<Maybe<Array<TResolversTypes['Review']>>, ParentType, ContextType>;
-  role?: Resolver<TResolversTypes['userRole'], ParentType, ContextType>;
+  role?: Resolver<TResolversTypes['UserRole'], ParentType, ContextType>;
   userName?: Resolver<TResolversTypes['String'], ParentType, ContextType>;
   verified?: Resolver<TResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

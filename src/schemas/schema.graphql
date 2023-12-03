@@ -6,16 +6,6 @@ scalar EmailAddress
 scalar DateTime
 scalar File
 
-type FileUpload {
-  file: File!
-}
-
-type ImageUrl {
-  url: String!
-}
-
-union Media = FileUpload | ImageUrl
-
 type Query {
   ########## Hotel ################
   "Usada para buscar um hotel pelo id"
@@ -55,9 +45,6 @@ type Mutation {
 
   "Usada para criar um usuário"
   createUser(data: CreateUserInput!): AuthPayload!
-
-  "Usada para criar um admin"
-  createAdmin(data: CreateUserInput!): AuthPayload!
 
   "Usada para atualizar informações não sensiveis (ex: senhas)"
   updateUser(data: UpdateUserInput!): AuthPayload!

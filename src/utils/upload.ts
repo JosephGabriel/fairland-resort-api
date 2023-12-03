@@ -1,55 +1,26 @@
-import { randomBytes } from 'crypto';
-import { Request, Response } from 'express';
-import fs from 'fs';
-import multer from 'multer';
+import { GraphQLError } from 'graphql';
+import fs from 'fs/promises';
+import path from 'path';
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const hasFolder = fs.existsSync('uploads/');
+export const uploadImage = async (request: Request, image: File) => {
+  try {
+    const fileArrayBuffer = await image.arrayBuffer();
 
-    if (!hasFolder) {
-      fs.mkdirSync('uploads/');
-    }
+    const imageName = `${new Date().getTime()}-${image.name}`;
 
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const extension = file.originalname.split('.')[1];
+    await fs.writeFile(
+      path.join('uploads', imageName),
+      Buffer.from(fileArrayBuffer)
+    );
 
-    const newFileName = randomBytes(64).toString('hex');
+    return `${request.headers.get('host')}/${imageName}`;
+  } catch (error) {
+    console.log(error);
 
-    cb(null, `${newFileName}.${extension}`);
-  },
-});
-
-export const upload = multer({ storage: storage });
-
-export const uploadUserAvatar = (req: Request, res: Response) => {
-  const { file } = req;
-
-  return res.json({
-    url: `${req.protocol}://${req.get('host')}/${file.filename}`,
-  });
-};
-
-export const uploadImage = (req: Request, res: Response) => {
-  const { file } = req;
-
-  return res.json({
-    url: `${req.protocol}://${req.get('host')}/${file.filename}`,
-  });
-};
-
-export const uploadImages = (req: Request, res: Response) => {
-  const { files } = req;
-
-  const photos = files['files'].map(
-    (f) => `${req.protocol}://${req.get('host')}/${f.filename}`
-  );
-
-  return res.json({
-    url: photos,
-  });
+    throw new GraphQLError(
+      'Não foi possivel fazer upload da imagem, tente mais tarde!'
+    );
+  }
 };
 
 export const deleteUploadedFile = async (file) => {
@@ -58,32 +29,12 @@ export const deleteUploadedFile = async (file) => {
 
     const filePath = `${__dirname}/../../public/images/${filename}`;
 
-    await fs.unlink(filePath, () => {
-      return;
-    });
+    await fs.unlink(filePath);
   } catch (err) {
     console.error(err);
-  }
 
-  return;
-};
-
-export const deleteMultipleUploadedFiles = async (files) => {
-  try {
-    await Promise.all(
-      files.map(async (file) => {
-        const filename = file.split('/images/')[1];
-
-        const filePath = `${__dirname}/../../public/images/${filename}`;
-
-        await fs.unlink(filePath, () => {
-          return;
-        });
-      })
+    throw new GraphQLError(
+      'Não foi possivel fazer upload da imagem, tente mais tarde!'
     );
-  } catch (err) {
-    console.error(err);
   }
-
-  return;
 };
