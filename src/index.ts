@@ -23,7 +23,6 @@ const schema = createSchema({
 
 export const yoga = createYoga<ServerContext>({
   schema: applyMiddleware(schema, permissions),
-  logging: 'debug',
   healthCheckEndpoint: '/live',
   plugins: [useApolloTracing()],
   context: (context) => ({
@@ -35,6 +34,8 @@ export const yoga = createYoga<ServerContext>({
 export const app = express();
 
 app.use(cors());
+
+app.use(express.static('uploads'));
 
 app.get(
   '/',
