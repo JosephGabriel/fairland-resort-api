@@ -4,44 +4,42 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: Date; output: Date; }
-  EmailAddress: { input: string; output: string; }
-  File: { input: File; output: File; }
-  Latitude: { input: number; output: number; }
-  Longitude: { input: number; output: number; }
-  Password: { input: string; output: string; }
-  PostalCode: { input: string; output: string; }
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  DateTime: Date;
+  EmailAddress: string;
+  File: File;
+  Latitude: number;
+  Longitude: number;
+  Password: string;
+  PostalCode: string;
 };
 
 export type TAuthPayload = {
   __typename?: 'AuthPayload';
-  token: Scalars['String']['output'];
+  token: Scalars['String'];
   user: TUser;
 };
 
 export type TBooking = {
   __typename?: 'Booking';
   /** Data em qua a reserva foi feita */
-  bookingDate: Scalars['String']['output'];
+  bookingDate: Scalars['String'];
   /** Data de entrada da reserva */
-  dateIn: Scalars['String']['output'];
+  dateIn: Scalars['String'];
   /** Data de saida da reserva */
-  dateOut: Scalars['String']['output'];
+  dateOut: Scalars['String'];
   /** Id da reserva */
-  id: Scalars['ID']['output'];
+  id: Scalars['ID'];
   /** Booleano que mostra se foi pago ou não */
-  paid: Scalars['Boolean']['output'];
+  paid: Scalars['Boolean'];
   /** Preço da reserva */
-  price: Scalars['Float']['output'];
+  price: Scalars['Float'];
   /** Quarto reservado */
   room: TRoom;
   /** Usuário que fez a reserva */
@@ -49,105 +47,105 @@ export type TBooking = {
 };
 
 export type TCreateBookingInput = {
-  dateIn: Scalars['String']['input'];
-  dateOut: Scalars['String']['input'];
-  price: Scalars['Float']['input'];
-  room: Scalars['ID']['input'];
+  dateIn: Scalars['String'];
+  dateOut: Scalars['String'];
+  price: Scalars['Float'];
+  room: Scalars['ID'];
 };
 
 export type TCreateHotelInput = {
-  address: Scalars['String']['input'];
-  addressNumber: Scalars['String']['input'];
-  city: Scalars['String']['input'];
-  description: Scalars['String']['input'];
-  images?: InputMaybe<Array<Scalars['String']['input']>>;
-  latitude: Scalars['Latitude']['input'];
-  logo: Scalars['String']['input'];
-  longitude: Scalars['Longitude']['input'];
-  name: Scalars['String']['input'];
-  neighborhood: Scalars['String']['input'];
-  state: Scalars['String']['input'];
-  summary: Scalars['String']['input'];
-  thumbnail: Scalars['String']['input'];
-  zipCode: Scalars['PostalCode']['input'];
+  address: Scalars['String'];
+  addressNumber: Scalars['String'];
+  city: Scalars['String'];
+  description: Scalars['String'];
+  images?: InputMaybe<Array<Scalars['String']>>;
+  latitude: Scalars['Latitude'];
+  logo: Scalars['String'];
+  longitude: Scalars['Longitude'];
+  name: Scalars['String'];
+  neighborhood: Scalars['String'];
+  state: Scalars['String'];
+  summary: Scalars['String'];
+  thumbnail: Scalars['String'];
+  zipCode: Scalars['PostalCode'];
 };
 
 export type TCreateRoomInput = {
-  description: Scalars['String']['input'];
-  hotel: Scalars['ID']['input'];
-  images?: InputMaybe<Array<Scalars['String']['input']>>;
-  name: Scalars['String']['input'];
-  price: Scalars['Float']['input'];
-  summary: Scalars['String']['input'];
-  thumbnail: Scalars['String']['input'];
+  description: Scalars['String'];
+  hotel: Scalars['ID'];
+  images?: InputMaybe<Array<Scalars['String']>>;
+  name: Scalars['String'];
+  price: Scalars['Float'];
+  summary: Scalars['String'];
+  thumbnail: Scalars['String'];
 };
 
 export type TCreateUserInput = {
-  avatar: Scalars['File']['input'];
-  email: Scalars['EmailAddress']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  password: Scalars['Password']['input'];
-  passwordConfirm: Scalars['Password']['input'];
+  avatar: Scalars['File'];
+  email: Scalars['EmailAddress'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  password: Scalars['Password'];
+  passwordConfirm: Scalars['Password'];
   role: TUserRole;
-  userName: Scalars['String']['input'];
+  userName: Scalars['String'];
 };
 
 export type THotel = {
   __typename?: 'Hotel';
   /** Rua do hotel */
-  address: Scalars['String']['output'];
+  address: Scalars['String'];
   /** Número residencial do hotel */
-  addressNumber: Scalars['String']['output'];
+  addressNumber: Scalars['String'];
   /** Cidade do hotel */
-  city: Scalars['String']['output'];
+  city: Scalars['String'];
   /** Data de criação do hotel */
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
   /** A descrição do hotel */
-  description: Scalars['String']['output'];
+  description: Scalars['String'];
   /** Id do hotel */
-  id: Scalars['ID']['output'];
+  id: Scalars['ID'];
   /** Um array de url's de imagens de hoteis */
-  images: Array<Scalars['String']['output']>;
+  images: Array<Scalars['String']>;
   /** Latitude do hotel */
-  latitude: Scalars['Latitude']['output'];
+  latitude: Scalars['Latitude'];
   /** Url da logo do hotel */
-  logo: Scalars['String']['output'];
+  logo: Scalars['String'];
   /** Longitude do hotel */
-  longitude: Scalars['Longitude']['output'];
+  longitude: Scalars['Longitude'];
   /** Nome do hotel */
-  name: Scalars['String']['output'];
+  name: Scalars['String'];
   /** Bairro do hotel */
-  neighborhood: Scalars['String']['output'];
+  neighborhood: Scalars['String'];
   /** Classificação do hotel ex: 5 estrelas */
-  rating: Scalars['Int']['output'];
+  rating: Scalars['Int'];
   /** Array com os quartos do hotel */
   rooms: Array<TRoom>;
   /** Slug do hotel baseado no nome */
-  slug: Scalars['String']['output'];
+  slug: Scalars['String'];
   /** Estado do hotel */
-  state: Scalars['String']['output'];
+  state: Scalars['String'];
   /** Uma pequena descrição do hotel de 10 as 30 palavras */
-  summary: Scalars['String']['output'];
+  summary: Scalars['String'];
   /** Thumbnail a ser exibida do hotel */
-  thumbnail: Scalars['String']['output'];
+  thumbnail: Scalars['String'];
   /** Data da ultima atualização do hotel */
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
   /** Cep do hotel */
-  zipCode: Scalars['PostalCode']['output'];
+  zipCode: Scalars['PostalCode'];
 };
 
 export type THotelsPayload = TQueryPayload & {
   __typename?: 'HotelsPayload';
   /** Quantidade total de hotéis criados */
-  count: Scalars['Int']['output'];
+  count: Scalars['Int'];
   /** Array com hotéis */
   nodes: Array<THotel>;
 };
 
 export type TLoginUserInput = {
-  email: Scalars['EmailAddress']['input'];
-  password: Scalars['Password']['input'];
+  email: Scalars['EmailAddress'];
+  password: Scalars['Password'];
 };
 
 export type TMutation = {
@@ -161,13 +159,13 @@ export type TMutation = {
   /** Usada para criar um usuário */
   createUser: TAuthPayload;
   /** Usada para que o próprio usuário possa desativar a conta, mas não apagá-la */
-  deactivateUser: Scalars['String']['output'];
+  deactivateUser: Scalars['String'];
   /** Usada para cancelar uma reserva */
-  deleteBooking: Scalars['String']['output'];
+  deleteBooking: Scalars['String'];
   /** Usada para apagar um hotel */
   deleteHotel: THotel;
   /** Usada para deletar um quarto de hotel */
-  deleteRoom: Scalars['String']['output'];
+  deleteRoom: Scalars['String'];
   /** Usada para fazer login */
   loginUser: TAuthPayload;
   /** Usada para atualizar um hotel */
@@ -204,17 +202,17 @@ export type TMutationCreateUserArgs = {
 
 
 export type TMutationDeleteBookingArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
 export type TMutationDeleteHotelArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
 export type TMutationDeleteRoomArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
@@ -225,13 +223,13 @@ export type TMutationLoginUserArgs = {
 
 export type TMutationUpdateHotelArgs = {
   data: TUpdateHotelInput;
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
 export type TMutationUpdateRoomArgs = {
   data: TUpdateRoomInput;
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
@@ -246,8 +244,8 @@ export type TMutationUpdateUserPasswordArgs = {
 
 export type TOptions = {
   orderBy?: InputMaybe<TOrderBy>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export enum TOrderBy {
@@ -279,18 +277,18 @@ export type TQuery = {
 
 
 export type TQueryBookingArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
 export type TQueryHotelArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
   roomOptions?: InputMaybe<TOptions>;
 };
 
 
 export type TQueryHotelBySlugArgs = {
-  slug: Scalars['String']['input'];
+  slug: Scalars['String'];
 };
 
 
@@ -305,7 +303,7 @@ export type TQueryHotelsByAdminArgs = {
 
 
 export type TQueryRoomArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['ID'];
 };
 
 
@@ -315,22 +313,22 @@ export type TQueryRoomsArgs = {
 
 
 export type TQueryRoomsByHotelArgs = {
-  hotel: Scalars['ID']['input'];
+  hotel: Scalars['ID'];
   options?: InputMaybe<TOptions>;
 };
 
 export type TQueryPayload = {
-  count: Scalars['Int']['output'];
+  count: Scalars['Int'];
 };
 
 export type TReview = {
   __typename?: 'Review';
   /** Id da review */
-  id: Scalars['ID']['output'];
+  id: Scalars['ID'];
   /** Classificação da review */
-  rating: Scalars['Int']['output'];
+  rating: Scalars['Int'];
   /** Texto da review */
-  review: Scalars['String']['output'];
+  review: Scalars['String'];
   /** Quarto que recebeu a review */
   room: TRoom;
   /** Usuário que fez a review */
@@ -340,110 +338,110 @@ export type TReview = {
 export type TRoom = {
   __typename?: 'Room';
   /** Data em que foi criado */
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTime'];
   /** Uma descrição do quarto */
-  description: Scalars['String']['output'];
+  description: Scalars['String'];
   /** Hotel a qual o quarto pertence */
   hotel: THotel;
   /** Id do quarto */
-  id: Scalars['ID']['output'];
+  id: Scalars['ID'];
   /** Um array de url's de imagens do quarto */
-  images?: Maybe<Array<Scalars['String']['output']>>;
+  images?: Maybe<Array<Scalars['String']>>;
   /** Nome do quarto */
-  name: Scalars['String']['output'];
+  name: Scalars['String'];
   /** Preço por noite do quarto */
-  price: Scalars['Float']['output'];
+  price: Scalars['Float'];
   /** Classificação do quarto ex: 5 estrelas */
-  rating?: Maybe<Scalars['Int']['output']>;
+  rating?: Maybe<Scalars['Int']>;
   /** Uma pequena descrição do quarto */
-  summary: Scalars['String']['output'];
+  summary: Scalars['String'];
   /** Thumbnail a ser exibida do quarto */
-  thumbnail: Scalars['String']['output'];
+  thumbnail: Scalars['String'];
   /** Data da ultima atualização */
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type TRoomFilter = {
-  maxPrice?: InputMaybe<Scalars['Float']['input']>;
-  maxRating?: InputMaybe<Scalars['Int']['input']>;
-  minPrice?: InputMaybe<Scalars['Float']['input']>;
-  minRating?: InputMaybe<Scalars['Int']['input']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  maxRating?: InputMaybe<Scalars['Int']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
+  minRating?: InputMaybe<Scalars['Int']>;
 };
 
 export type TRoomPayload = TQueryPayload & {
   __typename?: 'RoomPayload';
   /** Quantidade total de quartos criados */
-  count: Scalars['Int']['output'];
+  count: Scalars['Int'];
   /** Array com quartos */
   nodes: Array<TRoom>;
 };
 
 export type TUpdateHotelInput = {
-  address?: InputMaybe<Scalars['String']['input']>;
-  addressNumber?: InputMaybe<Scalars['String']['input']>;
-  city?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  images?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  latitude?: InputMaybe<Scalars['Latitude']['input']>;
-  logo?: InputMaybe<Scalars['String']['input']>;
-  longitude?: InputMaybe<Scalars['Longitude']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  neighborhood?: InputMaybe<Scalars['String']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
-  summary?: InputMaybe<Scalars['String']['input']>;
-  thumbnail?: InputMaybe<Scalars['String']['input']>;
-  zipCode?: InputMaybe<Scalars['PostalCode']['input']>;
+  address?: InputMaybe<Scalars['String']>;
+  addressNumber?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  images?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  latitude?: InputMaybe<Scalars['Latitude']>;
+  logo?: InputMaybe<Scalars['String']>;
+  longitude?: InputMaybe<Scalars['Longitude']>;
+  name?: InputMaybe<Scalars['String']>;
+  neighborhood?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<Scalars['String']>;
+  summary?: InputMaybe<Scalars['String']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+  zipCode?: InputMaybe<Scalars['PostalCode']>;
 };
 
 export type TUpdateRoomInput = {
-  images?: InputMaybe<Array<Scalars['String']['input']>>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  price?: InputMaybe<Scalars['Float']['input']>;
-  summary?: InputMaybe<Scalars['String']['input']>;
-  thumbnail?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<Scalars['String']>>;
+  name?: InputMaybe<Scalars['String']>;
+  price?: InputMaybe<Scalars['Float']>;
+  summary?: InputMaybe<Scalars['String']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
 };
 
 export type TUpdateUserInput = {
-  avatar?: InputMaybe<Scalars['String']['input']>;
-  email?: InputMaybe<Scalars['EmailAddress']['input']>;
-  firstName?: InputMaybe<Scalars['String']['input']>;
-  lastName?: InputMaybe<Scalars['String']['input']>;
-  userName?: InputMaybe<Scalars['String']['input']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['EmailAddress']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  userName?: InputMaybe<Scalars['String']>;
 };
 
 export type TUpdateUserPasswordInput = {
-  password: Scalars['Password']['input'];
-  passwordConfirm: Scalars['Password']['input'];
+  password: Scalars['Password'];
+  passwordConfirm: Scalars['Password'];
 };
 
 export type TUser = {
   __typename?: 'User';
   /** Mostra se o usuário esta ativo ou não */
-  active: Scalars['Boolean']['output'];
+  active: Scalars['Boolean'];
   /** Url da imagem de perfil de cada usuário */
-  avatar: Scalars['String']['output'];
+  avatar: Scalars['String'];
   /** Reservas do usúario */
   bookings?: Maybe<Array<TBooking>>;
   /** Email único de cada usuário */
-  email: Scalars['EmailAddress']['output'];
+  email: Scalars['EmailAddress'];
   /** Primeiro nome do usuário */
-  firstName: Scalars['String']['output'];
+  firstName: Scalars['String'];
   /** Id único de cada usuário */
-  id: Scalars['ID']['output'];
+  id: Scalars['ID'];
   /** Sobrenome nome do usuário */
-  lastName: Scalars['String']['output'];
+  lastName: Scalars['String'];
   /** Senha criptografada de cada usuário */
-  password: Scalars['Password']['output'];
+  password: Scalars['Password'];
   /** Timestamp do momento em que o usuário mudou a senha */
-  passwordChangedAt?: Maybe<Scalars['String']['output']>;
+  passwordChangedAt?: Maybe<Scalars['String']>;
   /** Review feitas pelo usuário */
   reviews?: Maybe<Array<TReview>>;
   /** Enum do tipo de função (ADMIN | USER) */
   role: TUserRole;
   /** Nome de usuário único de cada usuário */
-  userName: Scalars['String']['output'];
+  userName: Scalars['String'];
   /** Mostra se o usuário verificou o email ou não */
-  verified: Scalars['Boolean']['output'];
+  verified: Scalars['Boolean'];
 };
 
 export enum TUserRole {
@@ -545,7 +543,7 @@ export type TCreateAdminMutationVariables = Exact<{
 }>;
 
 
-export type TCreateAdminMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string } } };
+export type TCreateAdminMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthPayload', user: { __typename?: 'User', userName: string, role: TUserRole } } };
 
 export type TCreateUserMutationVariables = Exact<{
   data: TCreateUserInput;
@@ -599,7 +597,7 @@ export const UpdateHotelDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const CreateRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateRoomInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<TCreateRoomMutation, TCreateRoomMutationVariables>;
 export const DeleteRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<TDeleteRoomMutation, TDeleteRoomMutationVariables>;
 export const UpdateRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateRoomInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<TUpdateRoomMutation, TUpdateRoomMutationVariables>;
-export const CreateAdminDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateAdmin"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userName"}}]}}]}}]}}]} as unknown as DocumentNode<TCreateAdminMutation, TCreateAdminMutationVariables>;
+export const CreateAdminDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateAdmin"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userName"}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]}}]} as unknown as DocumentNode<TCreateAdminMutation, TCreateAdminMutationVariables>;
 export const CreateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userName"}}]}}]}}]}}]} as unknown as DocumentNode<TCreateUserMutation, TCreateUserMutationVariables>;
 export const DeactivateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeactivateUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deactivateUser"}}]}}]} as unknown as DocumentNode<TDeactivateUserMutation, TDeactivateUserMutationVariables>;
 export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userName"}}]}}]}}]}}]} as unknown as DocumentNode<TLoginUserMutation, TLoginUserMutationVariables>;

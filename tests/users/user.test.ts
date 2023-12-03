@@ -1,5 +1,6 @@
 import { getClient, setupDatabase, userForTest } from '../utils/index';
 import bcrypt from 'bcrypt';
+import fs from 'fs/promises';
 
 import {
   LoginUserDocument,
@@ -9,9 +10,14 @@ import {
   UpdateUserDocument,
   UpdateUserPasswordDocument,
   VerifyUserDocument,
+  TUserRole,
 } from '../generated/graphql';
 
 beforeEach(setupDatabase);
+
+const getAvatar = async () => {
+  return (await fs.readFile('uploads/default-profile.jpeg')) as unknown as File;
+};
 
 describe('Users', () => {
   describe('Mutations', () => {
@@ -77,9 +83,11 @@ describe('Users', () => {
             email: 'test2@test.com',
             firstName: 'Test2',
             lastName: 'Test2',
+            role: TUserRole.User,
             userName: 'Test2',
             password: userForTest.raw_password,
             passwordConfirm: userForTest.raw_password,
+            avatar: await getAvatar(),
           },
         },
       });
@@ -99,6 +107,8 @@ describe('Users', () => {
               firstName: 'Test2',
               lastName: 'Test2',
               userName: 'Test2',
+              avatar: await getAvatar(),
+              role: TUserRole.User,
               password: userForTest.raw_password,
               passwordConfirm: `${userForTest.raw_password}222`,
             },
@@ -121,6 +131,8 @@ describe('Users', () => {
               firstName: 'Test2',
               lastName: 'Test2',
               userName: 'Test2',
+              avatar: await getAvatar(),
+              role: TUserRole.User,
               password: userForTest.raw_password,
               passwordConfirm: userForTest.raw_password,
             },
@@ -143,6 +155,8 @@ describe('Users', () => {
             email: 'admin@admin.com',
             firstName: 'Admin-test',
             lastName: 'Admin-test',
+            avatar: await getAvatar(),
+            role: TUserRole.Admin,
             password: userForTest.raw_password,
             passwordConfirm: userForTest.raw_password,
             userName: 'Admin-test',
@@ -150,7 +164,8 @@ describe('Users', () => {
         },
       });
 
-      expect(data?.createAdmin.user.userName).toBe('Admin-test');
+      expect(data?.createUser.user.userName).toBe('Admin-test');
+      expect(data?.createUser.user.role).toBe(TUserRole.Admin);
     });
 
     it('should not create one admin when passwords do not match', async () => {
@@ -165,6 +180,8 @@ describe('Users', () => {
               firstName: 'Admin-test',
               lastName: 'Admin-test',
               userName: 'Admin-test',
+              avatar: await getAvatar(),
+              role: TUserRole.Admin,
               password: userForTest.raw_password,
               passwordConfirm: userForTest.raw_password + '3333',
             },
@@ -187,6 +204,8 @@ describe('Users', () => {
               firstName: 'Admin-test',
               lastName: 'Admin-test',
               userName: 'Admin-test',
+              avatar: await getAvatar(),
+              role: TUserRole.Admin,
               password: userForTest.raw_password,
               passwordConfirm: userForTest.raw_password,
             },

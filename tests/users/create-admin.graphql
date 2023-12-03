@@ -2,6 +2,7 @@ mutation CreateAdmin($data: CreateUserInput!) {
   createUser(data: $data) {
     user {
       userName
+      role
     }
   }
 }
