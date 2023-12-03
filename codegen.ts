@@ -28,7 +28,6 @@ const config: CodegenConfig = {
           User: '../models/models#UserModel',
           Room: '../models/models#RoomModel',
           Booking: '../models/models#BookingModel',
-          // File: '../models/models#FileUploadModel',
         },
       },
     },
