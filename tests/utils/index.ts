@@ -122,6 +122,7 @@ export const setupDatabase = async () => {
       active: true,
       verified: false,
       role: 'USER',
+      avatar: 'default-profile.jpeg',
       password: passwordHashed,
     },
   });
@@ -135,6 +136,7 @@ export const setupDatabase = async () => {
       active: true,
       verified: true,
       role: 'ADMIN',
+      avatar: 'default-profile.jpeg',
       password: passwordHashed,
     },
   });
