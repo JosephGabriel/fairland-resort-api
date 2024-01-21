@@ -8,6 +8,13 @@ export const uploadImage = async (request: Request, image: File) => {
 
     const imageName = `${new Date().getTime()}-${image.name}`;
 
+    try {
+      await fs.access('uploads');
+    } catch (error) {
+      console.log(error);
+      await fs.mkdir('uploads');
+    }
+
     await fs.writeFile(
       path.join('uploads', imageName),
       Buffer.from(fileArrayBuffer)

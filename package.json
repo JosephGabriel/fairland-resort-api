@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node dist/server",
     "build": "tsc --build",
-    "prestart": "npx prisma migrate deploy && npx prisma db push",
     "dev": "npm-run-all serve codegen",
     "serve": "nodemon src/server --ext graphql,ts",
     "test": "npx jest --runInBand --watchAll",
@@ -22,7 +21,7 @@
     "@graphql-tools/load": "^7.5.5",
     "@graphql-tools/merge": "^8.2.1",
     "@graphql-tools/schema": "^8.3.1",
-    "@prisma/client": "4.6.1",
+    "@prisma/client": "^5.8.0",
     "@sendgrid/mail": "^7.6.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -36,7 +35,7 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.5-lts.1",
     "npm-run-all": "^4.1.5",
-    "prisma": "4.6.1",
+    "prisma": "^5.8.0",
     "slugify": "^1.6.5",
     "validator": "^13.7.0"
   },
