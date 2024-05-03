@@ -16,7 +16,7 @@ import {
 beforeEach(setupDatabase);
 
 const getAvatar = async () => {
-  return (await fs.readFile('uploads/default-profile.jpeg')) as unknown as File;
+  return (await fs.readFile('uploads/default-profile.jpg')) as unknown as File;
 };
 
 describe('Users', () => {
@@ -51,8 +51,12 @@ describe('Users', () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe('Email ou senha inválida');
+        return expect(error.graphQLErrors[0].message).toBe(
+          'Email ou senha inválida'
+        );
       }
+
+      throw new Error('Should not reach this point');
     });
 
     it('should not do login when give a wrong password', async () => {
@@ -69,8 +73,12 @@ describe('Users', () => {
           },
         });
       } catch (error) {
-        expect(error.graphQLErrors[0].message).toBe('Email ou senha inválida');
+        return expect(error.graphQLErrors[0].message).toBe(
+          'Email ou senha inválida'
+        );
       }
+
+      throw new Error('Should not reach this point');
     });
 
     it('should create one user', async () => {
