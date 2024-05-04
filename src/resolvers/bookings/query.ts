@@ -21,14 +21,22 @@ export const BookingQueries: Queries = {
   },
   async bookings(parent, args, { prisma, user }) {
     const bookings = await prisma.booking.findMany({
-      where: {
-        userId: user.id,
-      },
+      // where: {
+      //   room: {
+      //     hotel: {
+      //       admin: {
+      //         id: user.id,
+      //       },
+      //     },
+      //   },
+      // },
       include: {
         room: true,
         user: true,
       },
     });
+
+    console.log(bookings);
 
     return bookings;
   },

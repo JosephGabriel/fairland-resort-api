@@ -56,7 +56,7 @@ input CreateUserInput {
   userName: String!
   password: Password!
   passwordConfirm: Password!
-  avatar: File!
+  avatar: File
   role: UserRole!
 }
 

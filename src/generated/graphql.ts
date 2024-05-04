@@ -85,7 +85,7 @@ export type TCreateRoomInput = {
 };
 
 export type TCreateUserInput = {
-  avatar: Scalars['File'];
+  avatar?: InputMaybe<Scalars['File']>;
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
