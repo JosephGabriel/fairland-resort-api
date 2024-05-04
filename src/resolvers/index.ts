@@ -14,9 +14,9 @@ import { HotelQueries } from '../resolvers/hotels/query';
 import { RoomQueries } from '../resolvers/rooms/query';
 import { BookingQueries } from '../resolvers/bookings/query';
 
-import { TResolvers } from '../generated/graphql';
+import { Resolvers } from '../generated/graphql';
 
-export const resolvers: TResolvers = {
+export const resolvers: Resolvers = {
   Query: {
     ...HotelQueries,
     ...RoomQueries,

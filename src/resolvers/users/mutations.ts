@@ -7,7 +7,7 @@ import { hashPassword, verifyPassword } from '../../utils/password';
 import { signUpToken } from '../../utils/token';
 import { uploadImage } from '../../utils/upload';
 
-import { TUserRole } from '../../generated/graphql';
+import { UserRole } from '../../generated/graphql';
 
 export const UserMutations: Mutations = {
   async loginUser(parent, { data }, { prisma }) {
@@ -53,8 +53,8 @@ export const UserMutations: Mutations = {
         ...data,
         avatar: avatarUrl,
         role: data.role,
-        active: data.role === TUserRole.Admin,
-        verified: data.role === TUserRole.Admin,
+        active: data.role === UserRole.Admin,
+        verified: data.role === UserRole.Admin,
       },
     });
 
