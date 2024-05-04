@@ -6,7 +6,6 @@ const config: CodegenConfig = {
   documents: 'tests/**/*.graphql',
   watch: true,
   config: {
-    typesPrefix: 'T',
     strictScalars: true,
     scalars: {
       EmailAddress: 'string',

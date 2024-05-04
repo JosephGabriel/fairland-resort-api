@@ -19,7 +19,7 @@ export const BookingQueries: Queries = {
 
     return booking;
   },
-  async bookings(parent, args, { prisma, user }) {
+  async bookings(parent, args, { prisma }) {
     const bookings = await prisma.booking.findMany({
       // where: {
       //   room: {
