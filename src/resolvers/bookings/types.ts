@@ -5,7 +5,7 @@ export interface Mutations {
   deleteBooking: MutationResolvers['deleteBooking'];
 }
 
-export interface Queries {
+export interface Queries extends QueryResolvers {
   booking: QueryResolvers['booking'];
-  bookings: QueryResolvers['bookings'];
+  bookingsByAdmin: QueryResolvers['bookingsByAdmin'];
 }

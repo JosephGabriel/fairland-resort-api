@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server",
     "build": "tsc --build",
-    "dev": "npm-run-all serve codegen",
+    "start:dev": "npm-run-all serve codegen",
     "serve": "nodemon src/server --ext graphql,ts",
     "test": "npx jest --runInBand --watchAll",
     "codegen": "graphql-codegen --config codegen.ts"
