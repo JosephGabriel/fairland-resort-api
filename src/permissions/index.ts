@@ -85,6 +85,7 @@ export const permissions = shield(
     },
     Query: {
       booking: isLoggedin,
+      bookingsByUser: isLoggedin,
       bookingsByAdmin: isLoggedin,
       hotelsByAdmin: chain(isLoggedin, isAdmin),
     },

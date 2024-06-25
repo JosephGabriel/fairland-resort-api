@@ -185,7 +185,7 @@ describe('Bookings', () => {
         mutation: GetBookingsByUserDocument,
       });
 
-      expect(data?.bookings.length).toBe(1);
+      expect(data?.bookingsByUser.length).toBe(1);
     });
 
     it('should not fetch bookings of an user when is not logged in', async () => {

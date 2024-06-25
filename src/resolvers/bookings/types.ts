@@ -7,5 +7,6 @@ export interface Mutations {
 
 export interface Queries extends QueryResolvers {
   booking: QueryResolvers['booking'];
+  bookingsByUser: QueryResolvers['bookingsByUser'];
   bookingsByAdmin: QueryResolvers['bookingsByAdmin'];
 }

@@ -34,6 +34,9 @@ type Query {
   "Usada para buscar uma reserva pelo id"
   booking(id: ID!): Booking!
 
+  "Usada para buscar reservas de um usuário"
+  bookingsByUser: [Booking!]!
+
   "Usada para buscar reservas de um admin"
   bookingsByAdmin: [Booking!]!
 }

@@ -5,6 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "start": "node dist/server",
+    "prestart": "npx prisma migrate deploy",
     "build": "tsc --build",
     "start:dev": "npm-run-all serve codegen",
     "serve": "nodemon src/server --ext graphql,ts",

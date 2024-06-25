@@ -261,8 +261,10 @@ export type Query = {
   __typename?: 'Query';
   /** Usada para buscar uma reserva pelo id */
   booking: Booking;
+  /** Usada para buscar reservas de um admin */
+  bookingsByAdmin: Array<Booking>;
   /** Usada para buscar reservas de um usuário */
-  bookings: Array<Booking>;
+  bookingsByUser: Array<Booking>;
   /** Usada para buscar um hotel pelo id */
   hotel: Hotel;
   /** Usada para buscar um hotel pelo slug */
@@ -694,7 +696,8 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   booking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<QueryBookingArgs, 'id'>>;
-  bookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
+  bookingsByAdmin?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
+  bookingsByUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
   hotel?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelArgs, 'id'>>;
   hotelBySlug?: Resolver<ResolversTypes['Hotel'], ParentType, ContextType, RequireFields<QueryHotelBySlugArgs, 'slug'>>;
   hotels?: Resolver<Array<ResolversTypes['Hotel']>, ParentType, ContextType, Partial<QueryHotelsArgs>>;

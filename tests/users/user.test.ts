@@ -10,7 +10,7 @@ import {
   UpdateUserDocument,
   UpdateUserPasswordDocument,
   VerifyUserDocument,
-  TUserRole,
+  UserRole,
 } from '../generated/graphql';
 
 beforeEach(setupDatabase);
@@ -91,7 +91,7 @@ describe('Users', () => {
             email: 'test2@test.com',
             firstName: 'Test2',
             lastName: 'Test2',
-            role: TUserRole.User,
+            role: UserRole.User,
             userName: 'Test2',
             password: userForTest.raw_password,
             passwordConfirm: userForTest.raw_password,
@@ -116,7 +116,7 @@ describe('Users', () => {
               lastName: 'Test2',
               userName: 'Test2',
               avatar: await getAvatar(),
-              role: TUserRole.User,
+              role: UserRole.User,
               password: userForTest.raw_password,
               passwordConfirm: `${userForTest.raw_password}222`,
             },
@@ -140,7 +140,7 @@ describe('Users', () => {
               lastName: 'Test2',
               userName: 'Test2',
               avatar: await getAvatar(),
-              role: TUserRole.User,
+              role: UserRole.User,
               password: userForTest.raw_password,
               passwordConfirm: userForTest.raw_password,
             },
@@ -164,7 +164,7 @@ describe('Users', () => {
             firstName: 'Admin-test',
             lastName: 'Admin-test',
             avatar: await getAvatar(),
-            role: TUserRole.Admin,
+            role: UserRole.Admin,
             password: userForTest.raw_password,
             passwordConfirm: userForTest.raw_password,
             userName: 'Admin-test',
@@ -173,7 +173,7 @@ describe('Users', () => {
       });
 
       expect(data?.createUser.user.userName).toBe('Admin-test');
-      expect(data?.createUser.user.role).toBe(TUserRole.Admin);
+      expect(data?.createUser.user.role).toBe(UserRole.Admin);
     });
 
     it('should not create one admin when passwords do not match', async () => {
@@ -189,7 +189,7 @@ describe('Users', () => {
               lastName: 'Admin-test',
               userName: 'Admin-test',
               avatar: await getAvatar(),
-              role: TUserRole.Admin,
+              role: UserRole.Admin,
               password: userForTest.raw_password,
               passwordConfirm: userForTest.raw_password + '3333',
             },
@@ -213,7 +213,7 @@ describe('Users', () => {
               lastName: 'Admin-test',
               userName: 'Admin-test',
               avatar: await getAvatar(),
-              role: TUserRole.Admin,
+              role: UserRole.Admin,
               password: userForTest.raw_password,
               passwordConfirm: userForTest.raw_password,
             },
