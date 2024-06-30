@@ -46,7 +46,7 @@ export const UserMutations: Mutations = {
 
     const avatarUrl = data.avatar?.name
       ? await uploadImage(request, data.avatar)
-      : `${request.headers.get('host')}/default-profile.jpeg`;
+      : `${request.headers.get('host')}/default-profile.jpg`;
 
     const user = await prisma.user.create({
       data: {
